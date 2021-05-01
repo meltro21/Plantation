@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "45251315758",
+    "project_id": "indian-hub-7bde3",
+    "storage_bucket": "indian-hub-7bde3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45251315758:android:4dadbd624dda85a758f7bf",
+        "android_client_info": {
+          "package_name": "com.Indian_Hub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "45251315758-up5tm4h1thobj9rvgjigdrcn74maj3rf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAT6-4C19qU-hArWpfIzHCpyG8v4FS3W7M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "45251315758-up5tm4h1thobj9rvgjigdrcn74maj3rf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
