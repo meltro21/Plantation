@@ -102,13 +102,13 @@
     <string name="common_open_on_phone">Open on phone</string>
     <string name="common_signin_button_text">Sign in</string>
     <string name="common_signin_button_text_long">Sign in with Google</string>
-    <string name="default_web_client_id" translatable="false">45251315758-up5tm4h1thobj9rvgjigdrcn74maj3rf.apps.googleusercontent.com</string>
-    <string name="gcm_defaultSenderId" translatable="false">45251315758</string>
-    <string name="google_api_key" translatable="false">AIzaSyAT6-4C19qU-hArWpfIzHCpyG8v4FS3W7M</string>
-    <string name="google_app_id" translatable="false">1:45251315758:android:4dadbd624dda85a758f7bf</string>
-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAT6-4C19qU-hArWpfIzHCpyG8v4FS3W7M</string>
-    <string name="google_storage_bucket" translatable="false">indian-hub-7bde3.appspot.com</string>
-    <string name="project_id" translatable="false">indian-hub-7bde3</string>
+    <string name="default_web_client_id" translatable="false">695970986178-957naj3pcqvg7onfednh966ml4f50ajv.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">695970986178</string>
+    <string name="google_api_key" translatable="false">AIzaSyAEhJ7f0CDzjbiTZVSxRApr7xcSJC-0VCo</string>
+    <string name="google_app_id" translatable="false">1:695970986178:android:e53c4b7a4d14badeeca35b</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAEhJ7f0CDzjbiTZVSxRApr7xcSJC-0VCo</string>
+    <string name="google_storage_bucket" translatable="false">plantation-fd04e.appspot.com</string>
+    <string name="project_id" translatable="false">plantation-fd04e</string>
     <string name="status_bar_notification_info_overflow">999+</string>
     <style name="LaunchTheme" parent="@android:style/Theme.Black.NoTitleBar">
         <!-- Show a splash screen on the activity. Automatically removed when

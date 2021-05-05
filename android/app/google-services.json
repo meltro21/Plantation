@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "45251315758",
-    "project_id": "indian-hub-7bde3",
-    "storage_bucket": "indian-hub-7bde3.appspot.com"
+    "project_number": "695970986178",
+    "project_id": "plantation-fd04e",
+    "storage_bucket": "plantation-fd04e.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:45251315758:android:4dadbd624dda85a758f7bf",
+        "mobilesdk_app_id": "1:695970986178:android:e53c4b7a4d14badeeca35b",
         "android_client_info": {
-          "package_name": "com.Indian_Hub"
+          "package_name": "com.Plantation"
         }
       },
       "oauth_client": [
         {
-          "client_id": "45251315758-up5tm4h1thobj9rvgjigdrcn74maj3rf.apps.googleusercontent.com",
+          "client_id": "695970986178-957naj3pcqvg7onfednh966ml4f50ajv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAT6-4C19qU-hArWpfIzHCpyG8v4FS3W7M"
+          "current_key": "AIzaSyAEhJ7f0CDzjbiTZVSxRApr7xcSJC-0VCo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "45251315758-up5tm4h1thobj9rvgjigdrcn74maj3rf.apps.googleusercontent.com",
+              "client_id": "695970986178-957naj3pcqvg7onfednh966ml4f50ajv.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
