@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertest/screen/admin/adminBatches.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,7 @@ class AdminHome extends StatefulWidget {
 class _AdminHomeState extends State<AdminHome> {
   
    final AuthService _auth = AuthService();
+   
  
   @override
   
@@ -35,8 +37,45 @@ class _AdminHomeState extends State<AdminHome> {
             ],
         
         ),
-        body: Container(
-          child: Text('adminHome')
+        body: Center(
+          child:Container(
+            child:SingleChildScrollView(child: Column(
+              children: [
+                Card(
+                  elevation: 5,
+                  child:Container(
+                    height: 150,
+                    width: 150,
+                    child:FlatButton(
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminBatches()));
+                      },
+                        child: Align(
+                        alignment: Alignment.center,
+                        child: Text('Batches')),
+                    ),
+                  ),
+                ),
+                Card(
+                  elevation: 5,
+                  child:Container(
+                    height: 150,
+                    width: 150,
+                    child:FlatButton(
+                      onPressed: (){
+
+                      },
+                      child:Align(
+                      alignment: Alignment.center,
+                      child: Text('Workers Info')),
+                      ),
+                    
+                  ),
+                ),
+              ],
+            ),
+            ),
+          ),
         )
            );
   }

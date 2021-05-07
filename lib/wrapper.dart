@@ -32,28 +32,7 @@ class _WrapperState extends State<Wrapper> {
       }
       else
       {
-         if(user.uid!='Lrn8iIoM7nRFReK4phSDHNFdq2B2')
-         {
-           print('In if Loop');
-           print('uid is ${user.uid}');
-           firestoreInstance.collection('Position').doc(user.uid).get().then((value) {
-          print(value.data()['PlayTime']);
-           print('value is ${value.data()["PlayTime"]}');
-            if(value.data()["PlayTime"]==null)
-            {
-              print('Field created with value 0');
-              firestoreInstance.collection('Position').doc(user.uid).set({'PlayTime':0});
-              print('In if Loop with ${user.uid}');
-            }
-           }).onError((error, stackTrace) async {
-            
-             firestoreInstance.collection('Position').doc(user.uid).set({
-            'Email':user.email,
-            'PlayTime':0});
-           });
-         }
-         print('didnt go');
-        return user.uid=='Lrn8iIoM7nRFReK4phSDHNFdq2B2'? WrapperAdminHome():WrapperUserHome();
+        return user.uid=='4YXjBmjSdMZgflxvmz5NRtW24Ce2'? WrapperAdminHome():WrapperUserHome();
       }
   }
 
