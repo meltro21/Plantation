@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "F:\\FreeLance Projects\\In Production Projects\\Plantation\\Plantation Project\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ka\\values-ka.xml",
+            "outputFile": "G:\\FreeLance Projects\\In Production Projects\\Plantation\\Plantation\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ka\\values-ka.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\Usama\\.gradle\\caches\\transforms-2\\files-2.1\\7f0aa2e07f7fd198dc2589db3d7f0a4f\\jetified-play-services-basement-17.1.0\\res\\values-ka\\values.xml",
+                    "source": "C:\\Users\\liamj\\.gradle\\caches\\transforms-2\\files-2.1\\f6dfa6055fedb4c70dff8f6567a7ef88\\jetified-play-services-basement-17.1.0\\res\\values-ka\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Usama\\.gradle\\caches\\transforms-2\\files-2.1\\97461efba6c5e9e0983cc52e8129f2d5\\play-services-base-17.1.0\\res\\values-ka\\values.xml",
+                    "source": "C:\\Users\\liamj\\.gradle\\caches\\transforms-2\\files-2.1\\97461efba6c5e9e0983cc52e8129f2d5\\play-services-base-17.1.0\\res\\values-ka\\values.xml",
                     "from": {
                         "startLines": "4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20",
                         "startColumns": "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0",
@@ -38,7 +38,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\Usama\\.gradle\\caches\\transforms-2\\files-2.1\\3e26ef26d15f163a2f1a31a2130a0254\\core-1.1.0\\res\\values-ka\\values-ka.xml",
+                    "source": "C:\\Users\\liamj\\.gradle\\caches\\transforms-2\\files-2.1\\3e26ef26d15f163a2f1a31a2130a0254\\core-1.1.0\\res\\values-ka\\values-ka.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
