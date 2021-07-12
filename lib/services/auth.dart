@@ -38,6 +38,7 @@ class AuthService {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
+      print('After ');
       User user = result.user;
       return user;
     } catch (error) {

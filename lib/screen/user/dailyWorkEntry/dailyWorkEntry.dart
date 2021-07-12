@@ -1,84 +1,314 @@
+import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertest/models/dailyWork.dart';
+import 'package:http/http.dart' as http;
+
+Future<String> postDailyWork(
+    String lightsCondition,
+    oFansCondition,
+    heatersCondition,
+    eFansCondition,
+    dehumidifierCondition,
+    acCondition,
+    tHigh,
+    tLow,
+    hHigh,
+    hLow,
+    feed,
+    flush,
+    gPlant,
+    administrationPlant,
+    fBuggySpray,
+    fRinse,
+    fFoodSpray,
+    aSpray,
+    bugs,
+    waterORSoilTreatment,
+    transplanting,
+    topping,
+    pruning,
+    staking,
+    cloning,
+    harvest,
+    cleaning,
+    maintenance,
+    construction,
+    notes,
+    uid) async {
+  print('Fedd empty is: $feed');
+  print(lightsCondition);
+  double sum = 0.0;
+  if (lightsCondition == '') {
+    lightsCondition = "N/A";
+  }
+  if (oFansCondition == '') {
+    oFansCondition = "N/A";
+  }
+  if (heatersCondition == '') {
+    heatersCondition = "N/A";
+  }
+  if (eFansCondition == '') {
+    eFansCondition = "N/A";
+  }
+  if (dehumidifierCondition == '') {
+    dehumidifierCondition = "N/A";
+  }
+  if (acCondition == '') {
+    acCondition = "N/A";
+  }
+  if (tHigh == '') {
+    tHigh = "N/A";
+  }
+  if (tLow == '') {
+    tLow = "N/A";
+  }
+  if (hHigh == '') {
+    hHigh = "N/A";
+  }
+  if (hLow == '') {
+    hLow = "N/A";
+  }
+  if (feed == '') {
+    feed = "N/A";
+  } else {
+    sum = sum + double.parse(feed.toString());
+    print("Fed sum is $sum");
+  }
+  if (flush == '') {
+    flush = "N/A";
+  } else {
+    sum = sum + double.parse(flush.toString());
+  }
+  if (gPlant == '') {
+    gPlant = "N/A";
+  } else {
+    sum = sum + double.parse(gPlant.toString());
+  }
+  if (administrationPlant == '') {
+    administrationPlant = "N/A";
+  } else {
+    sum = sum + double.parse(administrationPlant.toString());
+  }
+  if (fBuggySpray == '') {
+    fBuggySpray = "N/A";
+  } else {
+    sum = sum + double.parse(fBuggySpray.toString());
+  }
+  if (fRinse == '') {
+    fRinse = "N/A";
+  } else {
+    sum = sum + double.parse(fRinse.toString());
+  }
+  if (fFoodSpray == '') {
+    fFoodSpray = "N/A";
+  } else {
+    sum = sum + double.parse(fFoodSpray.toString());
+  }
+  if (aSpray == '') {
+    aSpray = "N/A";
+  } else {
+    sum = sum + double.parse(aSpray.toString());
+  }
+  if (bugs == '') {
+    bugs = "N/A";
+  } else {
+    sum = sum + double.parse(bugs.toString());
+  }
+  if (waterORSoilTreatment == '') {
+    waterORSoilTreatment = "N/A";
+  } else {
+    sum = sum + double.parse(waterORSoilTreatment.toString());
+  }
+  if (transplanting == '') {
+    transplanting = "N/A";
+  } else {
+    sum = sum + double.parse(transplanting.toString());
+  }
+
+  if (topping == '') {
+    topping = "N/A";
+  } else {
+    sum = sum + double.parse(topping.toString());
+  }
+  if (pruning == '') {
+    pruning = "N/A";
+  } else {
+    sum = sum + double.parse(pruning.toString());
+  }
+  if (staking == '') {
+    staking = "N/A";
+  } else {
+    sum = sum + double.parse(staking.toString());
+  }
+  if (cloning == '') {
+    cloning = "N/A";
+  } else {
+    sum = sum + double.parse(cloning.toString());
+  }
+  if (harvest == '') {
+    harvest = "N/A";
+  } else {
+    sum = sum + double.parse(harvest.toString());
+  }
+
+  if (cleaning == '') {
+    cleaning = "N/A";
+  } else {
+    sum = sum + double.parse(cleaning.toString());
+  }
+  if (maintenance == '') {
+    maintenance = "N/A";
+  } else {
+    sum = sum + double.parse(maintenance.toString());
+  }
+  if (construction == '') {
+    construction = "N/A";
+  } else {
+    sum = sum + double.parse(construction.toString());
+  }
+  if (notes == '') {
+    notes = "N/A";
+  }
+  print("Sum is $sum");
+
+  final response = await http.post(
+      Uri.parse('https://hughplantation.herokuapp.com/dailyWork'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        "LightsCondition": lightsCondition,
+        "OFansCondition": oFansCondition,
+        "HeatersCondition": heatersCondition,
+        "EFansCondition": eFansCondition,
+        "DehumidifierCondition": dehumidifierCondition,
+        "AcCondition": acCondition,
+        "THigh": tHigh,
+        "TLow": tLow,
+        "HHigh": hHigh,
+        "HLow": hLow,
+        "Feed": feed,
+        "Flush": flush,
+        "GPlant": gPlant,
+        "AdministrationPlant": administrationPlant,
+        "FBuggySpray": fBuggySpray,
+        "FRinse": fRinse,
+        "FFoodSpray": fFoodSpray,
+        "ASpray": aSpray,
+        "Bugs": bugs,
+        "WaterORSoilTreatment": waterORSoilTreatment,
+        "Transplanting": transplanting,
+        "Topping": topping,
+        "Pruning": pruning,
+        "Staking": staking,
+        "Cloning": cloning,
+        "Harvest": harvest,
+        "Cleaning": cleaning,
+        "Maintenance": maintenance,
+        "Construction": construction,
+        "Notes": notes,
+        "TotalHours": sum.toString(),
+        "CreatedBy": uid
+      }));
+
+  if (response.statusCode == 200) {
+    print(response.statusCode);
+    print('Daily Work added successfully');
+    return "success";
+  } else {
+    print('error adding batch');
+    return "error";
+  }
+}
+
+String lightsCondition = '';
+String oFansCondition = '';
+String heatersCondition = '';
+String eFansCondition = '';
+String dehumidifierCondition = '';
+String acCondition = '';
+TextEditingController tHighController = TextEditingController();
+TextEditingController tLowController = TextEditingController();
+TextEditingController hHighController = TextEditingController();
+TextEditingController hLowController = TextEditingController();
+TextEditingController feedController = TextEditingController();
+TextEditingController flushController = TextEditingController();
+TextEditingController gPlantCareController = TextEditingController();
+TextEditingController administrationPlantController = TextEditingController();
+TextEditingController fBuggySprayController = TextEditingController();
+TextEditingController fRinseController = TextEditingController();
+TextEditingController fFoodSprayController = TextEditingController();
+TextEditingController aSprayController = TextEditingController();
+TextEditingController bugsController = TextEditingController();
+TextEditingController waterORSoilTreatmentController = TextEditingController();
+TextEditingController transplantingController = TextEditingController();
+TextEditingController toppingController = TextEditingController();
+TextEditingController pruningController = TextEditingController();
+TextEditingController stakingController = TextEditingController();
+TextEditingController cloningController = TextEditingController();
+TextEditingController harvestController = TextEditingController();
+TextEditingController cleaningController = TextEditingController();
+TextEditingController maintenanceController = TextEditingController();
+TextEditingController constructionController = TextEditingController();
+TextEditingController notesController = TextEditingController();
 
 class DailyWorkEntry extends StatefulWidget {
+  String uid;
+  DailyWorkEntry(this.uid);
   @override
   _DailyWorkEntryState createState() => _DailyWorkEntryState();
 }
 
 class _DailyWorkEntryState extends State<DailyWorkEntry> {
   final _formKey = GlobalKey<FormState>();
-  String lightsCondition = '';
-  String oFansCondition = '';
-  String heatersCondition = '';
-  String eFansCondition = '';
-  String dehumidifierCondition = '';
-  String acCondition = '';
-  TextEditingController tHighController = TextEditingController();
-  TextEditingController tLowController = TextEditingController();
-  TextEditingController hHighController = TextEditingController();
-  TextEditingController hLowController = TextEditingController();
-  TextEditingController feedController = TextEditingController();
-  TextEditingController flushController = TextEditingController();
-  TextEditingController gPlantCareController = TextEditingController();
-  TextEditingController administrationPlantController = TextEditingController();
-  TextEditingController fBuggySprayController = TextEditingController();
-  TextEditingController fRinseController = TextEditingController();
-  TextEditingController fFoodSprayController = TextEditingController();
-  TextEditingController aSprayController = TextEditingController();
-  TextEditingController bugsController = TextEditingController();
-  TextEditingController waterORSoilTreatmentController =
-      TextEditingController();
-  TextEditingController transplantingController = TextEditingController();
-  TextEditingController toppingController = TextEditingController();
-  TextEditingController pruningController = TextEditingController();
-  TextEditingController stakingController = TextEditingController();
-  TextEditingController cloningController = TextEditingController();
-  TextEditingController harvestController = TextEditingController();
-  TextEditingController cleaningController = TextEditingController();
-  TextEditingController maintenanceController = TextEditingController();
-  TextEditingController constructionController = TextEditingController();
-  TextEditingController notesController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    lightsCondition = "";
+    oFansCondition = "";
+    heatersCondition = "";
+    eFansCondition = "";
+    dehumidifierCondition = "";
+    acCondition = "";
+    tHighController.text = '';
+    tLowController.text = '';
+    hHighController.text = '';
+    hLowController.text = '';
+    feedController.text = '';
+    flushController.text = '';
+    gPlantCareController.text = '';
+    administrationPlantController.text = '';
+    fBuggySprayController.text = '';
+    fRinseController.text = '';
+    fFoodSprayController.text = '';
+    aSprayController.text = '';
+    bugsController.text = '';
+    waterORSoilTreatmentController.text = '';
+    transplantingController.text = '';
+    pruningController.text = '';
+    stakingController.text = '';
+    cloningController.text = '';
+    harvestController.text = '';
+    cleaningController.text = '';
+    maintenanceController.text = '';
+    constructionController.text = '';
+    notesController.text = '';
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Daily Work Entry'),
+        title: Text('Enter Daily Work'),
       ),
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10),
-          child: DailyWorkFullForm(
-              tHighController: tHighController,
-              tLowController: tLowController,
-              hHighController: hHighController,
-              hLowController: hLowController,
-              lightsCondition: lightsCondition,
-              oFansCondition: oFansCondition,
-              heatersCondition: heatersCondition,
-              eFansCondition: eFansCondition,
-              dehumidifierCondition: dehumidifierCondition,
-              acCondition: acCondition,
-              feedController: feedController,
-              flushController: flushController,
-              gPlantCareController: gPlantCareController,
-              administrationPlantController: administrationPlantController,
-              fBuggySprayController: fBuggySprayController,
-              fRinseController: fRinseController,
-              fFoodSprayController: fFoodSprayController,
-              aSprayController: aSprayController,
-              bugsController: bugsController,
-              waterORSoilTreatmentController: waterORSoilTreatmentController,
-              transplantingController: transplantingController,
-              toppingController: toppingController,
-              pruningController: pruningController,
-              stakingController: stakingController,
-              cloningController: cloningController,
-              harvestController: harvestController,
-              cleaningController: cleaningController,
-              maintenanceController: maintenanceController,
-              constructionController: constructionController,
-              notesController: notesController),
+          child: DailyWorkFullForm(widget.uid),
         ),
       ),
     );
@@ -86,70 +316,8 @@ class _DailyWorkEntryState extends State<DailyWorkEntry> {
 }
 
 class DailyWorkFullForm extends StatelessWidget {
-  const DailyWorkFullForm({
-    Key key,
-    @required this.tHighController,
-    @required this.tLowController,
-    @required this.hHighController,
-    @required this.hLowController,
-    @required this.lightsCondition,
-    @required this.oFansCondition,
-    @required this.heatersCondition,
-    @required this.eFansCondition,
-    @required this.dehumidifierCondition,
-    @required this.acCondition,
-    @required this.feedController,
-    @required this.flushController,
-    @required this.gPlantCareController,
-    @required this.administrationPlantController,
-    @required this.fBuggySprayController,
-    @required this.fRinseController,
-    @required this.fFoodSprayController,
-    @required this.aSprayController,
-    @required this.bugsController,
-    @required this.waterORSoilTreatmentController,
-    @required this.transplantingController,
-    @required this.toppingController,
-    @required this.pruningController,
-    @required this.stakingController,
-    @required this.cloningController,
-    @required this.harvestController,
-    @required this.cleaningController,
-    @required this.maintenanceController,
-    @required this.constructionController,
-    @required this.notesController,
-  }) : super(key: key);
-
-  final TextEditingController tHighController;
-  final TextEditingController tLowController;
-  final TextEditingController hHighController;
-  final TextEditingController hLowController;
-  final String lightsCondition;
-  final String oFansCondition;
-  final String heatersCondition;
-  final String eFansCondition;
-  final String dehumidifierCondition;
-  final String acCondition;
-  final TextEditingController feedController;
-  final TextEditingController flushController;
-  final TextEditingController gPlantCareController;
-  final TextEditingController administrationPlantController;
-  final TextEditingController fBuggySprayController;
-  final TextEditingController fRinseController;
-  final TextEditingController fFoodSprayController;
-  final TextEditingController aSprayController;
-  final TextEditingController bugsController;
-  final TextEditingController waterORSoilTreatmentController;
-  final TextEditingController transplantingController;
-  final TextEditingController toppingController;
-  final TextEditingController pruningController;
-  final TextEditingController stakingController;
-  final TextEditingController cloningController;
-  final TextEditingController harvestController;
-  final TextEditingController cleaningController;
-  final TextEditingController maintenanceController;
-  final TextEditingController constructionController;
-  final TextEditingController notesController;
+  String uid;
+  DailyWorkFullForm(this.uid);
 
   @override
   Widget build(BuildContext context) {
@@ -158,16 +326,6 @@ class DailyWorkFullForm extends StatelessWidget {
         Form(
           child: Column(
             children: [
-              DailyWorkForm(
-                labelText: 'Temperatur High',
-                tController: tHighController,
-              ),
-              DailyWorkForm(
-                  labelText: 'Temperatur Low', tController: tLowController),
-              DailyWorkForm(
-                  labelText: 'Humadity High', tController: hHighController),
-              DailyWorkForm(
-                  labelText: 'Humadity Low', tController: hLowController),
               DailyWorkDropDown(
                 label: 'Lights:                  ',
                 choice: lightsCondition,
@@ -194,6 +352,16 @@ class DailyWorkFullForm extends StatelessWidget {
                 label: 'AC                           ',
                 choice: acCondition,
               ),
+              DailyWorkForm(
+                labelText: 'Temperatur High',
+                tController: tHighController,
+              ),
+              DailyWorkForm(
+                  labelText: 'Temperatur Low', tController: tLowController),
+              DailyWorkForm(
+                  labelText: 'Humadity High', tController: hHighController),
+              DailyWorkForm(
+                  labelText: 'Humadity Low', tController: hLowController),
               DailyWorkForm(
                 labelText: 'Feed',
                 tController: feedController,
@@ -273,23 +441,87 @@ class DailyWorkFullForm extends StatelessWidget {
               DailyWorkForm(
                 labelText: 'NOTES:',
                 tController: notesController,
-              )
+              ),
+              SizedBox(height: 20),
+              GestureDetector(
+                onTap: () async {
+                  print("Add batch post called");
+                  print("Parameters are: ");
+                  print('Lights: $lightsCondition');
+                  print(oFansCondition);
+                  print(heatersCondition);
+
+                  print(eFansCondition);
+                  print(dehumidifierCondition);
+                  print(acCondition);
+
+                  print(tHighController.text);
+                  print(tLowController.text);
+
+                  print(hHighController.text);
+                  print(hLowController.text);
+                  print(feedController.text);
+                  print(flushController.text);
+                  print(gPlantCareController.text);
+                  // print(tHighController.text);
+                  // print(tHighController.text);
+                  // print(tHighController.text);
+
+                  await postDailyWork(
+                      lightsCondition,
+                      oFansCondition,
+                      heatersCondition,
+                      eFansCondition,
+                      dehumidifierCondition,
+                      acCondition,
+                      tHighController.text,
+                      tLowController.text,
+                      hHighController.text,
+                      hLowController.text,
+                      feedController.text,
+                      flushController.text,
+                      gPlantCareController.text,
+                      administrationPlantController.text,
+                      fBuggySprayController.text,
+                      fRinseController.text,
+                      fFoodSprayController.text,
+                      aSprayController.text,
+                      bugsController.text,
+                      waterORSoilTreatmentController.text,
+                      transplantingController.text,
+                      toppingController.text,
+                      pruningController.text,
+                      stakingController.text,
+                      cloningController.text,
+                      harvestController.text,
+                      cleaningController.text,
+                      maintenanceController.text,
+                      constructionController.text,
+                      notesController.text,
+                      uid);
+                },
+                child: Container(
+                  height: 40.0,
+                  child: Material(
+                    borderRadius: BorderRadius.circular(20.0),
+                    shadowColor: Colors.greenAccent,
+                    color: Colors.blue,
+                    elevation: 7.0,
+                    child: Center(
+                      child: Text(
+                        'Upload Daily Work',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Montserrat'),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
-        RaisedButton(onPressed: () {
-          print('tHigh ${tHighController.text}');
-          print('tLow ${tLowController.text}');
-          print('hHigh ${hHighController.text}');
-          print('hLow ${hLowController.text}');
-          print('feed ${feedController.text}');
-
-          print('flush ${flushController.text}');
-          print('gPlant ${gPlantCareController.text}');
-          print('admistritaion ${administrationPlantController.text}');
-          print('fBuggy ${fBuggySprayController.text}');
-          print('fRinse ${fRinseController.text}');
-        })
       ],
     );
   }
@@ -303,6 +535,132 @@ class DailyWorkForm extends StatelessWidget {
   String labelText;
   TextEditingController tController;
   DailyWorkForm({this.labelText, this.tController});
+  TextEditingController editingController(
+      String label, TextEditingController t) {
+    TextEditingController temp = TextEditingController();
+    if (label == "Temperatur High") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Temperatur Low") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Humadity High") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Humadity Low") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Feed") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Flush") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "General Plat Care") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Administration, Solrting and or Moving Plants") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Foliar Buggy Spray") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Foliar Rinse") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+
+    if (label == "Foliar Food Spray") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Alternate Spray") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Bugs") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Water or Soil Bugg Treatment") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Transplanting") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Topping") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Pruning") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Staking") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+
+    if (label == "Cloning") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Harvest") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Cleaning") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Maintenance") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "Contruction") {
+      tHighController = t;
+      temp = t;
+      return temp;
+    }
+    if (label == "NOTES:") {
+      notesController = t;
+      temp = t;
+      return temp;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -310,7 +668,7 @@ class DailyWorkForm extends StatelessWidget {
       decoration: InputDecoration(
         labelText: "$labelText",
       ),
-      controller: tController,
+      controller: editingController(labelText, tController),
     );
   }
 }
@@ -341,8 +699,34 @@ class _DailyWorkDropDownState extends State<DailyWorkDropDown> {
               );
             }).toList(),
             onChanged: (_) {
+              // if (widget.label == 'Lights:                  ') {
+              //   print('In Lights');
+              //   lightsCondition = _;
+              //   print(lightsCondition);
+              // }
               setState(() {
                 widget.choice = _;
+                if (widget.label == 'Lights:                  ') {
+                  print('In Lights');
+                  lightsCondition = _;
+                  print(lightsCondition);
+                }
+                if (widget.label == 'Oscillating Fans: ') {
+                  print('In oFans');
+                  oFansCondition = _;
+                  print(lightsCondition);
+                }
+                if (widget.label == 'Heaters                 ') {
+                  print('In oFans');
+                  heatersCondition = _;
+                  print(lightsCondition);
+                } else if (widget.label == 'Exaust Fans          ') {
+                  eFansCondition = _;
+                } else if (widget.label == 'Dehumidifier         ') {
+                  dehumidifierCondition = _;
+                } else if (widget.label == 'AC                           ') {
+                  acCondition = _;
+                }
               });
             },
           ))
