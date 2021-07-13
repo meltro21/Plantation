@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/models/varietyInfo.dart';
 import 'package:fluttertest/screen/admin/batches/addBatch.dart';
+import 'package:fluttertest/screen/admin/batches/variety/addVarietyInfoAdmin.dart';
 import 'package:fluttertest/screen/admin/batches/variety/variety.dart';
 import 'package:fluttertest/screen/user/varietyUser/addVarietyInfo.dart';
 import 'package:fluttertest/screen/user/varietyUser/datailVarietyInfo.dart';
@@ -25,7 +26,8 @@ List<VarietyInfoModel> parseVarietyInfo(String responseBody) {
 
 class VarietyInfoHome extends StatefulWidget {
   String varietyId;
-  VarietyInfoHome(this.varietyId);
+  Function navigateToVarietyInfoHome;
+  VarietyInfoHome(this.varietyId, this.navigateToVarietyInfoHome);
   @override
   _VarietyInfoHomeState createState() => _VarietyInfoHomeState();
 }
@@ -48,6 +50,7 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
   @override
   Widget build(BuildContext context) {
     DateTime dateTime;
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Variety History'),
@@ -57,8 +60,8 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          AddVarietyInfoUser(widget.varietyId)));
+                      builder: (context) => addVarietyInfoAdmin(
+                          widget.varietyId, widget.navigateToVarietyInfoHome)));
             },
             label: Text('Add History')),
         body: FutureBuilder(

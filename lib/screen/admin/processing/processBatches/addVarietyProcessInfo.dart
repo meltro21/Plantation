@@ -3,14 +3,20 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:http/http.dart' as http;
 
 class AddVarietyProcessInfo extends StatelessWidget {
   String varietyId;
-  AddVarietyProcessInfo(this.varietyId);
+  Function navigateToVarietyHistoryList;
+  AddVarietyProcessInfo(this.varietyId, this.navigateToVarietyHistoryList);
   @override
   Widget build(BuildContext context) {
+    final spinkit = SpinKitChasingDots(
+      color: Colors.grey[200],
+      size: 50.0,
+    );
     final _formKey = GlobalKey<FormState>();
     TextEditingController aGradeController = TextEditingController();
     TextEditingController bGradeController = TextEditingController();
@@ -78,26 +84,13 @@ class AddVarietyProcessInfo extends StatelessWidget {
       });
     }
 
-    void showDialogBox(String t, String s) {
+    void showDialogBox() {
       showCupertinoDialog(
           context: context,
-          builder: (_) => AlertDialog(
-                title: Text(t),
-                content: Text(s),
-                actions: [
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('No'),
-                  ),
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('Ok'),
-                  ),
-                ],
+          builder: (_) => Container(
+                child: AlertDialog(
+                  content: Container(width: 50, height: 50, child: spinkit),
+                ),
               ));
     }
 
@@ -168,13 +161,18 @@ class AddVarietyProcessInfo extends StatelessWidget {
                     SizedBox(height: 20),
                     GestureDetector(
                       onTap: () async {
-                        postVarietyProcessInfo(
+                        showDialogBox();
+                        await postVarietyProcessInfo(
                           varietyId,
                           aGradeController.text,
                           bGradeController.text,
                           shakeController.text,
                           compostController.text,
                         );
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        this.navigateToVarietyHistoryList(varietyId);
                       },
                       child: Container(
                         height: 40.0,

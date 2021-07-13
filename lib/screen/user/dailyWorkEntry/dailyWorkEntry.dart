@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/models/dailyWork.dart';
 import 'package:http/http.dart' as http;
 
@@ -256,7 +258,8 @@ TextEditingController notesController = TextEditingController();
 
 class DailyWorkEntry extends StatefulWidget {
   String uid;
-  DailyWorkEntry(this.uid);
+  Function navigateToHomeDailyWorkEntry;
+  DailyWorkEntry(this.uid, this.navigateToHomeDailyWorkEntry);
   @override
   _DailyWorkEntryState createState() => _DailyWorkEntryState();
 }
@@ -308,7 +311,8 @@ class _DailyWorkEntryState extends State<DailyWorkEntry> {
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10),
-          child: DailyWorkFullForm(widget.uid),
+          child: DailyWorkFullForm(
+              widget.uid, widget.navigateToHomeDailyWorkEntry),
         ),
       ),
     );
@@ -317,10 +321,40 @@ class _DailyWorkEntryState extends State<DailyWorkEntry> {
 
 class DailyWorkFullForm extends StatelessWidget {
   String uid;
-  DailyWorkFullForm(this.uid);
+  Function navigateToHomeDailyWorkEntry;
+  DailyWorkFullForm(this.uid, this.navigateToHomeDailyWorkEntry);
+  final spinkit = SpinKitChasingDots(
+    color: Colors.grey[200],
+    size: 50.0,
+  );
 
   @override
   Widget build(BuildContext context) {
+    void showDialogBox() {
+      showCupertinoDialog(
+          context: context,
+          builder: (_) => Container(
+                child: AlertDialog(
+                  content: Container(width: 50, height: 50, child: spinkit),
+
+                  // actions: [
+                  //   FlatButton(
+                  //     onPressed: () {za
+                  //       Navigator.pop(context);
+                  //     },
+                  //     child: Text('No'),
+                  //   ),
+                  //   FlatButton(
+                  //     onPressed: () {
+                  //       Navigator.pop(context);
+                  //     },
+                  //     child: Text('Ok'),
+                  //   ),
+                  // ],
+                ),
+              ));
+    }
+
     return Column(
       children: [
         Form(
@@ -467,6 +501,7 @@ class DailyWorkFullForm extends StatelessWidget {
                   // print(tHighController.text);
                   // print(tHighController.text);
 
+                  showDialogBox();
                   await postDailyWork(
                       lightsCondition,
                       oFansCondition,
@@ -499,6 +534,10 @@ class DailyWorkFullForm extends StatelessWidget {
                       constructionController.text,
                       notesController.text,
                       uid);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  navigateToHomeDailyWorkEntry(uid);
                 },
                 child: Container(
                   height: 40.0,

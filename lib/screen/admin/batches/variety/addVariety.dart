@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 
 Future<String> postVariety(
@@ -23,7 +25,8 @@ Future<String> postVariety(
 
 class AddVariety extends StatefulWidget {
   String batchId;
-  AddVariety(this.batchId);
+  Function navigateToListVarieties;
+  AddVariety(this.batchId, this.navigateToListVarieties);
 
   @override
   _AddVarietyState createState() => _AddVarietyState();
@@ -33,6 +36,35 @@ class _AddVarietyState extends State<AddVariety> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController varietyNameController = TextEditingController();
   TextEditingController varietyNoOfPlantsController = TextEditingController();
+  final spinkit = SpinKitChasingDots(
+    color: Colors.grey[200],
+    size: 50.0,
+  );
+
+  void showDialogBox() {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Container(width: 50, height: 50, child: spinkit),
+
+                // actions: [
+                //   FlatButton(
+                //     onPressed: () {za
+                //       Navigator.pop(context);
+                //     },
+                //     child: Text('No'),
+                //   ),
+                //   FlatButton(
+                //     onPressed: () {
+                //       Navigator.pop(context);
+                //     },
+                //     child: Text('Ok'),
+                //   ),
+                // ],
+              ),
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +107,15 @@ class _AddVarietyState extends State<AddVariety> {
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
-                    postVariety(widget.batchId, varietyNameController.text,
+                    showDialogBox();
+                    await postVariety(
+                        widget.batchId,
+                        varietyNameController.text,
                         varietyNoOfPlantsController.text);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    widget.navigateToListVarieties(widget.batchId);
                   },
                   child: Container(
                     height: 40.0,

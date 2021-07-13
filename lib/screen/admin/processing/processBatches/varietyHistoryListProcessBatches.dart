@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/models/varietyInfo.dart';
 import 'package:fluttertest/models/varietyProcessModel.dart';
@@ -27,8 +29,10 @@ List<VarietyProcessModel> parseVarietyInfo(String responseBody) {
 }
 
 class VarietyHistoryListProcessBatches extends StatefulWidget {
+  Function navigateToVarietyHistoryList;
   String varietyId;
-  VarietyHistoryListProcessBatches(this.varietyId);
+  VarietyHistoryListProcessBatches(
+      this.varietyId, this.navigateToVarietyHistoryList);
   @override
   _VarietyHistoryListProcessBatchesState createState() =>
       _VarietyHistoryListProcessBatchesState();
@@ -36,6 +40,10 @@ class VarietyHistoryListProcessBatches extends StatefulWidget {
 
 class _VarietyHistoryListProcessBatchesState
     extends State<VarietyHistoryListProcessBatches> {
+  final spinkit = SpinKitChasingDots(
+    color: Colors.grey[200],
+    size: 50.0,
+  );
   Future<List<VarietyProcessModel>> getVarietyInfo(http.Client client) async {
     print('start filterVariety get');
     var queryParameters = {'VarietyId': widget.varietyId};
@@ -50,6 +58,16 @@ class _VarietyHistoryListProcessBatchesState
     return compute(parseVarietyInfo, response.body);
   }
 
+  void showDialogBox(bool flag) {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Container(width: 50, height: 50, child: spinkit),
+              ),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     DateTime dateTime;
@@ -62,8 +80,9 @@ class _VarietyHistoryListProcessBatchesState
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) =>
-                          AddVarietyProcessInfo(widget.varietyId)));
+                      builder: (context) => AddVarietyProcessInfo(
+                          widget.varietyId,
+                          widget.navigateToVarietyHistoryList)));
             },
             label: Text('Add Batch')),
         body: FutureBuilder(

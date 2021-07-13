@@ -94,6 +94,13 @@ class UserHome extends StatefulWidget {
 
 class _UserHomeState extends State<UserHome> {
   final AuthService _auth = AuthService();
+  void navigateToHomeDailyWorkEntry(String id) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                HomeDailyWorkEntry(widget.uid, navigateToHomeDailyWorkEntry)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +163,8 @@ class _UserHomeState extends State<UserHome> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              HomeDailyWorkEntry(widget.uid)));
+                                              HomeDailyWorkEntry(widget.uid,
+                                                  navigateToHomeDailyWorkEntry)));
                                 },
                                 child: Align(
                                     alignment: Alignment.center,

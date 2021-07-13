@@ -173,6 +173,13 @@ class AdminHome extends StatefulWidget {
 class _AdminHomeState extends State<AdminHome> {
   final AuthService _auth = AuthService();
 
+  void navigateToAdminBatches() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => AdminBatches(navigateToAdminBatches)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -215,8 +222,8 @@ class _AdminHomeState extends State<AdminHome> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              AdminBatches()));
+                                          builder: (context) => AdminBatches(
+                                              navigateToAdminBatches)));
                                 },
                                 child: Align(
                                     alignment: Alignment.center,

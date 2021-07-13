@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 
@@ -33,6 +34,12 @@ Future<String> postBatch(
 }
 
 class AddBatch extends StatelessWidget {
+  Function navigateToAdminBatches;
+  final spinkit = SpinKitChasingDots(
+    color: Colors.grey[200],
+    size: 50.0,
+  );
+  AddBatch(this.navigateToAdminBatches);
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
@@ -77,26 +84,28 @@ class AddBatch extends StatelessWidget {
       });
     }
 
-    void showDialogBox(String t, String s) {
+    void showDialogBox() {
       showCupertinoDialog(
           context: context,
-          builder: (_) => AlertDialog(
-                title: Text(t),
-                content: Text(s),
-                actions: [
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('No'),
-                  ),
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('Ok'),
-                  ),
-                ],
+          builder: (_) => Container(
+                child: AlertDialog(
+                  content: Container(width: 50, height: 50, child: spinkit),
+
+                  // actions: [
+                  //   FlatButton(
+                  //     onPressed: () {za
+                  //       Navigator.pop(context);
+                  //     },
+                  //     child: Text('No'),
+                  //   ),
+                  //   FlatButton(
+                  //     onPressed: () {
+                  //       Navigator.pop(context);
+                  //     },
+                  //     child: Text('Ok'),
+                  //   ),
+                  // ],
+                ),
               ));
     }
 
@@ -224,12 +233,17 @@ class AddBatch extends StatelessWidget {
               SizedBox(height: 20),
               GestureDetector(
                 onTap: () async {
-                  postBatch(
+                  showDialogBox();
+                  await postBatch(
                       batchNoController.text,
                       roomNameController.text,
                       noOfPlantsHarvestedController.text,
                       entryIntoRoomController.text,
                       harvestDateController.text);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  navigateToAdminBatches();
                 },
                 child: Container(
                   height: 40.0,

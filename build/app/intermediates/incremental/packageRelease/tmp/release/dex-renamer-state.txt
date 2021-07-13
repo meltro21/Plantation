@@ -1,0 +1,4 @@
+#Mon Jul 12 14:41:40 PDT 2021
+base.0=G\:\\FreeLance Projects\\In Production Projects\\Plantation\\Plantation\\build\\app\\intermediates\\transforms\\r8\\release\\0\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

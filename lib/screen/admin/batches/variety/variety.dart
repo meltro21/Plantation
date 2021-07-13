@@ -1,11 +1,12 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertest/screen/admin/batches/adminBatches.dart';
 import 'package:fluttertest/screen/admin/batches/variety/addVariety.dart';
 import 'package:fluttertest/screen/admin/batches/variety/varityInfoHome.dart';
-import 'package:fluttertest/screen/user/varietyUser/datailVarietyInfo.dart';
-import 'package:fluttertest/screen/user/varietyUser/varietyHistoryList.dart';
 import 'package:fluttertest/shared/loading.dart';
 import 'package:http/http.dart' as http;
 import '../../../../models/variety.dart';
@@ -20,14 +21,21 @@ List<VarietyModel> parseVarieties(String responseBody) {
 }
 
 class Variety extends StatefulWidget {
+  Function navigateToAdminBatches;
+  Function navigateToListVarieties;
   String batchId;
-  Variety(this.batchId);
+  Variety(
+      this.batchId, this.navigateToAdminBatches, this.navigateToListVarieties);
 
   @override
   _VarietyState createState() => _VarietyState();
 }
 
 class _VarietyState extends State<Variety> {
+  final spinkit = SpinKitChasingDots(
+    color: Colors.grey[200],
+    size: 50.0,
+  );
   Future<List<VarietyModel>> getVarities(http.Client client) async {
     print('start filterVariety get');
     var queryParameters = {'batchId': widget.batchId};
@@ -58,8 +66,42 @@ class _VarietyState extends State<Variety> {
     }
   }
 
+  void navigateToVarietyInfoHome(String id) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                VarietyInfoHome(id, navigateToVarietyInfoHome)));
+  }
+
+  void showDialogBox(bool flag) {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Container(width: 50, height: 50, child: spinkit),
+
+                // actions: [
+                //   FlatButton(
+                //     onPressed: () {za
+                //       Navigator.pop(context);
+                //     },
+                //     child: Text('No'),
+                //   ),
+                //   FlatButton(
+                //     onPressed: () {
+                //       Navigator.pop(context);
+                //     },
+                //     child: Text('Ok'),
+                //   ),
+                // ],
+              ),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
+    print('hello');
     return Scaffold(
       appBar: AppBar(
         title: Text('Variety List'),
@@ -69,7 +111,8 @@ class _VarietyState extends State<Variety> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => AddVariety(widget.batchId)));
+                    builder: (context) => AddVariety(
+                        widget.batchId, widget.navigateToListVarieties)));
           },
           label: Text('Add Variety')),
       body: Container(
@@ -91,7 +134,8 @@ class _VarietyState extends State<Variety> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => VarietyInfoHome(
-                                          snapshot.data[index].varietyId)));
+                                          snapshot.data[index].varietyId,
+                                          navigateToVarietyInfoHome)));
                             },
                           );
                         });
@@ -114,7 +158,13 @@ class _VarietyState extends State<Variety> {
                 elevation: 7.0,
                 child: GestureDetector(
                   onTap: () async {
+                    showDialogBox(true);
                     await getShiftBatches(http.Client());
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+
+                    widget.navigateToAdminBatches();
                   },
                   child: Center(
                     child: Text(

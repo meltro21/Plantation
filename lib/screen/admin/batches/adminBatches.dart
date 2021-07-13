@@ -32,12 +32,37 @@ Future<List<Batch>> getBatches(http.Client client) async {
 }
 
 class AdminBatches extends StatefulWidget {
+  Function navigateToAdminBatches;
+  AdminBatches(this.navigateToAdminBatches);
   @override
   _AdminBatchesState createState() => _AdminBatchesState();
 }
 
 class _AdminBatchesState extends State<AdminBatches> {
+  Future<List<Batch>> futureBatch;
   final AuthService _auth = AuthService();
+  void adminBatchesPop() {
+    Navigator.pop(context);
+    Navigator.pop(context);
+  }
+
+  void navigateToListVarieties(String id) {
+    print('Navigate');
+    print('id is $id');
+
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Variety(
+                id, widget.navigateToAdminBatches, navigateToListVarieties)));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    futureBatch = getBatches(http.Client());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +74,14 @@ class _AdminBatchesState extends State<AdminBatches> {
         floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
               Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => AddBatch()));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AddBatch(widget.navigateToAdminBatches)));
             },
             label: Text('Add Batch')),
         body: FutureBuilder(
-            future: getBatches(http.Client()),
+            future: futureBatch,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 print('snapshot has data');
@@ -68,8 +96,10 @@ class _AdminBatchesState extends State<AdminBatches> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      Variety(snapshot.data[index].id)));
+                                  builder: (context) => Variety(
+                                      snapshot.data[index].id,
+                                      widget.navigateToAdminBatches,
+                                      navigateToListVarieties)));
                         },
                         child: ListTile(
                           title: Text('Batch ${snapshot.data[index].batchNo}'),

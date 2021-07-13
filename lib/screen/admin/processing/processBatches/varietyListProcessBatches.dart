@@ -44,6 +44,14 @@ class _VarietyListProcessBatchesState extends State<VarietyListProcessBatches> {
     return compute(parseVarieties, response.body);
   }
 
+  void navigateToVarietyHistoryList(String id) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => VarietyHistoryListProcessBatches(
+                id, navigateToVarietyHistoryList)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +84,8 @@ class _VarietyListProcessBatchesState extends State<VarietyListProcessBatches> {
                                   MaterialPageRoute(
                                       builder: (context) =>
                                           VarietyHistoryListProcessBatches(
-                                              snapshot.data[index].varietyId)));
+                                              snapshot.data[index].varietyId,
+                                              navigateToVarietyHistoryList)));
                             },
                           );
                         });

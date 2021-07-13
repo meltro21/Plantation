@@ -27,7 +27,8 @@ List<DailyWorkModel> parseVarieties(String responseBody) {
 
 class HomeDailyWorkEntry extends StatefulWidget {
   String uid;
-  HomeDailyWorkEntry(this.uid);
+  Function navigateToHomeDailyWorkEntry;
+  HomeDailyWorkEntry(this.uid, this.navigateToHomeDailyWorkEntry);
   @override
   _HomeDailyWorkEntryState createState() => _HomeDailyWorkEntryState();
 }
@@ -61,7 +62,8 @@ class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DailyWorkEntry(widget.uid)));
+                      builder: (context) => DailyWorkEntry(
+                          widget.uid, widget.navigateToHomeDailyWorkEntry)));
             },
             label: Text('Add Daily Work')),
         body: FutureBuilder(

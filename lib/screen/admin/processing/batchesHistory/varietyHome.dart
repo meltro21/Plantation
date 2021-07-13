@@ -67,7 +67,8 @@ class _VarietyHomeProcessingState extends State<VarietyHomeProcessing> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => VarietyInfoHome(
-                                          snapshot.data[index].varietyId)));
+                                          snapshot.data[index].varietyId,
+                                          null)));
                             },
                           );
                         });
