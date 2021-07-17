@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/screen/admin/batches/addBatch.dart';
 import 'package:fluttertest/screen/admin/batches/variety/variety.dart';
@@ -31,6 +33,18 @@ Future<List<Batch>> getBatches(http.Client client) async {
   return compute(parseBatch, response.body);
 }
 
+Future<int> deleteBatch(http.Client client, String batchId) async {
+  var queryParameters = {'BatchId': batchId};
+  var uri = Uri.https(
+      'hughplantation.herokuapp.com', '/deleteBatch', queryParameters);
+  final response = await http.get(uri);
+  if (response.statusCode == 200) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 class AdminBatches extends StatefulWidget {
   Function navigateToAdminBatches;
   AdminBatches(this.navigateToAdminBatches);
@@ -46,6 +60,11 @@ class _AdminBatchesState extends State<AdminBatches> {
     Navigator.pop(context);
   }
 
+  final spinkit = SpinKitChasingDots(
+    color: Colors.grey[200],
+    size: 50.0,
+  );
+
   void navigateToListVarieties(String id) {
     print('Navigate');
     print('id is $id');
@@ -55,6 +74,45 @@ class _AdminBatchesState extends State<AdminBatches> {
         MaterialPageRoute(
             builder: (context) => Variety(
                 id, widget.navigateToAdminBatches, navigateToListVarieties)));
+  }
+
+  void showConfirmDeleteDialogBox(String batchId) async {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Text('Are you sure you want to delete!'),
+                actions: [
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('No'),
+                  ),
+                  FlatButton(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      showLoadingDialogBox();
+                      await deleteBatch(http.Client(), batchId);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      widget.navigateToAdminBatches();
+                    },
+                    child: Text('Yes'),
+                  ),
+                ],
+              ),
+            ));
+  }
+
+  void showLoadingDialogBox() {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Container(width: 50, height: 50, child: spinkit),
+              ),
+            ));
   }
 
   @override
@@ -84,10 +142,6 @@ class _AdminBatchesState extends State<AdminBatches> {
             future: futureBatch,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print('snapshot has data');
-                for (var i in snapshot.data) {
-                  print(i.enterRoomDate);
-                }
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
@@ -103,6 +157,13 @@ class _AdminBatchesState extends State<AdminBatches> {
                         },
                         child: ListTile(
                           title: Text('Batch ${snapshot.data[index].batchNo}'),
+                          trailing: GestureDetector(
+                            child: Icon(Icons.highlight_off),
+                            onTap: () async {
+                              await showConfirmDeleteDialogBox(
+                                  snapshot.data[index].id);
+                            },
+                          ),
                         ),
                       );
                     });

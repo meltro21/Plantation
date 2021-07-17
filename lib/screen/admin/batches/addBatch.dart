@@ -134,99 +134,99 @@ class AddBatch extends StatelessWidget {
                               borderSide: BorderSide(color: Colors.green))),
                       controller: batchNoController,
                     ),
-                    SizedBox(height: 20.0),
-                    TextFormField(
-                      validator: (val) =>
-                          val.isEmpty ? 'Enter Room Name' : null,
-                      decoration: InputDecoration(
-                          labelText: 'Room Name',
-                          labelStyle: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.green))),
-                      controller: roomNameController,
-                    ),
-                    SizedBox(height: 20.0),
-                    TextFormField(
-                      validator: (val) => val.isEmpty ? 'Enter Batch #' : null,
-                      decoration: InputDecoration(
-                          labelText: 'No Of Plants Harvested',
-                          labelStyle: TextStyle(
-                              fontFamily: 'Montserrat',
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey),
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.green))),
-                      controller: noOfPlantsHarvestedController,
-                    ),
-                    SizedBox(height: 20.0),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            validator: (val) =>
-                                val.isEmpty ? 'Enter Room Name' : null,
-                            decoration: InputDecoration(
-                                labelText: 'Entry into Room',
-                                labelStyle: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.green))),
-                            controller: entryIntoRoomController,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            pickStartDate();
-                          },
-                          child: Container(
-                              height: 50,
-                              width: 50,
-                              child: Image.asset(
-                                "littlePlant.png",
-                                fit: BoxFit.fitWidth,
-                              )),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: TextFormField(
-                            validator: (val) =>
-                                val.isEmpty ? 'Enter Room Name' : null,
-                            decoration: InputDecoration(
-                                labelText: 'Harvest Date',
-                                labelStyle: TextStyle(
-                                    fontFamily: 'Montserrat',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey),
-                                focusedBorder: UnderlineInputBorder(
-                                    borderSide:
-                                        BorderSide(color: Colors.green))),
-                            controller: harvestDateController,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            pickEndDate();
-                          },
-                          child: Container(
-                              height: 50,
-                              width: 50,
-                              child: Image.asset(
-                                "largePlant.png",
-                                fit: BoxFit.fitWidth,
-                              )),
-                        ),
-                      ],
-                    ),
+                    // SizedBox(height: 20.0),
+                    // TextFormField(
+                    //   validator: (val) =>
+                    //       val.isEmpty ? 'Enter Room Name' : null,
+                    //   decoration: InputDecoration(
+                    //       labelText: 'Room Name',
+                    //       labelStyle: TextStyle(
+                    //           fontFamily: 'Montserrat',
+                    //           fontWeight: FontWeight.bold,
+                    //           color: Colors.grey),
+                    //       focusedBorder: UnderlineInputBorder(
+                    //           borderSide: BorderSide(color: Colors.green))),
+                    //   controller: roomNameController,
+                    // ),
+                    // SizedBox(height: 20.0),
+                    // TextFormField(
+                    //   validator: (val) => val.isEmpty ? 'Enter Batch #' : null,
+                    //   decoration: InputDecoration(
+                    //       labelText: 'No Of Plants Harvested',
+                    //       labelStyle: TextStyle(
+                    //           fontFamily: 'Montserrat',
+                    //           fontWeight: FontWeight.bold,
+                    //           color: Colors.grey),
+                    //       focusedBorder: UnderlineInputBorder(
+                    //           borderSide: BorderSide(color: Colors.green))),
+                    //   controller: noOfPlantsHarvestedController,
+                    // ),
+                    // SizedBox(height: 20.0),
+                    // Row(
+                    //   children: [
+                    //     Expanded(
+                    //       child: TextFormField(
+                    //         validator: (val) =>
+                    //             val.isEmpty ? 'Enter Room Name' : null,
+                    //         decoration: InputDecoration(
+                    //             labelText: 'Entry into Room',
+                    //             labelStyle: TextStyle(
+                    //                 fontFamily: 'Montserrat',
+                    //                 fontWeight: FontWeight.bold,
+                    //                 color: Colors.grey),
+                    //             focusedBorder: UnderlineInputBorder(
+                    //                 borderSide:
+                    //                     BorderSide(color: Colors.green))),
+                    //         controller: entryIntoRoomController,
+                    //       ),
+                    //     ),
+                    //     GestureDetector(
+                    //       onTap: () {
+                    //         pickStartDate();
+                    //       },
+                    //       child: Container(
+                    //           height: 50,
+                    //           width: 50,
+                    //           child: Image.asset(
+                    //             "littlePlant.png",
+                    //             fit: BoxFit.fitWidth,
+                    //           )),
+                    //     ),
+                    //   ],
+                    // ),
+                    // SizedBox(height: 20),
+                    // Row(
+                    //   children: [
+                    //     Expanded(
+                    //       child: TextFormField(
+                    //         validator: (val) =>
+                    //             val.isEmpty ? 'Enter Room Name' : null,
+                    //         decoration: InputDecoration(
+                    //             labelText: 'Harvest Date',
+                    //             labelStyle: TextStyle(
+                    //                 fontFamily: 'Montserrat',
+                    //                 fontWeight: FontWeight.bold,
+                    //                 color: Colors.grey),
+                    //             focusedBorder: UnderlineInputBorder(
+                    //                 borderSide:
+                    //                     BorderSide(color: Colors.green))),
+                    //         controller: harvestDateController,
+                    //       ),
+                    //     ),
+                    //     GestureDetector(
+                    //       onTap: () {
+                    //         pickEndDate();
+                    //       },
+                    //       child: Container(
+                    //           height: 50,
+                    //           width: 50,
+                    //           child: Image.asset(
+                    //             "largePlant.png",
+                    //             fit: BoxFit.fitWidth,
+                    //           )),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),
