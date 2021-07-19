@@ -40,6 +40,14 @@ class _VarietyUserHomeState extends State<VarietyUserHome> {
     return compute(parseVarieties, response.body);
   }
 
+  void navigateToVarietyInfoHome(String id) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                VarietyHistoryList(id, navigateToVarietyInfoHome)));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,7 +68,8 @@ class _VarietyUserHomeState extends State<VarietyUserHome> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => VarietyHistoryList(
-                                  snapshot.data[index].varietyId)));
+                                  snapshot.data[index].varietyId,
+                                  navigateToVarietyInfoHome)));
                     },
                   );
                 });

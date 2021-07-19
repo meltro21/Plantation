@@ -1,13 +1,11 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertest/models/batch.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/models/varietyInfo.dart';
-import 'package:fluttertest/screen/admin/batches/addBatch.dart';
 import 'package:fluttertest/screen/admin/batches/variety/addVarietyInfoAdmin.dart';
-import 'package:fluttertest/screen/admin/batches/variety/variety.dart';
-import 'package:fluttertest/screen/user/varietyUser/addVarietyInfo.dart';
 import 'package:fluttertest/screen/user/varietyUser/datailVarietyInfo.dart';
 import 'package:fluttertest/shared/loading.dart';
 
@@ -24,6 +22,18 @@ List<VarietyInfoModel> parseVarietyInfo(String responseBody) {
       .toList();
 }
 
+Future<int> deleteVarietyInfo(http.Client client, String varietyInfoId) async {
+  var queryParameters = {'VarietyInfoId': varietyInfoId};
+  var uri = Uri.https(
+      'hughplantation.herokuapp.com', '/deleteVarietyInfo', queryParameters);
+  final response = await http.get(uri);
+  if (response.statusCode == 200) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 class VarietyInfoHome extends StatefulWidget {
   String varietyId;
   Function navigateToVarietyInfoHome;
@@ -33,6 +43,10 @@ class VarietyInfoHome extends StatefulWidget {
 }
 
 class _VarietyInfoHomeState extends State<VarietyInfoHome> {
+  final spinkit = SpinKitChasingDots(
+    color: Colors.grey[200],
+    size: 50.0,
+  );
   Future<List<VarietyInfoModel>> getVarietyInfo(http.Client client) async {
     print('start filterVariety get');
     var queryParameters = {'VarietyId': widget.varietyId};
@@ -40,11 +54,52 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
         'hughplantation.herokuapp.com', '/varietyInfo', queryParameters);
     print('Filter Variety uri is: $uri');
     final response = await http.get(uri);
+
     if (response.statusCode == 200) {}
 
     print(response);
     print('end filterVariety get');
     return compute(parseVarietyInfo, response.body);
+  }
+
+  void showConfirmDeleteDialogBox(String varietyInfoId) async {
+    print('enter');
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Text('Are you sure you want to delete!'),
+                actions: [
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('No'),
+                  ),
+                  FlatButton(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      showLoadingDialogBox();
+                      await deleteVarietyInfo(http.Client(), varietyInfoId);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      widget.navigateToVarietyInfoHome(widget.varietyId);
+                    },
+                    child: Text('Yes'),
+                  ),
+                ],
+              ),
+            ));
+  }
+
+  void showLoadingDialogBox() {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Container(width: 50, height: 50, child: spinkit),
+              ),
+            ));
   }
 
   @override
@@ -86,6 +141,14 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
                         child: ListTile(
                           title: Text(DateFormat().format(
                               DateTime.parse(snapshot.data[index].createdAt))),
+                          trailing: GestureDetector(
+                            child: Icon(Icons.highlight_off),
+                            onTap: () async {
+                              print('Error');
+                              await showConfirmDeleteDialogBox(
+                                  snapshot.data[index].id);
+                            },
+                          ),
                         ),
                       );
                     });

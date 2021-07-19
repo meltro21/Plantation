@@ -1,5 +1,6 @@
 class DailyWorkModel {
-  String lightsCondition,
+  String id,
+      lightsCondition,
       oFansCondition,
       heatersCondition,
       eFansCondition,
@@ -34,7 +35,8 @@ class DailyWorkModel {
       createdBy;
 
   DailyWorkModel(
-      {this.lightsCondition,
+      {this.id,
+      this.lightsCondition,
       this.oFansCondition,
       this.heatersCondition,
       this.eFansCondition,
@@ -70,6 +72,7 @@ class DailyWorkModel {
 
   factory DailyWorkModel.fromJson(Map<String, dynamic> json) {
     return new DailyWorkModel(
+        id: json['_id'].toString(),
         lightsCondition: json['LightsCondition'].toString(),
         oFansCondition: json['AcCondition'].toString(),
         heatersCondition: json['HeatersCondition'].toString(),
@@ -77,7 +80,7 @@ class DailyWorkModel {
         dehumidifierCondition: json["DehumidifierCondition"].toString(),
         acCondition: json["AcCondition"].toString(),
         tHigh: json["THigh"].toString(),
-        tLow: json["TLigh"].toString(),
+        tLow: json["TLow"].toString(),
         hHigh: json["HHigh"].toString(),
         hLow: json["HLow"].toString(),
         feed: json["Feed"].toString(),

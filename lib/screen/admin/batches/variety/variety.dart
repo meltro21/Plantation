@@ -20,6 +20,18 @@ List<VarietyModel> parseVarieties(String responseBody) {
       .toList();
 }
 
+Future<int> deleteVariety(http.Client client, String varietyId) async {
+  var queryParameters = {'VarietyId': varietyId};
+  var uri = Uri.https(
+      'hughplantation.herokuapp.com', '/deleteVariety', queryParameters);
+  final response = await http.get(uri);
+  if (response.statusCode == 200) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 class Variety extends StatefulWidget {
   Function navigateToAdminBatches;
   Function navigateToListVarieties;
@@ -74,7 +86,7 @@ class _VarietyState extends State<Variety> {
                 VarietyInfoHome(id, navigateToVarietyInfoHome)));
   }
 
-  void showDialogBox(bool flag) {
+  void showDialogBox() {
     showCupertinoDialog(
         context: context,
         builder: (_) => Container(
@@ -99,12 +111,83 @@ class _VarietyState extends State<Variety> {
             ));
   }
 
+  void showConfirmDeleteDialogBox(String varietyName, String varietyId) async {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Text('$varietyName will be deleted!'),
+                actions: [
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('No'),
+                  ),
+                  FlatButton(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      showDialogBox();
+                      await deleteVariety(http.Client(), varietyId);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      widget.navigateToListVarieties(widget.batchId);
+                    },
+                    child: Text('Yes'),
+                  ),
+                ],
+              ),
+            ));
+  }
+
+  void showConfirmAddToProcessing() async {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Text(' will be shifted to Processing'),
+                actions: [
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('No'),
+                  ),
+                  FlatButton(
+                    onPressed: () async {
+                      showDialogBox();
+                      await getShiftBatches(http.Client());
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+
+                      widget.navigateToAdminBatches();
+                    },
+                    child: Text('Yes'),
+                  ),
+                ],
+              ),
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     print('hello');
     return Scaffold(
       appBar: AppBar(
         title: Text('Variety List'),
+        actions: [
+          Container(
+            margin: EdgeInsets.only(right: 20),
+            child: GestureDetector(
+              onTap: () async {
+                await showConfirmAddToProcessing();
+              },
+              child: Icon(Icons.add),
+            ),
+          )
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
@@ -129,6 +212,13 @@ class _VarietyState extends State<Variety> {
                         itemBuilder: (context, index) {
                           return ListTile(
                             title: Text(snapshot.data[index].varietyName),
+                            trailing: GestureDetector(
+                                onTap: () {
+                                  showConfirmDeleteDialogBox(
+                                      snapshot.data[index].varietyName,
+                                      snapshot.data[index].varietyId);
+                                },
+                                child: Icon(Icons.highlight_off)),
                             onTap: () {
                               Navigator.push(
                                   context,
@@ -147,37 +237,37 @@ class _VarietyState extends State<Variety> {
                 },
               ),
             ),
-            SizedBox(height: 20),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              height: 40.0,
-              child: Material(
-                borderRadius: BorderRadius.circular(20.0),
-                shadowColor: Colors.greenAccent,
-                color: Colors.blue,
-                elevation: 7.0,
-                child: GestureDetector(
-                  onTap: () async {
-                    showDialogBox(true);
-                    await getShiftBatches(http.Client());
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
+            // SizedBox(height: 20),
+            // Container(
+            //   padding: EdgeInsets.symmetric(horizontal: 20),
+            //   height: 40.0,
+            //   child: Material(
+            //     borderRadius: BorderRadius.circular(20.0),
+            //     shadowColor: Colors.greenAccent,
+            //     color: Colors.blue,
+            //     elevation: 7.0,
+            //     child: GestureDetector(
+            //       onTap: () async {
+            //         showDialogBox();
+            //         await getShiftBatches(http.Client());
+            //         Navigator.pop(context);
+            //         Navigator.pop(context);
+            //         Navigator.pop(context);
 
-                    widget.navigateToAdminBatches();
-                  },
-                  child: Center(
-                    child: Text(
-                      'Add to Processing',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Montserrat'),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            //         widget.navigateToAdminBatches();
+            //       },
+            //       child: Center(
+            //         child: Text(
+            //           'Add to Processing',
+            //           style: TextStyle(
+            //               color: Colors.white,
+            //               fontWeight: FontWeight.bold,
+            //               fontFamily: 'Montserrat'),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

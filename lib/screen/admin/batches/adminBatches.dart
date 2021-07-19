@@ -127,7 +127,7 @@ class _AdminBatchesState extends State<AdminBatches> {
     DateTime dateTime;
     return Scaffold(
         appBar: AppBar(
-          title: Text('Batches List'),
+          title: Text('Batch List'),
         ),
         floatingActionButton: FloatingActionButton.extended(
             onPressed: () {

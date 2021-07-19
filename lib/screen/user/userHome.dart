@@ -59,7 +59,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluttertest/models/workers.dart';
-import 'package:fluttertest/screen/user/batchHome.dart';
+import 'package:fluttertest/screen/admin/processing/homeProcessing.dart';
+import 'package:fluttertest/screen/user/userBatches.dart';
 import 'package:fluttertest/screen/user/dailyWorkEntry/homeDailyWorkEntry.dart';
 import 'package:fluttertest/shared/loading.dart';
 import 'package:http/http.dart' as http;
@@ -168,7 +169,26 @@ class _UserHomeState extends State<UserHome> {
                                 },
                                 child: Align(
                                     alignment: Alignment.center,
-                                    child: Text('Daily Work')),
+                                    child: Text('Garden History')),
+                              ),
+                            ),
+                          ),
+                          Card(
+                            elevation: 5,
+                            child: Container(
+                              height: 150,
+                              width: 150,
+                              child: FlatButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              HomeProcessing()));
+                                },
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text('Processing')),
                               ),
                             ),
                           ),

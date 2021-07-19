@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class VarietyInfoModel {
-  String VarietyId, enterRoomName, enterRoomDate, noOfPlants, createdAt;
+  String id, enterRoomName, enterRoomDate, noOfPlants, createdAt;
 
   VarietyInfoModel(
-      {this.VarietyId,
+      {this.id,
       this.enterRoomDate,
       this.enterRoomName,
       this.noOfPlants,
@@ -15,7 +15,7 @@ class VarietyInfoModel {
 
   factory VarietyInfoModel.fromJson(Map<String, dynamic> json) {
     return new VarietyInfoModel(
-      VarietyId: json['_id'].toString(),
+      id: json['_id'].toString(),
       enterRoomName: json['EnterRoomName'].toString(),
       enterRoomDate: json['EnterRoomDate'].toString(),
       noOfPlants: json['NoOfPlants'].toString(),

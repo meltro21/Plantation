@@ -90,16 +90,12 @@ class _UserBatchesState extends State<UserBatches> {
     DateTime dateTime;
     return Scaffold(
         appBar: AppBar(
-          title: Text('Batches'),
+          title: Text('Batch List'),
         ),
         body: FutureBuilder(
             future: getBatches(http.Client()),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
-                print('snapshot has data');
-                for (var i in snapshot.data) {
-                  print(i.enterRoomDate);
-                }
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {

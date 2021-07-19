@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/models/dailyWork.dart';
 import 'package:fluttertest/models/workers.dart';
@@ -35,6 +37,10 @@ class HomeDailyWorkEntry extends StatefulWidget {
 
 class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
   final AuthService _auth = AuthService();
+  final spinkit = SpinKitChasingDots(
+    color: Colors.grey[200],
+    size: 50.0,
+  );
 
   Future<List<DailyWorkModel>> getVarities(http.Client client) async {
     print('start FilterDailyWork get');
@@ -48,6 +54,60 @@ class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
     print(response);
     print('end filterVariety get');
     return compute(parseVarieties, response.body);
+  }
+
+  void showDialogBox() {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Container(width: 50, height: 50, child: spinkit),
+
+                // actions: [
+                //   FlatButton(
+                //     onPressed: () {za
+                //       Navigator.pop(context);
+                //     },
+                //     child: Text('No'),
+                //   ),
+                //   FlatButton(
+                //     onPressed: () {
+                //       Navigator.pop(context);
+                //     },
+                //     child: Text('Ok'),
+                //   ),
+                // ],
+              ),
+            ));
+  }
+
+  void showConfirmDeleteDialogBox(String varietyId) async {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Text(' will be deleted!'),
+                actions: [
+                  FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('No'),
+                  ),
+                  FlatButton(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      showDialogBox();
+                      await deleteVariety(http.Client(), varietyId);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      widget.navigateToHomeDailyWorkEntry(widget.uid);
+                    },
+                    child: Text('Yes'),
+                  ),
+                ],
+              ),
+            ));
   }
 
   @override
@@ -85,6 +145,14 @@ class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
                         },
                         child: ListTile(
                           title: Text(snapshot.data[index].createdAt),
+                          trailing: GestureDetector(
+                            child: Icon(Icons.highlight_off),
+                            onTap: () async {
+                              print('Error');
+                              await showConfirmDeleteDialogBox(
+                                  snapshot.data[index].id);
+                            },
+                          ),
                         ),
                       );
                     });

@@ -86,9 +86,9 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
             child: Column(
               children: <Widget>[
                 TextFormField(
-                  validator: (val) => val.isEmpty ? 'Enter Room Name' : null,
+                  validator: (val) => val.isEmpty ? 'Room' : null,
                   decoration: InputDecoration(
-                      labelText: 'Room Name',
+                      labelText: 'Room',
                       labelStyle: TextStyle(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,

@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
@@ -25,7 +27,8 @@ Future<String> postVarietyInfo(String varietyId, String roomName,
 
 class AddVarietyInfoUser extends StatefulWidget {
   String varietyId;
-  AddVarietyInfoUser(this.varietyId);
+  Function navigateToVarietyInfoHome;
+  AddVarietyInfoUser(this.varietyId, this.navigateToVarietyInfoHome);
 
   @override
   _AddVarietyInfoUserState createState() => _AddVarietyInfoUserState();
@@ -36,6 +39,10 @@ class _AddVarietyInfoUserState extends State<AddVarietyInfoUser> {
   TextEditingController roomNameController = TextEditingController();
   TextEditingController noOfPlantsController = TextEditingController();
   TextEditingController entryIntoRoomController = TextEditingController();
+  final spinkit = SpinKitChasingDots(
+    color: Colors.grey[200],
+    size: 50.0,
+  );
 
   void pickStartDate() {
     showDatePicker(
@@ -52,6 +59,16 @@ class _AddVarietyInfoUserState extends State<AddVarietyInfoUser> {
         entryIntoRoomController.text = DateFormat.yMMMd().format(pickedDate);
       }
     });
+  }
+
+  void showDialogBox() {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => Container(
+              child: AlertDialog(
+                content: Container(width: 50, height: 50, child: spinkit),
+              ),
+            ));
   }
 
   @override
@@ -71,7 +88,7 @@ class _AddVarietyInfoUserState extends State<AddVarietyInfoUser> {
                 TextFormField(
                   validator: (val) => val.isEmpty ? 'Enter Room Name' : null,
                   decoration: InputDecoration(
-                      labelText: 'Room Name',
+                      labelText: 'Room',
                       labelStyle: TextStyle(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
@@ -127,11 +144,16 @@ class _AddVarietyInfoUserState extends State<AddVarietyInfoUser> {
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
-                    postVarietyInfo(
+                    showDialogBox();
+                    await postVarietyInfo(
                         widget.varietyId,
                         roomNameController.text,
                         noOfPlantsController.text,
                         entryIntoRoomController.text);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                    widget.navigateToVarietyInfoHome(widget.varietyId);
                   },
                   child: Container(
                     height: 40.0,
@@ -142,7 +164,7 @@ class _AddVarietyInfoUserState extends State<AddVarietyInfoUser> {
                       elevation: 7.0,
                       child: Center(
                         child: Text(
-                          'Create Variety',
+                          'Add History',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

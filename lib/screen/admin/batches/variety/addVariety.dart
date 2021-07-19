@@ -70,7 +70,7 @@ class _AddVarietyState extends State<AddVariety> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Data'),
+        title: Text('Add Variety Data'),
       ),
       body: Container(
         padding: EdgeInsets.only(left: 15, right: 15),
