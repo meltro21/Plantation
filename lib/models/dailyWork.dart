@@ -74,7 +74,7 @@ class DailyWorkModel {
     return new DailyWorkModel(
         id: json['_id'].toString(),
         lightsCondition: json['LightsCondition'].toString(),
-        oFansCondition: json['AcCondition'].toString(),
+        oFansCondition: json['OFansCondition'].toString(),
         heatersCondition: json['HeatersCondition'].toString(),
         eFansCondition: json['EFansCondition'].toString(),
         dehumidifierCondition: json["DehumidifierCondition"].toString(),

@@ -618,19 +618,19 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                   children: [
                     Container(
                       width: titleWidth,
-                      child: widget.dailyWork.totalHours != 'N/A'
+                      child: widget.dailyWork.totalHours != '0.0'
                           ? Text('Total Hours')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
-                      child: widget.dailyWork.totalHours != 'N/A'
+                      child: widget.dailyWork.totalHours != '0.0'
                           ? Text(widget.dailyWork.totalHours)
                           : SizedBox(),
                     )
                   ],
                 ),
-                widget.dailyWork.totalHours != 'N/A'
+                widget.dailyWork.totalHours != '0.0'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )

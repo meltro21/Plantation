@@ -96,7 +96,7 @@ class AddVarietyProcessInfo extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Batch'),
+        title: Text('Add Weight'),
       ),
       body: Container(
         padding: EdgeInsets.only(left: 15, right: 15),
@@ -183,7 +183,7 @@ class AddVarietyProcessInfo extends StatelessWidget {
                           elevation: 7.0,
                           child: Center(
                             child: Text(
-                              'Add Variety Process Info',
+                              'Add Weight',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

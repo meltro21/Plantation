@@ -27,10 +27,22 @@ List<DailyWorkModel> parseVarieties(String responseBody) {
       .toList();
 }
 
+Future<int> deleteDailyWork(http.Client client, String dailyWorkId) async {
+  var queryParameters = {'DailyWorkId': dailyWorkId};
+  var uri = Uri.https(
+      'hughplantation.herokuapp.com', '/deleteDailyWork', queryParameters);
+  final response = await http.get(uri);
+  if (response.statusCode == 200) {
+    return 1;
+  } else {
+    return 0;
+  }
+}
+
 class HomeDailyWorkEntry extends StatefulWidget {
-  String uid;
+  String dailyWorkId;
   Function navigateToHomeDailyWorkEntry;
-  HomeDailyWorkEntry(this.uid, this.navigateToHomeDailyWorkEntry);
+  HomeDailyWorkEntry(this.dailyWorkId, this.navigateToHomeDailyWorkEntry);
   @override
   _HomeDailyWorkEntryState createState() => _HomeDailyWorkEntryState();
 }
@@ -44,7 +56,7 @@ class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
 
   Future<List<DailyWorkModel>> getVarities(http.Client client) async {
     print('start FilterDailyWork get');
-    var queryParameters = {'firestoreId': '${widget.uid}'};
+    var queryParameters = {'firestoreId': '${widget.dailyWorkId}'};
     var uri = Uri.https(
         'hughplantation.herokuapp.com', '/filterDailyWork', queryParameters);
     print('Filter Variety uri is: $uri');
@@ -98,10 +110,10 @@ class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
                     onPressed: () async {
                       Navigator.pop(context);
                       showDialogBox();
-                      await deleteVariety(http.Client(), varietyId);
+                      await deleteDailyWork(http.Client(), varietyId);
                       Navigator.pop(context);
                       Navigator.pop(context);
-                      widget.navigateToHomeDailyWorkEntry(widget.uid);
+                      widget.navigateToHomeDailyWorkEntry(widget.dailyWorkId);
                     },
                     child: Text('Yes'),
                   ),
@@ -115,17 +127,17 @@ class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
     DateTime dateTime;
     return Scaffold(
         appBar: AppBar(
-          title: Text('Daily Work'),
+          title: Text('Garden History'),
         ),
         floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => DailyWorkEntry(
-                          widget.uid, widget.navigateToHomeDailyWorkEntry)));
+                      builder: (context) => DailyWorkEntry(widget.dailyWorkId,
+                          widget.navigateToHomeDailyWorkEntry)));
             },
-            label: Text('Add Daily Work')),
+            label: Text('Add Garden History')),
         body: FutureBuilder(
             future: getVarities(http.Client()),
             builder: (context, snapshot) {

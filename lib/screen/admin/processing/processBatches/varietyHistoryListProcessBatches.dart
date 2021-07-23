@@ -73,7 +73,7 @@ class _VarietyHistoryListProcessBatchesState
     DateTime dateTime;
     return Scaffold(
         appBar: AppBar(
-          title: Text('Batches'),
+          title: Text('Weight'),
         ),
         floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
@@ -84,7 +84,7 @@ class _VarietyHistoryListProcessBatchesState
                           widget.varietyId,
                           widget.navigateToVarietyHistoryList)));
             },
-            label: Text('Add Batch')),
+            label: Text('Add Weight')),
         body: FutureBuilder(
             future: getVarietyInfo(http.Client()),
             builder: (context, snapshot) {
