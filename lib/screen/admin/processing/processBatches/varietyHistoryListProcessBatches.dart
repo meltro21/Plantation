@@ -40,6 +40,7 @@ class VarietyHistoryListProcessBatches extends StatefulWidget {
 
 class _VarietyHistoryListProcessBatchesState
     extends State<VarietyHistoryListProcessBatches> {
+  Future<List<VarietyProcessModel>> futureVarietyProcess;
   final spinkit = SpinKitChasingDots(
     color: Colors.grey[200],
     size: 50.0,
@@ -69,10 +70,20 @@ class _VarietyHistoryListProcessBatchesState
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    futureVarietyProcess =
+        getVarietyInfo(http.Client()) as Future<List<VarietyProcessModel>>;
+  }
+
+  @override
   Widget build(BuildContext context) {
     DateTime dateTime;
     return Scaffold(
+        backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorDark,
           title: Text('Weight'),
         ),
         floatingActionButton: FloatingActionButton.extended(
@@ -86,13 +97,35 @@ class _VarietyHistoryListProcessBatchesState
             },
             label: Text('Add Weight')),
         body: FutureBuilder(
-            future: getVarietyInfo(http.Client()),
+            future: futureVarietyProcess,
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 print('snapshot has data');
+                int aGrade = 0;
+                int bGrade = 0;
+                int shake = 0;
+                int compost = 0;
+                int noOfPlantsHarvested = 0;
+                int noOfHours = 0;
+                VarietyProcessModel totalStats = VarietyProcessModel.empty();
+
                 for (var i in snapshot.data) {
-                  print(i.aGrade);
+                  aGrade = aGrade + int.parse(i.aGrade);
+                  bGrade = bGrade + int.parse(i.bGrade);
+                  shake = shake + int.parse(i.shake);
+                  compost = compost + int.parse(i.compost);
+                  noOfPlantsHarvested =
+                      compost + int.parse(i.noOfPlantsHarvested);
+                  noOfHours = noOfHours + int.parse(i.totalHours);
                 }
+                totalStats.aGrade = aGrade.toString();
+                totalStats.bGrade = bGrade.toString();
+                totalStats.shake = shake.toString();
+                totalStats.compost = compost.toString();
+                totalStats.noOfPlantsHarvested = noOfPlantsHarvested.toString();
+                totalStats.totalHours = noOfHours.toString();
+                print('totalStats + ${totalStats.aGrade}');
+                snapshot.data.add(totalStats);
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
@@ -105,8 +138,143 @@ class _VarietyHistoryListProcessBatchesState
                                       DetailVarietyInfoProcessBatch(
                                           snapshot.data[index])));
                         },
-                        child:
-                            ListTile(title: Text(snapshot.data[index].aGrade)),
+                        child: Card(
+                          color: Theme.of(context).accentColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            // title: Text(snapshot.data[index].aGrade),
+                            title: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        'A Grade',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      ' ${snapshot.data[index].aGrade} g',
+                                      // style: TextStyle(
+                                      //     fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        'B Grade',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      '${snapshot.data[index].bGrade} g',
+                                      // style: TextStyle(
+                                      //     fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        'Shake',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      '${snapshot.data[index].shake} g',
+                                      // style: TextStyle(
+                                      //     fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        'Compost',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      '${snapshot.data[index].compost} g',
+                                      // style: TextStyle(
+                                      //     fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        'NoOfPlants',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      '${snapshot.data[index].noOfPlantsHarvested} ',
+                                      // style: TextStyle(
+                                      //     fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(height: 10),
+                                Row(
+                                  children: [
+                                    Container(
+                                      width: 100,
+                                      child: Text(
+                                        'Total Hours',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      '${snapshot.data[index].totalHours} ',
+                                      // style: TextStyle(
+                                      //     fontWeight: FontWeight.bold),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
                       );
                     });
               } else if (snapshot.hasError) {

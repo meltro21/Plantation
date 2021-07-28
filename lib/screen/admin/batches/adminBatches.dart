@@ -126,10 +126,14 @@ class _AdminBatchesState extends State<AdminBatches> {
   Widget build(BuildContext context) {
     DateTime dateTime;
     return Scaffold(
+        backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorDark,
           title: Text('Batch List'),
         ),
         floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: Theme.of(context).primaryColorDark,
+            icon: Icon(Icons.add),
             onPressed: () {
               Navigator.push(
                   context,
@@ -155,14 +159,23 @@ class _AdminBatchesState extends State<AdminBatches> {
                                       widget.navigateToAdminBatches,
                                       navigateToListVarieties)));
                         },
-                        child: ListTile(
-                          title: Text('Batch ${snapshot.data[index].batchNo}'),
-                          trailing: GestureDetector(
-                            child: Icon(Icons.highlight_off),
-                            onTap: () async {
-                              await showConfirmDeleteDialogBox(
-                                  snapshot.data[index].id);
-                            },
+                        child: Card(
+                          color: Theme.of(context).accentColor,
+                          margin: EdgeInsets.all(10),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            title: Text(
+                              'Batch ${snapshot.data[index].batchNo}',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            trailing: GestureDetector(
+                              child: Icon(Icons.highlight_off),
+                              onTap: () async {
+                                await showConfirmDeleteDialogBox(
+                                    snapshot.data[index].id);
+                              },
+                            ),
                           ),
                         ),
                       );

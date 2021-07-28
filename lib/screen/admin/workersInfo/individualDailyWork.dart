@@ -42,7 +42,9 @@ class _IndividualDailyWorkState extends State<IndividualDailyWork> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorDark,
           title: Text('Daily Work'),
         ),
         body: FutureBuilder(
@@ -62,10 +64,26 @@ class _IndividualDailyWorkState extends State<IndividualDailyWork> {
                                     builder: (context) =>
                                         DetailDailyWork(snapshot.data[index])));
                           },
-                          child: ListTile(
-                            title: Text(
-                              DateFormat().format(DateTime.parse(
-                                  snapshot.data[index].createdAt)),
+                          child: Card(
+                            color: Theme.of(context).accentColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: ListTile(
+                              title: Text(
+                                DateFormat.yMMMd().format(DateTime.parse(
+                                    snapshot.data[index].createdAt)),
+                              ),
+                              subtitle: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text('Total Hour'),
+                                      SizedBox(width: 10),
+                                      Text(snapshot.data[index].totalHours)
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ));
                     });

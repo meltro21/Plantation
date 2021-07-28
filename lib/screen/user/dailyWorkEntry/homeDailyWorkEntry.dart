@@ -126,7 +126,9 @@ class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
   Widget build(BuildContext context) {
     DateTime dateTime;
     return Scaffold(
+        backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorDark,
           title: Text('Garden History'),
         ),
         floatingActionButton: FloatingActionButton.extended(
@@ -155,15 +157,22 @@ class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
                                   builder: (context) =>
                                       DetailDailyWork(snapshot.data[index])));
                         },
-                        child: ListTile(
-                          title: Text(snapshot.data[index].createdAt),
-                          trailing: GestureDetector(
-                            child: Icon(Icons.highlight_off),
-                            onTap: () async {
-                              print('Error');
-                              await showConfirmDeleteDialogBox(
-                                  snapshot.data[index].id);
-                            },
+                        child: Card(
+                          color: Theme.of(context).accentColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            title: Text(DateFormat.yMMMd().format(
+                                DateTime.parse(
+                                    snapshot.data[index].createdAt))),
+                            trailing: GestureDetector(
+                              child: Icon(Icons.highlight_off),
+                              onTap: () async {
+                                print('Error');
+                                await showConfirmDeleteDialogBox(
+                                    snapshot.data[index].id);
+                              },
+                            ),
                           ),
                         ),
                       );

@@ -17,13 +17,14 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
-        //.                           .
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text("Detail"),
       ),
       body: SingleChildScrollView(
         child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10.0),
+            padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 10),
             child: Column(
               children: [
                 Row(

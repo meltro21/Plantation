@@ -74,7 +74,9 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text('Variety'),
       ),
       body: Container(
@@ -92,7 +94,7 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                       labelStyle: TextStyle(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+                          color: Colors.black),
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.green))),
                   controller: roomNameController,
@@ -104,7 +106,7 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                       labelStyle: TextStyle(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+                          color: Colors.black),
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.green))),
                   controller: noOfPlantsController,
@@ -121,7 +123,7 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                             labelStyle: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey),
+                                color: Colors.black),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green))),
                         controller: entryIntoRoomController,
@@ -160,7 +162,7 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                     child: Material(
                       borderRadius: BorderRadius.circular(20.0),
                       shadowColor: Colors.greenAccent,
-                      color: Colors.blue,
+                      color: Theme.of(context).primaryColorDark,
                       elevation: 7.0,
                       child: Center(
                         child: Text(

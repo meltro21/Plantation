@@ -4,7 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertest/models/workers.dart';
 import 'package:fluttertest/screen/admin/batches/adminBatches.dart';
-import 'package:fluttertest/screen/admin/processing/homeProcessing.dart';
+import 'package:fluttertest/screen/admin/batchesHistory/batchesHIstory.dart';
+import 'package:fluttertest/screen/admin/processing/processBatches/batchesListProcessBatches.dart';
 import 'package:fluttertest/screen/admin/workersInfo/dailyWork.dart';
 import 'package:fluttertest/shared/loading.dart';
 import 'package:http/http.dart' as http;
@@ -48,7 +49,9 @@ class _AdminHomeState extends State<AdminHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorDark,
           title: Text('Home'),
           actions: [
             FlatButton.icon(
@@ -78,6 +81,7 @@ class _AdminHomeState extends State<AdminHome> {
                       child: Column(
                         children: [
                           Card(
+                            color: Theme.of(context).primaryColorDark,
                             elevation: 5,
                             child: Container(
                               height: 150,
@@ -97,6 +101,7 @@ class _AdminHomeState extends State<AdminHome> {
                             ),
                           ),
                           Card(
+                            color: Theme.of(context).primaryColorDark,
                             elevation: 5,
                             child: Container(
                               height: 150,
@@ -116,6 +121,7 @@ class _AdminHomeState extends State<AdminHome> {
                             ),
                           ),
                           Card(
+                            color: Theme.of(context).primaryColorDark,
                             elevation: 5,
                             child: Container(
                               height: 150,
@@ -126,11 +132,31 @@ class _AdminHomeState extends State<AdminHome> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              HomeProcessing()));
+                                              BatchesListProcessBatches()));
                                 },
                                 child: Align(
                                     alignment: Alignment.center,
                                     child: Text('Processing')),
+                              ),
+                            ),
+                          ),
+                          Card(
+                            color: Theme.of(context).primaryColorDark,
+                            elevation: 5,
+                            child: Container(
+                              height: 150,
+                              width: 150,
+                              child: FlatButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              BatchesHistory()));
+                                },
+                                child: Align(
+                                    alignment: Alignment.center,
+                                    child: Text('Batches History')),
                               ),
                             ),
                           ),

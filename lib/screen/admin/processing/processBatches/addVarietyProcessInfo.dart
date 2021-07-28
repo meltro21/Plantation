@@ -22,14 +22,18 @@ class AddVarietyProcessInfo extends StatelessWidget {
     TextEditingController bGradeController = TextEditingController();
     TextEditingController shakeController = TextEditingController();
     TextEditingController compostController = TextEditingController();
+    TextEditingController totalHoursController = TextEditingController();
+    TextEditingController noOfPlantsHarvestedController =
+        TextEditingController();
 
     Future<String> postVarietyProcessInfo(
-      String varietyId,
-      String aGrade,
-      String bGrade,
-      String shake,
-      String compost,
-    ) async {
+        String varietyId,
+        String aGrade,
+        String bGrade,
+        String shake,
+        String compost,
+        String totalHours,
+        String noOfPlantsHarvested) async {
       final response = await http.post(
           Uri.https('hughplantation.herokuapp.com', '/processingVariety'),
           headers: <String, String>{
@@ -41,6 +45,8 @@ class AddVarietyProcessInfo extends StatelessWidget {
             "BGrade": bGrade,
             "Shake": shake,
             "Compost": compost,
+            "NoOfPlantsHarvested": noOfPlantsHarvested,
+            "TotalHours": totalHours
           }));
 
       if (response.statusCode == 200) {
@@ -95,7 +101,9 @@ class AddVarietyProcessInfo extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text('Add Weight'),
       ),
       body: Container(
@@ -108,78 +116,115 @@ class AddVarietyProcessInfo extends StatelessWidget {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
-                      validator: (val) => val.isEmpty ? 'AGrade' : null,
+                      keyboardType: TextInputType.number,
+                      validator: (val) => val.isEmpty ? 'Enter AGrade' : null,
                       decoration: InputDecoration(
                           labelText: 'AGrade',
                           labelStyle: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey),
+                              color: Colors.black),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.green))),
                       controller: aGradeController,
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
-                      validator: (val) => val.isEmpty ? 'BGrade' : null,
+                      keyboardType: TextInputType.number,
+                      validator: (val) => val.isEmpty ? 'Enter BGrade' : null,
                       decoration: InputDecoration(
                           labelText: 'BGrade',
                           labelStyle: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey),
+                              color: Colors.black),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.green))),
                       controller: bGradeController,
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
-                      validator: (val) => val.isEmpty ? 'Shake' : null,
+                      keyboardType: TextInputType.number,
+                      validator: (val) => val.isEmpty ? 'Enter Shake' : null,
                       decoration: InputDecoration(
                           labelText: 'Shake',
                           labelStyle: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey),
+                              color: Colors.black),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.green))),
                       controller: shakeController,
                     ),
                     SizedBox(height: 20.0),
                     TextFormField(
-                      validator: (val) => val.isEmpty ? 'Compost' : null,
+                      keyboardType: TextInputType.number,
+                      validator: (val) => val.isEmpty ? 'Enter Compost' : null,
                       decoration: InputDecoration(
                           labelText: 'Compost',
                           labelStyle: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey),
+                              color: Colors.black),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.green))),
                       controller: compostController,
                     ),
                     SizedBox(height: 20),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      validator: (val) =>
+                          val.isEmpty ? 'Enter No Of Plants Harvested' : null,
+                      decoration: InputDecoration(
+                          labelText: 'No Of Plants Harvested',
+                          labelStyle: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green))),
+                      controller: noOfPlantsHarvestedController,
+                    ),
+                    SizedBox(height: 20),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      validator: (val) =>
+                          val.isEmpty ? 'Enter Total Hours' : null,
+                      decoration: InputDecoration(
+                          labelText: 'Total Hours',
+                          labelStyle: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green))),
+                      controller: totalHoursController,
+                    ),
+                    SizedBox(height: 20),
                     GestureDetector(
                       onTap: () async {
-                        showDialogBox();
-                        await postVarietyProcessInfo(
-                          varietyId,
-                          aGradeController.text,
-                          bGradeController.text,
-                          shakeController.text,
-                          compostController.text,
-                        );
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                        this.navigateToVarietyHistoryList(varietyId);
+                        if (_formKey.currentState.validate()) {
+                          showDialogBox();
+                          await postVarietyProcessInfo(
+                              varietyId,
+                              aGradeController.text,
+                              bGradeController.text,
+                              shakeController.text,
+                              compostController.text,
+                              totalHoursController.text,
+                              noOfPlantsHarvestedController.text);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          this.navigateToVarietyHistoryList(varietyId);
+                        }
                       },
                       child: Container(
                         height: 40.0,
                         child: Material(
                           borderRadius: BorderRadius.circular(20.0),
                           shadowColor: Colors.greenAccent,
-                          color: Colors.blue,
+                          color: Theme.of(context).primaryColorDark,
                           elevation: 7.0,
                           child: Center(
                             child: Text(

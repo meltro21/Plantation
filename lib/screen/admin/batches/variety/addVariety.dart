@@ -69,7 +69,9 @@ class _AddVarietyState extends State<AddVariety> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text('Add Variety Data'),
       ),
       body: Container(
@@ -87,7 +89,7 @@ class _AddVarietyState extends State<AddVariety> {
                       labelStyle: TextStyle(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+                          color: Colors.black),
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.green))),
                   controller: varietyNameController,
@@ -99,7 +101,7 @@ class _AddVarietyState extends State<AddVariety> {
                       labelStyle: TextStyle(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+                          color: Colors.black),
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.green))),
                   controller: varietyNoOfPlantsController,
@@ -122,7 +124,7 @@ class _AddVarietyState extends State<AddVariety> {
                     child: Material(
                       borderRadius: BorderRadius.circular(20.0),
                       shadowColor: Colors.greenAccent,
-                      color: Colors.blue,
+                      color: Theme.of(context).primaryColorDark,
                       elevation: 7.0,
                       child: Center(
                         child: Text(

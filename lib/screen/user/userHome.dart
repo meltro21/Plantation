@@ -59,7 +59,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluttertest/models/workers.dart';
-import 'package:fluttertest/screen/admin/processing/homeProcessing.dart';
+import 'package:fluttertest/screen/admin/processing/processBatches/batchesListProcessBatches.dart';
 import 'package:fluttertest/screen/user/userBatches.dart';
 import 'package:fluttertest/screen/user/dailyWorkEntry/homeDailyWorkEntry.dart';
 import 'package:fluttertest/shared/loading.dart';
@@ -106,7 +106,9 @@ class _UserHomeState extends State<UserHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorDark,
           title: Text('Home'),
           actions: [
             FlatButton.icon(
@@ -136,6 +138,7 @@ class _UserHomeState extends State<UserHome> {
                       child: Column(
                         children: [
                           Card(
+                            color: Theme.of(context).primaryColorDark,
                             elevation: 5,
                             child: Container(
                               height: 150,
@@ -154,6 +157,7 @@ class _UserHomeState extends State<UserHome> {
                             ),
                           ),
                           Card(
+                            color: Theme.of(context).primaryColorDark,
                             elevation: 5,
                             child: Container(
                               height: 150,
@@ -174,6 +178,7 @@ class _UserHomeState extends State<UserHome> {
                             ),
                           ),
                           Card(
+                            color: Theme.of(context).primaryColorDark,
                             elevation: 5,
                             child: Container(
                               height: 150,
@@ -184,7 +189,7 @@ class _UserHomeState extends State<UserHome> {
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              HomeProcessing()));
+                                              BatchesListProcessBatches()));
                                 },
                                 child: Align(
                                     alignment: Alignment.center,

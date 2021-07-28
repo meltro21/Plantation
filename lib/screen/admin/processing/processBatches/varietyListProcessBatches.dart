@@ -55,7 +55,9 @@ class _VarietyListProcessBatchesState extends State<VarietyListProcessBatches> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text('Variety List'),
       ),
       // floatingActionButton: FloatingActionButton.extended(
@@ -76,17 +78,22 @@ class _VarietyListProcessBatchesState extends State<VarietyListProcessBatches> {
                     return ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(snapshot.data[index].varietyName),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          VarietyHistoryListProcessBatches(
-                                              snapshot.data[index].varietyId,
-                                              navigateToVarietyHistoryList)));
-                            },
+                          return Card(
+                            color: Theme.of(context).accentColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10)),
+                            child: ListTile(
+                              title: Text(snapshot.data[index].varietyName),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            VarietyHistoryListProcessBatches(
+                                                snapshot.data[index].varietyId,
+                                                navigateToVarietyHistoryList)));
+                              },
+                            ),
                           );
                         });
                   } else if (snapshot.hasError) {

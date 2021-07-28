@@ -51,7 +51,9 @@ class _VarietyUserHomeState extends State<VarietyUserHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text('Variety List'),
       ),
       body: FutureBuilder(
@@ -61,16 +63,21 @@ class _VarietyUserHomeState extends State<VarietyUserHome> {
             return ListView.builder(
                 itemCount: snapshot.data.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(snapshot.data[index].varietyName),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => VarietyHistoryList(
-                                  snapshot.data[index].varietyId,
-                                  navigateToVarietyInfoHome)));
-                    },
+                  return Card(
+                    color: Theme.of(context).accentColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    child: ListTile(
+                      title: Text(snapshot.data[index].varietyName),
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => VarietyHistoryList(
+                                    snapshot.data[index].varietyId,
+                                    navigateToVarietyInfoHome)));
+                      },
+                    ),
                   );
                 });
           } else if (snapshot.hasError) {

@@ -6,12 +6,12 @@ import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/models/batchesHistoryModel.dart';
 import 'package:fluttertest/screen/admin/batches/addBatch.dart';
 import 'package:fluttertest/screen/admin/batches/variety/variety.dart';
-import 'package:fluttertest/screen/admin/processing/batchesHistory/varietyHome.dart';
+import 'package:fluttertest/screen/admin/batchesHistory/varietyHome.dart';
 import 'package:fluttertest/shared/loading.dart';
 
 import 'package:http/http.dart' as http;
 
-import '../../../../services/auth.dart';
+import '../../../services/auth.dart';
 
 List<BatchHistoryModel> parseBatch(String responseBody) {
   print('start parseBatch');
@@ -46,7 +46,9 @@ class _BatchesHistoryState extends State<BatchesHistory> {
   Widget build(BuildContext context) {
     DateTime dateTime;
     return Scaffold(
+        backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorDark,
           title: Text('Batches'),
         ),
         body: FutureBuilder(
@@ -68,8 +70,14 @@ class _BatchesHistoryState extends State<BatchesHistory> {
                                   builder: (context) => VarietyHomeProcessing(
                                       snapshot.data[index].id)));
                         },
-                        child: ListTile(
-                          title: Text('Batch ${snapshot.data[index].batchNo}'),
+                        child: Card(
+                          color: Theme.of(context).accentColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            title:
+                                Text('Batch ${snapshot.data[index].batchNo}'),
+                          ),
                         ),
                       );
                     });

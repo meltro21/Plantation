@@ -25,7 +25,9 @@ class _SignInState extends State<SignIn> {
     return loading
         ? Loading()
         : Scaffold(
+            backgroundColor: Theme.of(context).primaryColorLight,
             appBar: AppBar(
+              backgroundColor: Theme.of(context).primaryColorDark,
               title: Text('Indian Hub'),
             ),
             //  resizeToAvoidBottomPadding: false,
@@ -87,37 +89,37 @@ class _SignInState extends State<SignIn> {
                             //   ),
                             // ),
                             SizedBox(height: 40.0),
-                            //Login
-                            Container(
-                              height: 40.0,
-                              child: Material(
-                                borderRadius: BorderRadius.circular(20.0),
-                                shadowColor: Colors.greenAccent,
-                                color: Colors.blue,
-                                elevation: 7.0,
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    print(emailController.text);
-                                    print(passwordController.text);
-                                    if (_formKey.currentState.validate()) {
-                                      setState(() {
-                                        loading = true;
-                                      });
-                                      dynamic result = await _auth
-                                          .signInWithEmailAndPassword(
-                                              emailController.text,
-                                              passwordController.text);
-                                      if (result == null) {
-                                        setState(() {
-                                          loading = false;
-                                          error =
-                                              'Could not sign in with those credentials';
-                                          print(
-                                              'Email is: ${emailController.text} Password is: ${passwordController.text}');
-                                        });
-                                      }
-                                    }
-                                  },
+
+                            GestureDetector(
+                              onTap: () async {
+                                print(emailController.text);
+                                print(passwordController.text);
+                                if (_formKey.currentState.validate()) {
+                                  setState(() {
+                                    loading = true;
+                                  });
+                                  dynamic result =
+                                      await _auth.signInWithEmailAndPassword(
+                                          emailController.text,
+                                          passwordController.text);
+                                  if (result == null) {
+                                    setState(() {
+                                      loading = false;
+                                      error =
+                                          'Could not sign in with those credentials';
+                                      print(
+                                          'Email is: ${emailController.text} Password is: ${passwordController.text}');
+                                    });
+                                  }
+                                }
+                              },
+                              child: Container(
+                                height: 40,
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                  shadowColor: Colors.greenAccent,
+                                  color: Theme.of(context).primaryColorDark,
+                                  elevation: 7.0,
                                   child: Center(
                                     child: Text(
                                       'LOGIN',
@@ -160,7 +162,7 @@ class _SignInState extends State<SignIn> {
                           child: Text(
                             'Register',
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: Theme.of(context).primaryColorDark,
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
@@ -182,7 +184,7 @@ class _SignInState extends State<SignIn> {
                       child: Text(
                         'Forgot Password',
                         style: TextStyle(
-                          color: Colors.blue,
+                          color: Theme.of(context).primaryColorDark,
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
                         ),

@@ -74,7 +74,9 @@ class _AddVarietyInfoUserState extends State<AddVarietyInfoUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text('Variety'),
       ),
       body: Container(
@@ -92,7 +94,7 @@ class _AddVarietyInfoUserState extends State<AddVarietyInfoUser> {
                       labelStyle: TextStyle(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+                          color: Colors.black),
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.green))),
                   controller: roomNameController,
@@ -104,7 +106,7 @@ class _AddVarietyInfoUserState extends State<AddVarietyInfoUser> {
                       labelStyle: TextStyle(
                           fontFamily: 'Montserrat',
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey),
+                          color: Colors.black),
                       focusedBorder: UnderlineInputBorder(
                           borderSide: BorderSide(color: Colors.green))),
                   controller: noOfPlantsController,
@@ -115,13 +117,13 @@ class _AddVarietyInfoUserState extends State<AddVarietyInfoUser> {
                     Expanded(
                       child: TextFormField(
                         validator: (val) =>
-                            val.isEmpty ? 'Enter Room Name' : null,
+                            val.isEmpty ? 'Entry into Room' : null,
                         decoration: InputDecoration(
                             labelText: 'Entry into Room',
                             labelStyle: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey),
+                                color: Colors.black),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green))),
                         controller: entryIntoRoomController,
@@ -144,23 +146,25 @@ class _AddVarietyInfoUserState extends State<AddVarietyInfoUser> {
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
-                    showDialogBox();
-                    await postVarietyInfo(
-                        widget.varietyId,
-                        roomNameController.text,
-                        noOfPlantsController.text,
-                        entryIntoRoomController.text);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    widget.navigateToVarietyInfoHome(widget.varietyId);
+                    if (_formKey.currentState.validate()) {
+                      showDialogBox();
+                      await postVarietyInfo(
+                          widget.varietyId,
+                          roomNameController.text,
+                          noOfPlantsController.text,
+                          entryIntoRoomController.text);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                      widget.navigateToVarietyInfoHome(widget.varietyId);
+                    }
                   },
                   child: Container(
                     height: 40.0,
                     child: Material(
                       borderRadius: BorderRadius.circular(20.0),
                       shadowColor: Colors.greenAccent,
-                      color: Colors.blue,
+                      color: Theme.of(context).primaryColorDark,
                       elevation: 7.0,
                       child: Center(
                         child: Text(

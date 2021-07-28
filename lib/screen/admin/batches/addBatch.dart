@@ -110,7 +110,9 @@ class AddBatch extends StatelessWidget {
     }
 
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text('Add Batch'),
       ),
       body: Container(
@@ -129,7 +131,7 @@ class AddBatch extends StatelessWidget {
                           labelStyle: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
-                              color: Colors.grey),
+                              color: Colors.black),
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Colors.green))),
                       controller: batchNoController,
@@ -250,7 +252,7 @@ class AddBatch extends StatelessWidget {
                   child: Material(
                     borderRadius: BorderRadius.circular(20.0),
                     shadowColor: Colors.greenAccent,
-                    color: Colors.blue,
+                    color: Theme.of(context).primaryColorDark,
                     elevation: 7.0,
                     child: Center(
                       child: Text(

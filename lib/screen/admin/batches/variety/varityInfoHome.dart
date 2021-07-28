@@ -107,7 +107,9 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
     DateTime dateTime;
 
     return Scaffold(
+        backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorDark,
           title: Text('Variety History'),
         ),
         floatingActionButton: FloatingActionButton.extended(
@@ -138,16 +140,53 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
                                   builder: (context) =>
                                       DetailVarietyInfo(snapshot.data[index])));
                         },
-                        child: ListTile(
-                          title: Text(DateFormat().format(
-                              DateTime.parse(snapshot.data[index].createdAt))),
-                          trailing: GestureDetector(
-                            child: Icon(Icons.highlight_off),
-                            onTap: () async {
-                              print('Error');
-                              await showConfirmDeleteDialogBox(
-                                  snapshot.data[index].id);
-                            },
+                        child: Card(
+                          color: Theme.of(context).accentColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
+                          child: ListTile(
+                            title: Text(DateFormat.yMMMd().format(
+                                DateTime.parse(
+                                    snapshot.data[index].createdAt))),
+                            subtitle: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    Text('Room Name'),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(snapshot.data[index].enterRoomName)
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text('No Of Plants'),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(snapshot.data[index].noOfPlants)
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Text('Entry Into Room'),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(snapshot.data[index].enterRoomDate)
+                                  ],
+                                ),
+                              ],
+                            ),
+                            trailing: GestureDetector(
+                              child: Icon(Icons.highlight_off),
+                              onTap: () async {
+                                print('Error');
+                                await showConfirmDeleteDialogBox(
+                                    snapshot.data[index].id);
+                              },
+                            ),
                           ),
                         ),
                       );
@@ -161,3 +200,6 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
             }));
   }
 }
+
+// DateFormat().format(
+//                               DateTime.parse(snapshot.data[index].createdAt

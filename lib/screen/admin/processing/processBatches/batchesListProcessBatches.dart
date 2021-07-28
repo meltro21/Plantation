@@ -2,11 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/models/batchesHistoryModel.dart';
-import 'package:fluttertest/screen/admin/batches/addBatch.dart';
-import 'package:fluttertest/screen/admin/batches/variety/variety.dart';
-import 'package:fluttertest/screen/admin/processing/batchesHistory/varietyHome.dart';
 import 'package:fluttertest/screen/admin/processing/processBatches/varietyListProcessBatches.dart';
 import 'package:fluttertest/shared/loading.dart';
 
@@ -48,7 +44,9 @@ class _BatchesListProcessBatchesState extends State<BatchesListProcessBatches> {
   Widget build(BuildContext context) {
     DateTime dateTime;
     return Scaffold(
+        backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorDark,
           title: Text('Batches'),
         ),
         body: FutureBuilder(
@@ -71,8 +69,15 @@ class _BatchesListProcessBatchesState extends State<BatchesListProcessBatches> {
                                       VarietyListProcessBatches(
                                           snapshot.data[index].id)));
                         },
-                        child: ListTile(
-                          title: Text('Batch ${snapshot.data[index].batchNo}'),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            title: Text(
+                              'Batch ${snapshot.data[index].batchNo}',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ),
                         ),
                       );
                     });

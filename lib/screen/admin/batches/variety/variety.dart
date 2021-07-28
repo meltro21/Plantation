@@ -175,7 +175,9 @@ class _VarietyState extends State<Variety> {
   Widget build(BuildContext context) {
     print('hello');
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text('Variety List'),
         actions: [
           Container(
@@ -190,6 +192,7 @@ class _VarietyState extends State<Variety> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+          backgroundColor: Theme.of(context).primaryColorDark,
           onPressed: () {
             Navigator.push(
                 context,
@@ -210,23 +213,30 @@ class _VarietyState extends State<Variety> {
                     return ListView.builder(
                         itemCount: snapshot.data.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(snapshot.data[index].varietyName),
-                            trailing: GestureDetector(
-                                onTap: () {
-                                  showConfirmDeleteDialogBox(
-                                      snapshot.data[index].varietyName,
-                                      snapshot.data[index].varietyId);
-                                },
-                                child: Icon(Icons.highlight_off)),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => VarietyInfoHome(
-                                          snapshot.data[index].varietyId,
-                                          navigateToVarietyInfoHome)));
-                            },
+                          return Card(
+                            color: Theme.of(context).accentColor,
+                            margin: EdgeInsets.all(10),
+                            child: ListTile(
+                              title: Text(
+                                snapshot.data[index].varietyName,
+                                style: TextStyle(fontWeight: FontWeight.bold),
+                              ),
+                              trailing: GestureDetector(
+                                  onTap: () {
+                                    showConfirmDeleteDialogBox(
+                                        snapshot.data[index].varietyName,
+                                        snapshot.data[index].varietyId);
+                                  },
+                                  child: Icon(Icons.highlight_off)),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => VarietyInfoHome(
+                                            snapshot.data[index].varietyId,
+                                            navigateToVarietyInfoHome)));
+                              },
+                            ),
                           );
                         });
                   } else if (snapshot.hasError) {

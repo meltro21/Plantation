@@ -305,7 +305,9 @@ class _DailyWorkEntryState extends State<DailyWorkEntry> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         title: Text('Enter Daily Work'),
       ),
       body: SingleChildScrollView(
@@ -544,7 +546,7 @@ class DailyWorkFullForm extends StatelessWidget {
                   child: Material(
                     borderRadius: BorderRadius.circular(20.0),
                     shadowColor: Colors.greenAccent,
-                    color: Colors.blue,
+                    color: Theme.of(context).primaryColorDark,
                     elevation: 7.0,
                     child: Center(
                       child: Text(

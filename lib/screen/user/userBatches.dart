@@ -89,7 +89,9 @@ class _UserBatchesState extends State<UserBatches> {
   Widget build(BuildContext context) {
     DateTime dateTime;
     return Scaffold(
+        backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorDark,
           title: Text('Batch List'),
         ),
         body: FutureBuilder(
@@ -107,8 +109,14 @@ class _UserBatchesState extends State<UserBatches> {
                                   builder: (context) => VarietyUserHome(
                                       snapshot.data[index].id)));
                         },
-                        child: ListTile(
-                          title: Text('Batch ${snapshot.data[index].batchNo}'),
+                        child: Card(
+                          color: Theme.of(context).accentColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: ListTile(
+                            title:
+                                Text('Batch ${snapshot.data[index].batchNo}'),
+                          ),
                         ),
                       );
                     });
