@@ -33,17 +33,20 @@ Future<int> deleteVariety(http.Client client, String varietyId) async {
 }
 
 class Variety extends StatefulWidget {
+  String batchNo;
   Function navigateToAdminBatches;
   Function navigateToListVarieties;
   String batchId;
-  Variety(
-      this.batchId, this.navigateToAdminBatches, this.navigateToListVarieties);
+  Variety(this.batchId, this.navigateToAdminBatches,
+      this.navigateToListVarieties, this.batchNo);
 
   @override
   _VarietyState createState() => _VarietyState();
 }
 
 class _VarietyState extends State<Variety> {
+  double lWidth = 80;
+  double rWidth = 100;
   final spinkit = SpinKitChasingDots(
     color: Colors.grey[200],
     size: 50.0,
@@ -78,12 +81,12 @@ class _VarietyState extends State<Variety> {
     }
   }
 
-  void navigateToVarietyInfoHome(String id) {
+  void navigateToVarietyInfoHome(String id, String batchNo) {
     Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) =>
-                VarietyInfoHome(id, navigateToVarietyInfoHome)));
+                VarietyInfoHome(id, batchNo, navigateToVarietyInfoHome)));
   }
 
   void showDialogBox() {
@@ -131,7 +134,8 @@ class _VarietyState extends State<Variety> {
                       await deleteVariety(http.Client(), varietyId);
                       Navigator.pop(context);
                       Navigator.pop(context);
-                      widget.navigateToListVarieties(widget.batchId);
+                      widget.navigateToListVarieties(
+                          widget.batchId, widget.batchNo);
                     },
                     child: Text('Yes'),
                   ),
@@ -178,7 +182,7 @@ class _VarietyState extends State<Variety> {
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: Text('Variety List'),
+        title: Text('${widget.batchNo} Varieties'),
         actions: [
           Container(
             margin: EdgeInsets.only(right: 20),
@@ -221,6 +225,52 @@ class _VarietyState extends State<Variety> {
                                 snapshot.data[index].varietyName,
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
+                              subtitle: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  snapshot.data[index].stage != "null"
+                                      ? Row(
+                                          children: [
+                                            snapshot.data[index].stage != "null"
+                                                ? Container(
+                                                    width: lWidth,
+                                                    child: Text('Stage'))
+                                                : SizedBox(),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            snapshot.data[index].stage != "null"
+                                                ? Container(
+                                                    child: Text(snapshot
+                                                        .data[index].stage),
+                                                  )
+                                                : SizedBox()
+                                          ],
+                                        )
+                                      : SizedBox(),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  snapshot.data[index].noOfPlants != "null"
+                                      ? Row(
+                                          children: [
+                                            Container(
+                                                width: lWidth,
+                                                child: Text('No Of Plants')),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Container(
+                                              child: Text(snapshot
+                                                  .data[index].noOfPlants),
+                                            )
+                                          ],
+                                        )
+                                      : SizedBox(),
+                                ],
+                              ),
                               trailing: GestureDetector(
                                   onTap: () {
                                     showConfirmDeleteDialogBox(
@@ -234,6 +284,7 @@ class _VarietyState extends State<Variety> {
                                     MaterialPageRoute(
                                         builder: (context) => VarietyInfoHome(
                                             snapshot.data[index].varietyId,
+                                            widget.batchNo,
                                             navigateToVarietyInfoHome)));
                               },
                             ),

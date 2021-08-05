@@ -80,85 +80,106 @@ class _AdminHomeState extends State<AdminHome> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: [
-                          Card(
-                            color: Theme.of(context).primaryColorDark,
-                            elevation: 5,
-                            child: Container(
-                              height: 150,
-                              width: 150,
-                              child: FlatButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => AdminBatches(
-                                              navigateToAdminBatches)));
-                                },
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text('Batches')),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Card(
+                                color: Theme.of(context).primaryColorDark,
+                                elevation: 5,
+                                child: Container(
+                                  height: 150,
+                                  width: 150,
+                                  child: FlatButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AdminBatches(
+                                                      navigateToAdminBatches)));
+                                    },
+                                    child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text('Batches')),
+                                  ),
+                                ),
                               ),
-                            ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Card(
+                                color: Theme.of(context).primaryColorDark,
+                                elevation: 5,
+                                child: Container(
+                                  height: 150,
+                                  width: 150,
+                                  child: FlatButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  DailyWorkHome(
+                                                      snapshot.data)));
+                                    },
+                                    child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text('Garden Care')),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                          Card(
-                            color: Theme.of(context).primaryColorDark,
-                            elevation: 5,
-                            child: Container(
-                              height: 150,
-                              width: 150,
-                              child: FlatButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DailyWorkHome(snapshot.data)));
-                                },
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text('Daily Work')),
-                              ),
-                            ),
+                          SizedBox(
+                            height: 20,
                           ),
-                          Card(
-                            color: Theme.of(context).primaryColorDark,
-                            elevation: 5,
-                            child: Container(
-                              height: 150,
-                              width: 150,
-                              child: FlatButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              BatchesListProcessBatches()));
-                                },
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text('Processing')),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Card(
+                                color: Theme.of(context).primaryColorDark,
+                                elevation: 5,
+                                child: Container(
+                                  height: 150,
+                                  width: 150,
+                                  child: FlatButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BatchesListProcessBatches()));
+                                    },
+                                    child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text('Processing')),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          Card(
-                            color: Theme.of(context).primaryColorDark,
-                            elevation: 5,
-                            child: Container(
-                              height: 150,
-                              width: 150,
-                              child: FlatButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              BatchesHistory()));
-                                },
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text('Batches History')),
+                              SizedBox(
+                                width: 20,
                               ),
-                            ),
+                              Card(
+                                color: Theme.of(context).primaryColorDark,
+                                elevation: 5,
+                                child: Container(
+                                  height: 150,
+                                  width: 150,
+                                  child: FlatButton(
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  BatchesHistory("0")));
+                                    },
+                                    child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text('Batch History')),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ],
                       ),

@@ -65,15 +65,15 @@ class _AdminBatchesState extends State<AdminBatches> {
     size: 50.0,
   );
 
-  void navigateToListVarieties(String id) {
+  void navigateToListVarieties(String id, String batchNo) {
     print('Navigate');
     print('id is $id');
 
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => Variety(
-                id, widget.navigateToAdminBatches, navigateToListVarieties)));
+            builder: (context) => Variety(id, widget.navigateToAdminBatches,
+                navigateToListVarieties, batchNo)));
   }
 
   void showConfirmDeleteDialogBox(String batchId) async {
@@ -157,7 +157,8 @@ class _AdminBatchesState extends State<AdminBatches> {
                                   builder: (context) => Variety(
                                       snapshot.data[index].id,
                                       widget.navigateToAdminBatches,
-                                      navigateToListVarieties)));
+                                      navigateToListVarieties,
+                                      snapshot.data[index].batchNo)));
                         },
                         child: Card(
                           color: Theme.of(context).accentColor,

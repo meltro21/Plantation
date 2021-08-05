@@ -46,8 +46,10 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       // backgroundColor: Colors.brown[100],
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         // backgroundColor: Colors.brown[400],
         // elevation: 0.0,
         actions: [
@@ -78,7 +80,7 @@ class _RegisterState extends State<Register> {
                             labelStyle: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey),
+                                color: Colors.black),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green))),
                         controller: userNameController,
@@ -92,7 +94,7 @@ class _RegisterState extends State<Register> {
                             labelStyle: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey),
+                                color: Colors.black),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green))),
                         controller: emailController,
@@ -107,7 +109,7 @@ class _RegisterState extends State<Register> {
                             labelStyle: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey),
+                                color: Colors.black),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green))),
                         obscureText: true,
@@ -120,7 +122,7 @@ class _RegisterState extends State<Register> {
                         child: Material(
                           borderRadius: BorderRadius.circular(20.0),
                           shadowColor: Colors.greenAccent,
-                          color: Colors.blue,
+                          color: Theme.of(context).primaryColorDark,
                           elevation: 7.0,
                           child: GestureDetector(
                             onTap: () async {

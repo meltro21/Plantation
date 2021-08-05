@@ -31,14 +31,16 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                   children: [
                     Container(
                       width: titleWidth,
-                      child: widget.dailyWork.lightsCondition != 'N/A'
+                      child: widget.dailyWork.lightsCondition != 'N/A' &&
+                              widget.dailyWork.lightsCondition != '      Good'
                           ? Text('Lights')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
-                      child: widget.dailyWork.lightsCondition != 'N/A'
-                          ? Text(widget.dailyWork.lightsCondition)
+                      child: widget.dailyWork.lightsCondition != 'N/A' &&
+                              widget.dailyWork.lightsCondition != '      Good'
+                          ? Text('Problem')
                           : SizedBox(),
                     )
                   ],
@@ -52,19 +54,24 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                   children: [
                     Container(
                       width: titleWidth,
-                      child: widget.dailyWork.oFansCondition != 'N/A'
+                      child: widget.dailyWork.oFansCondition != 'N/A' &&
+                              widget.dailyWork.oFansCondition != '      Good'
                           ? Text('Oscillating Fans')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
-                      child: widget.dailyWork.oFansCondition != 'N/A'
-                          ? Text(widget.dailyWork.oFansCondition)
+                      child: widget.dailyWork.oFansCondition != 'N/A' &&
+                              widget.dailyWork.oFansCondition != '      Good'
+                          ? Text(widget.dailyWork.oFansCondition != '      Good'
+                              ? 'Problem'
+                              : '')
                           : SizedBox(),
                     )
                   ],
                 ),
-                widget.dailyWork.oFansCondition != 'N/A'
+                widget.dailyWork.oFansCondition != 'N/A' &&
+                        widget.dailyWork.oFansCondition != '      Good'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )
@@ -73,19 +80,25 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                   children: [
                     Container(
                       width: titleWidth,
-                      child: widget.dailyWork.heatersCondition != 'N/A'
+                      child: widget.dailyWork.heatersCondition != 'N/A' &&
+                              widget.dailyWork.heatersCondition != '      Good'
                           ? Text('Heaters')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
-                      child: widget.dailyWork.heatersCondition != 'N/A'
-                          ? Text(widget.dailyWork.heatersCondition)
+                      child: widget.dailyWork.heatersCondition != 'N/A' &&
+                              widget.dailyWork.heatersCondition != '      Good'
+                          ? Text(
+                              widget.dailyWork.heatersCondition != '      Good'
+                                  ? 'Problem'
+                                  : '')
                           : SizedBox(),
                     )
                   ],
                 ),
-                widget.dailyWork.heatersCondition != 'N/A'
+                widget.dailyWork.heatersCondition != 'N/A' &&
+                        widget.dailyWork.heatersCondition != '      Good'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )
@@ -94,19 +107,24 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                   children: [
                     Container(
                       width: titleWidth,
-                      child: widget.dailyWork.eFansCondition != 'N/A'
+                      child: widget.dailyWork.eFansCondition != 'N/A' &&
+                              widget.dailyWork.eFansCondition != '      Good'
                           ? Text('Exaust Fans')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
-                      child: widget.dailyWork.eFansCondition != 'N/A'
-                          ? Text(widget.dailyWork.eFansCondition)
+                      child: widget.dailyWork.eFansCondition != 'N/A' &&
+                              widget.dailyWork.eFansCondition != '      Good'
+                          ? Text(widget.dailyWork.eFansCondition != '      Good'
+                              ? 'Problem'
+                              : '')
                           : SizedBox(),
                     )
                   ],
                 ),
-                widget.dailyWork.eFansCondition != 'N/A'
+                widget.dailyWork.eFansCondition != 'N/A' &&
+                        widget.dailyWork.eFansCondition != '      Good'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )
@@ -115,19 +133,27 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                   children: [
                     Container(
                       width: titleWidth,
-                      child: widget.dailyWork.dehumidifierCondition != 'N/A'
+                      child: widget.dailyWork.dehumidifierCondition != 'N/A' &&
+                              widget.dailyWork.dehumidifierCondition !=
+                                  '      Good'
                           ? Text('Dehumidifier')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
-                      child: widget.dailyWork.dehumidifierCondition != 'N/A'
-                          ? Text(widget.dailyWork.dehumidifierCondition)
+                      child: widget.dailyWork.dehumidifierCondition != 'N/A' &&
+                              widget.dailyWork.dehumidifierCondition !=
+                                  '      Good'
+                          ? Text(widget.dailyWork.dehumidifierCondition !=
+                                  '      Good'
+                              ? 'Problem'
+                              : '')
                           : SizedBox(),
                     )
                   ],
                 ),
-                widget.dailyWork.dehumidifierCondition != 'N/A'
+                widget.dailyWork.dehumidifierCondition != 'N/A' &&
+                        widget.dailyWork.dehumidifierCondition != '      Good'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )
@@ -136,19 +162,24 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                   children: [
                     Container(
                       width: titleWidth,
-                      child: widget.dailyWork.acCondition != 'N/A'
+                      child: widget.dailyWork.acCondition != 'N/A' &&
+                              widget.dailyWork.acCondition != '      Good'
                           ? Text('Ac')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
-                      child: widget.dailyWork.acCondition != 'N/A'
-                          ? Text(widget.dailyWork.acCondition)
+                      child: widget.dailyWork.acCondition != 'N/A' &&
+                              widget.dailyWork.acCondition != '      Good'
+                          ? Text(widget.dailyWork.acCondition != '      Good'
+                              ? 'Problem'
+                              : '')
                           : SizedBox(),
                     )
                   ],
                 ),
-                widget.dailyWork.acCondition != 'N/A'
+                widget.dailyWork.acCondition != 'N/A' &&
+                        widget.dailyWork.acCondition != '      Good'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )

@@ -6,7 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-Future<String> postVarietyInfo(String varietyId, String roomName,
+Future<String> postVarietyInfo(String varietyId, String roomName, String stage,
     String noOfPlants, String entryIntoRoom) async {
   print("In PostVariety");
   final response =
@@ -17,6 +17,7 @@ Future<String> postVarietyInfo(String varietyId, String roomName,
           body: jsonEncode(<String, String>{
             "VarietyId": varietyId,
             "EnterRoomName": roomName,
+            "Stage": stage,
             "NoOfPlants": noOfPlants,
             "EnterRoomDate": entryIntoRoom
           }));
@@ -27,8 +28,10 @@ Future<String> postVarietyInfo(String varietyId, String roomName,
 
 class addVarietyInfoAdmin extends StatefulWidget {
   String varietyId;
+  String batchNo;
   Function navigateToVarietyInfoHome;
-  addVarietyInfoAdmin(this.varietyId, this.navigateToVarietyInfoHome);
+  addVarietyInfoAdmin(
+      this.varietyId, this.batchNo, this.navigateToVarietyInfoHome);
 
   @override
   _addVarietyInfoAdminState createState() => _addVarietyInfoAdminState();
@@ -40,7 +43,9 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
     size: 50.0,
   );
   final _formKey = GlobalKey<FormState>();
+  String date = DateFormat.yMMMd().format(DateTime.now());
   TextEditingController roomNameController = TextEditingController();
+  TextEditingController stageController = TextEditingController();
   TextEditingController noOfPlantsController = TextEditingController();
   TextEditingController entryIntoRoomController = TextEditingController();
 
@@ -48,15 +53,18 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
     showDatePicker(
             context: context,
             initialDate: DateTime.now(),
-            firstDate: DateTime.now(),
+            firstDate: DateTime.now().subtract(Duration(days: 365)),
             lastDate: DateTime.now().add(Duration(days: 1000)),
-            initialEntryMode: DatePickerEntryMode.input)
+            initialEntryMode: DatePickerEntryMode.calendarOnly)
         .then((pickedDate) {
       if (pickedDate == null) {
         print('No date Selected');
       } else {
         print('Selected Date is $pickedDate');
         entryIntoRoomController.text = DateFormat.yMMMd().format(pickedDate);
+        setState(() {
+          date = DateFormat.yMMMd().format(pickedDate);
+        });
       }
     });
   }
@@ -77,7 +85,7 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: Text('Variety'),
+        title: Text('Variety History'),
       ),
       body: Container(
         padding: EdgeInsets.only(left: 15, right: 15),
@@ -99,6 +107,20 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                           borderSide: BorderSide(color: Colors.green))),
                   controller: roomNameController,
                 ),
+                SizedBox(height: 20),
+                TextFormField(
+                  validator: (val) => val.isEmpty ? 'Stage' : null,
+                  decoration: InputDecoration(
+                      labelText: 'Stage',
+                      labelStyle: TextStyle(
+                          fontFamily: 'Montserrat',
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.green))),
+                  controller: stageController,
+                ),
+                SizedBox(height: 20),
                 TextFormField(
                   validator: (val) => val.isEmpty ? 'Enter No Of Plants' : null,
                   decoration: InputDecoration(
@@ -115,20 +137,25 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                 Row(
                   children: [
                     Expanded(
-                      child: TextFormField(
-                        validator: (val) =>
-                            val.isEmpty ? 'Enter Room Name' : null,
-                        decoration: InputDecoration(
-                            labelText: 'Entry into Room',
-                            labelStyle: TextStyle(
-                                fontFamily: 'Montserrat',
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black),
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.green))),
-                        controller: entryIntoRoomController,
-                      ),
-                    ),
+                        child:
+                            // TextFormField(
+                            //   validator: (val) =>
+                            //       val.isEmpty ? 'Enter Room Name' : null,
+                            //   decoration: InputDecoration(
+                            //       labelText: 'Entry into Room',
+                            //       labelStyle: TextStyle(
+                            //           fontFamily: 'Montserrat',
+                            //           fontWeight: FontWeight.bold,
+                            //           color: Colors.black),
+                            //       focusedBorder: UnderlineInputBorder(
+                            //           borderSide: BorderSide(color: Colors.green)
+                            // )),
+                            //   controller: entryIntoRoomController,
+                            // ),
+                            Text(
+                      '${date.toString()}',
+                      style: TextStyle(decoration: TextDecoration.underline),
+                    )),
                     GestureDetector(
                       onTap: () {
                         pickStartDate();
@@ -136,10 +163,7 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                       child: Container(
                           height: 50,
                           width: 50,
-                          child: Image.asset(
-                            "littlePlant.png",
-                            fit: BoxFit.fitWidth,
-                          )),
+                          child: Icon(Icons.calendar_today_rounded)),
                     ),
                   ],
                 ),
@@ -150,12 +174,14 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                     await postVarietyInfo(
                         widget.varietyId,
                         roomNameController.text,
+                        stageController.text,
                         noOfPlantsController.text,
-                        entryIntoRoomController.text);
+                        date);
                     Navigator.pop(context);
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    widget.navigateToVarietyInfoHome(widget.varietyId);
+                    widget.navigateToVarietyInfoHome(
+                        widget.varietyId, widget.batchNo);
                   },
                   child: Container(
                     height: 40.0,
@@ -166,7 +192,7 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                       elevation: 7.0,
                       child: Center(
                         child: Text(
-                          'Create Variety',
+                          'Upload History',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

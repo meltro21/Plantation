@@ -35,14 +35,16 @@ Future<int> deleteVarietyInfo(http.Client client, String varietyInfoId) async {
 }
 
 class VarietyInfoHome extends StatefulWidget {
+  String batchNo;
   String varietyId;
   Function navigateToVarietyInfoHome;
-  VarietyInfoHome(this.varietyId, this.navigateToVarietyInfoHome);
+  VarietyInfoHome(this.varietyId, this.batchNo, this.navigateToVarietyInfoHome);
   @override
   _VarietyInfoHomeState createState() => _VarietyInfoHomeState();
 }
 
 class _VarietyInfoHomeState extends State<VarietyInfoHome> {
+  double lWidth = 100;
   final spinkit = SpinKitChasingDots(
     color: Colors.grey[200],
     size: 50.0,
@@ -110,7 +112,7 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
         backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColorDark,
-          title: Text('Variety History'),
+          title: Text('${widget.batchNo} Variety History'),
         ),
         floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
@@ -118,7 +120,9 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => addVarietyInfoAdmin(
-                          widget.varietyId, widget.navigateToVarietyInfoHome)));
+                          widget.varietyId,
+                          widget.batchNo,
+                          widget.navigateToVarietyInfoHome)));
             },
             label: Text('Add History')),
         body: FutureBuilder(
@@ -134,11 +138,11 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      DetailVarietyInfo(snapshot.data[index])));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) =>
+                          //             DetailVarietyInfo(snapshot.data[index])));
                         },
                         child: Card(
                           color: Theme.of(context).accentColor,
@@ -152,7 +156,9 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
                               children: [
                                 Row(
                                   children: [
-                                    Text('Room Name'),
+                                    Container(
+                                        width: lWidth,
+                                        child: Text('Room Name')),
                                     SizedBox(
                                       width: 10,
                                     ),
@@ -161,7 +167,19 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
                                 ),
                                 Row(
                                   children: [
-                                    Text('No Of Plants'),
+                                    Container(
+                                        width: lWidth, child: Text('Stage')),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(snapshot.data[index].stage)
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Container(
+                                        width: lWidth,
+                                        child: Text('No Of Plants')),
                                     SizedBox(
                                       width: 10,
                                     ),
@@ -170,7 +188,9 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
                                 ),
                                 Row(
                                   children: [
-                                    Text('Entry Into Room'),
+                                    Container(
+                                        width: lWidth,
+                                        child: Text('Entry Into Room')),
                                     SizedBox(
                                       width: 10,
                                     ),
