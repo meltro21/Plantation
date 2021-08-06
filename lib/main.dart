@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertest/provider/batchProvider.dart';
+import 'package:fluttertest/provider/varietyProvider.dart';
 import 'package:provider/provider.dart';
 
 import './shared/loading.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
                 StreamProvider<User>.value(
                     value: AuthService().user, initialData: null),
                 ChangeNotifierProvider.value(value: BatchP()),
+                ChangeNotifierProvider.value(value: PVariety())
               ],
               child: Wrapper(),
             );

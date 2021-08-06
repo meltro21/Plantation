@@ -4,11 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertest/provider/varietyProvider.dart';
 import 'package:fluttertest/screen/admin/batches/adminBatches.dart';
 import 'package:fluttertest/screen/admin/batches/variety/addVariety.dart';
 import 'package:fluttertest/screen/admin/batches/variety/varityInfoHome.dart';
 import 'package:fluttertest/shared/loading.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../../../../models/variety.dart';
 
 List<VarietyModel> parseVarieties(String responseBody) {
@@ -34,11 +36,8 @@ Future<int> deleteVariety(http.Client client, String varietyId) async {
 
 class Variety extends StatefulWidget {
   String batchNo;
-  Function navigateToAdminBatches;
-  Function navigateToListVarieties;
   String batchId;
-  Variety(this.batchId, this.navigateToAdminBatches,
-      this.navigateToListVarieties, this.batchNo);
+  Variety(this.batchId, this.batchNo);
 
   @override
   _VarietyState createState() => _VarietyState();
@@ -114,36 +113,6 @@ class _VarietyState extends State<Variety> {
             ));
   }
 
-  void showConfirmDeleteDialogBox(String varietyName, String varietyId) async {
-    showCupertinoDialog(
-        context: context,
-        builder: (_) => Container(
-              child: AlertDialog(
-                content: Text('$varietyName will be deleted!'),
-                actions: [
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('No'),
-                  ),
-                  FlatButton(
-                    onPressed: () async {
-                      Navigator.pop(context);
-                      showDialogBox();
-                      await deleteVariety(http.Client(), varietyId);
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      widget.navigateToListVarieties(
-                          widget.batchId, widget.batchNo);
-                    },
-                    child: Text('Yes'),
-                  ),
-                ],
-              ),
-            ));
-  }
-
   void showConfirmAddToProcessing() async {
     showCupertinoDialog(
         context: context,
@@ -166,7 +135,7 @@ class _VarietyState extends State<Variety> {
                       Navigator.pop(context);
                       Navigator.pop(context);
 
-                      widget.navigateToAdminBatches();
+                      //  widget.navigateToAdminBatches();
                     },
                     child: Text('Yes'),
                   ),
@@ -176,7 +145,55 @@ class _VarietyState extends State<Variety> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final pVariety = Provider.of<PVariety>(context, listen: false);
+      pVariety.wrapperGetVarieties(context, widget.batchId);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final pVariety = Provider.of<PVariety>(context);
+
+    void showConfirmDeleteDialogBox(
+        String varietyName, String varietyId) async {
+      showCupertinoDialog(
+          context: context,
+          builder: (_) => Container(
+                child: AlertDialog(
+                  content: Text('$varietyName will be deleted!'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('No'),
+                    ),
+                    FlatButton(
+                      onPressed: () async {
+                        showDialogBox();
+                        await pVariety.wrapperDeleteVarieties(
+                            context, widget.batchId, varietyId);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        // showDialogBox();
+
+                        // await deleteVariety(http.Client(), varietyId);
+                        // Navigator.pop(context);
+                        // Navigator.pop(context);
+                        // widget.navigateToListVarieties(
+                        //     widget.batchId, widget.batchNo);
+                      },
+                      child: Text('Yes'),
+                    ),
+                  ],
+                ),
+              ));
+    }
+
     print('hello');
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
@@ -198,31 +215,40 @@ class _VarietyState extends State<Variety> {
       floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Theme.of(context).primaryColorDark,
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => AddVariety(
-                        widget.batchId, widget.navigateToListVarieties)));
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => MultiProvider(
+                        providers: [
+                          ChangeNotifierProvider.value(value: pVariety),
+                        ],
+                        child: AddVariety(widget.batchId),
+                      )),
+            );
+            // Navigator.push(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => AddVariety(
+            //             widget.batchId, widget.navigateToListVarieties)));
           },
           label: Text('Add Variety')),
       body: Container(
         child: Column(
           children: [
             Container(
-              height: 300,
-              child: FutureBuilder(
-                future: getVarities(http.Client()),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                        itemCount: snapshot.data.length,
+                height: 300,
+                child: pVariety.loading
+                    ? Container(
+                        child: Loading(),
+                      )
+                    : ListView.builder(
+                        itemCount: pVariety.lVariety.length,
                         itemBuilder: (context, index) {
                           return Card(
                             color: Theme.of(context).accentColor,
                             margin: EdgeInsets.all(10),
                             child: ListTile(
                               title: Text(
-                                snapshot.data[index].varietyName,
+                                pVariety.lVariety[index].varietyName,
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                               subtitle: Column(
@@ -230,10 +256,11 @@ class _VarietyState extends State<Variety> {
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  snapshot.data[index].stage != "null"
+                                  pVariety.lVariety[index].stage != "null"
                                       ? Row(
                                           children: [
-                                            snapshot.data[index].stage != "null"
+                                            pVariety.lVariety[index].stage !=
+                                                    "null"
                                                 ? Container(
                                                     width: lWidth,
                                                     child: Text('Stage'))
@@ -241,10 +268,11 @@ class _VarietyState extends State<Variety> {
                                             SizedBox(
                                               width: 10,
                                             ),
-                                            snapshot.data[index].stage != "null"
+                                            pVariety.lVariety[index].stage !=
+                                                    "null"
                                                 ? Container(
-                                                    child: Text(snapshot
-                                                        .data[index].stage),
+                                                    child: Text(pVariety
+                                                        .lVariety[index].stage),
                                                   )
                                                 : SizedBox()
                                           ],
@@ -253,7 +281,7 @@ class _VarietyState extends State<Variety> {
                                   SizedBox(
                                     height: 5,
                                   ),
-                                  snapshot.data[index].noOfPlants != "null"
+                                  pVariety.lVariety[index].noOfPlants != "null"
                                       ? Row(
                                           children: [
                                             Container(
@@ -263,8 +291,8 @@ class _VarietyState extends State<Variety> {
                                               width: 10,
                                             ),
                                             Container(
-                                              child: Text(snapshot
-                                                  .data[index].noOfPlants),
+                                              child: Text(pVariety
+                                                  .lVariety[index].noOfPlants),
                                             )
                                           ],
                                         )
@@ -272,10 +300,12 @@ class _VarietyState extends State<Variety> {
                                 ],
                               ),
                               trailing: GestureDetector(
-                                  onTap: () {
-                                    showConfirmDeleteDialogBox(
-                                        snapshot.data[index].varietyName,
-                                        snapshot.data[index].varietyId);
+                                  onTap: () async {
+                                    print('pressed');
+                                    await showConfirmDeleteDialogBox(
+                                        pVariety.lVariety[index].varietyName,
+                                        pVariety.lVariety[index].varietyId);
+                                    //Navigator.pop(context);
                                   },
                                   child: Icon(Icons.highlight_off)),
                               onTap: () {
@@ -283,21 +313,13 @@ class _VarietyState extends State<Variety> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => VarietyInfoHome(
-                                            snapshot.data[index].varietyId,
+                                            pVariety.lVariety[index].varietyId,
                                             widget.batchNo,
                                             navigateToVarietyInfoHome)));
                               },
                             ),
                           );
-                        });
-                  } else if (snapshot.hasError) {
-                    return Text('Error');
-                  } else {
-                    return Loading();
-                  }
-                },
-              ),
-            ),
+                        })),
             // SizedBox(height: 20),
             // Container(
             //   padding: EdgeInsets.symmetric(horizontal: 20),

@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertest/provider/varietyProvider.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 Future<String> postVariety(
     String batchId, String varietyName, String varietyNoOfPlants) async {
@@ -25,8 +27,7 @@ Future<String> postVariety(
 
 class AddVariety extends StatefulWidget {
   String batchId;
-  Function navigateToListVarieties;
-  AddVariety(this.batchId, this.navigateToListVarieties);
+  AddVariety(this.batchId);
 
   @override
   _AddVarietyState createState() => _AddVarietyState();
@@ -68,6 +69,7 @@ class _AddVarietyState extends State<AddVariety> {
 
   @override
   Widget build(BuildContext context) {
+    final pVariety = Provider.of<PVariety>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
@@ -113,14 +115,19 @@ class _AddVarietyState extends State<AddVariety> {
                 GestureDetector(
                   onTap: () async {
                     showDialogBox();
-                    await postVariety(
+                    await pVariety.wrapperPostVarieties(
+                        context,
                         widget.batchId,
                         varietyNameController.text,
                         varietyNoOfPlantsController.text);
+                    // await postVariety(
+                    //     widget.batchId,
+                    //     varietyNameController.text,
+                    //     varietyNoOfPlantsController.text);
+                    FocusScope.of(context).requestFocus(FocusNode());
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    Navigator.pop(context);
-                    widget.navigateToListVarieties(widget.batchId);
+                    //  widget.navigateToListVarieties(widget.batchId);
                   },
                   child: Container(
                     height: 40.0,

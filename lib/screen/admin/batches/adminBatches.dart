@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/provider/batchProvider.dart';
+import 'package:fluttertest/provider/varietyProvider.dart';
+import 'package:fluttertest/provider/varietyProvider.dart';
 import 'package:fluttertest/screen/admin/batches/addBatch.dart';
 import 'package:fluttertest/screen/admin/batches/variety/variety.dart';
 import 'package:fluttertest/shared/loading.dart';
@@ -73,10 +75,7 @@ class _AdminBatchesState extends State<AdminBatches> {
     print('id is $id');
 
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Variety(
-                id, navigateToAdminBatches, navigateToListVarieties, batchNo)));
+        context, MaterialPageRoute(builder: (context) => Variety(id, batchNo)));
   }
 
   void showLoadingDialogBox() {
@@ -102,6 +101,9 @@ class _AdminBatchesState extends State<AdminBatches> {
   @override
   Widget build(BuildContext context) {
     final pBatch = Provider.of<BatchP>(
+      context,
+    );
+    final pVariety = Provider.of<PVariety>(
       context,
     );
     void showConfirmDeleteDialogBox(String batchId) async {
@@ -164,14 +166,23 @@ class _AdminBatchesState extends State<AdminBatches> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Variety(
-                                pBatch.lBatch[index].id,
-                                navigateToAdminBatches,
-                                navigateToListVarieties,
-                                pBatch.lBatch[index].batchNo)));
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => MultiProvider(
+                              providers: [
+                                ChangeNotifierProvider.value(value: pBatch),
+                                ChangeNotifierProvider.value(value: pVariety),
+                              ],
+                              child: Variety(pBatch.lBatch[index].id,
+                                  pBatch.lBatch[index].batchNo),
+                            )));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => Variety(
+                    //             pBatch.lBatch[index].id,
+                    //             navigateToAdminBatches,
+                    //             navigateToListVarieties,
+                    //             pBatch.lBatch[index].batchNo)));
                   },
                   child: Card(
                     color: Theme.of(context).accentColor,
