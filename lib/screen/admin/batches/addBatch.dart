@@ -4,8 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertest/provider/batchProvider.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 Future<String> postBatch(
     String batchNo,
@@ -39,9 +41,11 @@ class AddBatch extends StatelessWidget {
     color: Colors.grey[200],
     size: 50.0,
   );
-  AddBatch(this.navigateToAdminBatches);
+  // AddBatch(this.navigateToAdminBatches);
   @override
   Widget build(BuildContext context) {
+    final pBatch = Provider.of<BatchP>(context);
+
     final _formKey = GlobalKey<FormState>();
     TextEditingController batchNoController = TextEditingController();
     TextEditingController roomNameController = TextEditingController();
@@ -236,16 +240,13 @@ class AddBatch extends StatelessWidget {
               GestureDetector(
                 onTap: () async {
                   showDialogBox();
-                  await postBatch(
-                      batchNoController.text,
-                      roomNameController.text,
-                      noOfPlantsHarvestedController.text,
-                      entryIntoRoomController.text,
-                      harvestDateController.text);
+                  await pBatch.wrapperPostBatch(
+                      context, batchNoController.text);
                   Navigator.pop(context);
                   Navigator.pop(context);
-                  Navigator.pop(context);
-                  navigateToAdminBatches();
+                  // Navigator.pop(context);
+                  // Navigator.pop(context);
+                  // navigateToAdminBatches();
                 },
                 child: Container(
                   height: 40.0,

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../services/auth.dart';
 
 class ForgotPassword extends StatefulWidget {
-
   @override
   _ForgotPasswordState createState() => _ForgotPasswordState();
 }
@@ -17,30 +16,39 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   final _formKey = GlobalKey<FormState>();
   String error = '';
 
-  void showDialogBox(String statement)
-  {
-    showCupertinoDialog(context: context, builder: (_)=>AlertDialog(
-      title: Text('Alert'),
-      content: Text(statement),
-      actions: [
-        FlatButton(onPressed: (){
-          Navigator.pop(context);
-        }, child: Text('No'),
-         ),
-        FlatButton(onPressed: (){
-          Navigator.pop(context);
-        }, child: Text('Ok'),
-         ),],
-    ));
+  void showDialogBox(String statement) {
+    showCupertinoDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              title: Text('Alert'),
+              content: Text(statement),
+              actions: [
+                FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('No'),
+                ),
+                FlatButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Ok'),
+                ),
+              ],
+            ));
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorLight,
       // backgroundColor: Colors.brown[100],
       appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
         // backgroundColor: Colors.brown[400],
         // elevation: 0.0,
-     
+
         title: Text('Forgot Password'),
       ),
       body: SingleChildScrollView(
@@ -90,12 +98,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             labelStyle: TextStyle(
                                 fontFamily: 'Montserrat',
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey),
+                                color: Colors.black),
                             focusedBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.green))),
                         controller: emailController,
                       ),
-                    
+
                       SizedBox(height: 5.0),
                       // Container(
                       //   alignment: Alignment(1.0, 0.0),
@@ -114,48 +122,52 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       SizedBox(height: 40.0),
                       GestureDetector(
                         onTap: () async {
-                                print(emailController.text);
-                                print(passwordController.text);
-                                if (_formKey.currentState.validate()) {
-                                  FirebaseAuth.instance.sendPasswordResetEmail(email: emailController.text).then((value) {
-                                    String s = "Password reset link is send to ${emailController.text}";
-                                    showDialogBox(s);
-                                    print('Exit this window');
-                                    //Navigator.pop(context);
-                                  }).catchError((onError){
-                                    print("Error is $onError");
-                                    String s = "Unable to send link, Error: $onError";
-                                    showDialogBox(s);
-                                  });
-                                  // dynamic result =
-                                  //     await _auth.registerWithEmailAndPassword(
-                                  //         emailController.text,
-                                  //         passwordController.text);
-                                  // if (result == null) {
-                                  //   setState(() {
-                                  //     error = 'Please supply a valid email';
-                                  //   });
-                                  // }
-                                }
-                              },
+                          print(emailController.text);
+                          print(passwordController.text);
+                          if (_formKey.currentState.validate()) {
+                            FirebaseAuth.instance
+                                .sendPasswordResetEmail(
+                                    email: emailController.text)
+                                .then((value) {
+                              String s =
+                                  "Password reset link is send to ${emailController.text}";
+                              showDialogBox(s);
+                              print('Exit this window');
+                              //Navigator.pop(context);
+                            }).catchError((onError) {
+                              print("Error is $onError");
+                              String s = "Unable to send link, Error: $onError";
+                              showDialogBox(s);
+                            });
+                            // dynamic result =
+                            //     await _auth.registerWithEmailAndPassword(
+                            //         emailController.text,
+                            //         passwordController.text);
+                            // if (result == null) {
+                            //   setState(() {
+                            //     error = 'Please supply a valid email';
+                            //   });
+                            // }
+                          }
+                        },
                         child: Container(
                           height: 40.0,
                           child: Material(
                             borderRadius: BorderRadius.circular(20.0),
                             shadowColor: Colors.greenAccent,
-                            color: Colors.blue,
+                            color: Theme.of(context).primaryColorDark,
                             elevation: 7.0,
-                              child: Center(
-                                child: Text(
-                                  'Send Reset Link',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Montserrat'),
-                                ),
+                            child: Center(
+                              child: Text(
+                                'Send Reset Link',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Montserrat'),
                               ),
                             ),
                           ),
+                        ),
                       ),
                       SizedBox(height: 12.0),
                       Text(

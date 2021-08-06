@@ -35,6 +35,8 @@ Future<List<BatchHistoryModel>> getBatches(http.Client client) async {
 }
 
 class BatchesHistory extends StatefulWidget {
+  String batchNo;
+  BatchesHistory(this.batchNo);
   @override
   _BatchesHistoryState createState() => _BatchesHistoryState();
 }
@@ -68,7 +70,8 @@ class _BatchesHistoryState extends State<BatchesHistory> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => VarietyHomeProcessing(
-                                      snapshot.data[index].id)));
+                                      snapshot.data[index].id,
+                                      widget.batchNo)));
                         },
                         child: Card(
                           color: Theme.of(context).accentColor,

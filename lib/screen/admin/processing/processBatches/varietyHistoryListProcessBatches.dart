@@ -7,6 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/models/varietyInfo.dart';
 import 'package:fluttertest/models/varietyProcessModel.dart';
+import 'package:fluttertest/models/varietyProcessModel.dart';
 import 'package:fluttertest/screen/admin/batches/addBatch.dart';
 import 'package:fluttertest/screen/admin/batches/variety/variety.dart';
 import 'package:fluttertest/screen/admin/processing/processBatches/addVarietyProcessInfo.dart';
@@ -87,6 +88,7 @@ class _VarietyHistoryListProcessBatchesState
           title: Text('Weight'),
         ),
         floatingActionButton: FloatingActionButton.extended(
+            backgroundColor: Theme.of(context).primaryColorDark,
             onPressed: () {
               Navigator.push(
                   context,
@@ -95,7 +97,10 @@ class _VarietyHistoryListProcessBatchesState
                           widget.varietyId,
                           widget.navigateToVarietyHistoryList)));
             },
-            label: Text('Add Weight')),
+            label: Text(
+              'Add Info',
+              style: TextStyle(color: Colors.white),
+            )),
         body: FutureBuilder(
             future: futureVarietyProcess,
             builder: (context, snapshot) {
@@ -125,9 +130,14 @@ class _VarietyHistoryListProcessBatchesState
                 totalStats.noOfPlantsHarvested = noOfPlantsHarvested.toString();
                 totalStats.totalHours = noOfHours.toString();
                 print('totalStats + ${totalStats.aGrade}');
-                snapshot.data.add(totalStats);
+                // snapshot.data.add(totalStats);
+                // snapshot.data.reversed;
+                List varietyProcessModel = snapshot.data;
+                varietyProcessModel.insert(0, totalStats);
+
+                // varietyProcessModel.reversed;
                 return ListView.builder(
-                    itemCount: snapshot.data.length,
+                    itemCount: varietyProcessModel.length,
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {

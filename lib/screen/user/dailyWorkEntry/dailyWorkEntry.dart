@@ -225,12 +225,12 @@ Future<String> postDailyWork(
   }
 }
 
-String lightsCondition = '';
-String oFansCondition = '';
-String heatersCondition = '';
-String eFansCondition = '';
-String dehumidifierCondition = '';
-String acCondition = '';
+String lightsCondition = '      Good';
+String oFansCondition = '      Good';
+String heatersCondition = '      Good';
+String eFansCondition = '      Good';
+String dehumidifierCondition = '      Good';
+String acCondition = '      Good';
 TextEditingController tHighController = TextEditingController();
 TextEditingController tLowController = TextEditingController();
 TextEditingController hHighController = TextEditingController();
@@ -270,12 +270,12 @@ class _DailyWorkEntryState extends State<DailyWorkEntry> {
   @override
   void dispose() {
     // TODO: implement dispose
-    lightsCondition = "";
-    oFansCondition = "";
-    heatersCondition = "";
-    eFansCondition = "";
-    dehumidifierCondition = "";
-    acCondition = "";
+    lightsCondition = "      Good";
+    oFansCondition = "      Good";
+    heatersCondition = "      Good";
+    eFansCondition = "      Good";
+    dehumidifierCondition = "      Good";
+    acCondition = "      Good";
     tHighController.text = '';
     tLowController.text = '';
     hHighController.text = '';
@@ -542,7 +542,7 @@ class DailyWorkFullForm extends StatelessWidget {
                   navigateToHomeDailyWorkEntry(uid);
                 },
                 child: Container(
-                  height: 40.0,
+                  height: 50.0,
                   child: Material(
                     borderRadius: BorderRadius.circular(20.0),
                     shadowColor: Colors.greenAccent,
@@ -550,7 +550,7 @@ class DailyWorkFullForm extends StatelessWidget {
                     elevation: 7.0,
                     child: Center(
                       child: Text(
-                        'Upload Daily Work',
+                        'Enter Daily Work',
                         style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -560,6 +560,7 @@ class DailyWorkFullForm extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: 20),
             ],
           ),
         ),

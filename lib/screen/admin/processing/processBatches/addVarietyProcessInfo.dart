@@ -228,7 +228,7 @@ class AddVarietyProcessInfo extends StatelessWidget {
                           elevation: 7.0,
                           child: Center(
                             child: Text(
-                              'Add Weight',
+                              'Add Info',
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

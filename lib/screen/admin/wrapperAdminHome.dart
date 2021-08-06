@@ -5,8 +5,6 @@ import 'package:fluttertest/screen/admin/adminHome.dart';
 
 import 'package:provider/provider.dart';
 
-
-
 class WrapperAdminHome extends StatefulWidget {
   @override
   _WrapperAdminHomeState createState() => _WrapperAdminHomeState();
@@ -15,10 +13,6 @@ class WrapperAdminHome extends StatefulWidget {
 class _WrapperAdminHomeState extends State<WrapperAdminHome> {
   @override
   Widget build(BuildContext context) {
-    return StreamProvider<QuerySnapshot>.value(
-      value : Database().CompetitionDateTime,
-      initialData: null,
-      child: AdminHome(),
-    );
+    return AdminHome();
   }
 }

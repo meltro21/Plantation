@@ -82,6 +82,9 @@ class _AddVarietyState extends State<AddVariety> {
             key: _formKey,
             child: Column(
               children: <Widget>[
+                SizedBox(
+                  height: 10,
+                ),
                 TextFormField(
                   validator: (val) => val.isEmpty ? 'Enter Variety' : null,
                   decoration: InputDecoration(
@@ -94,18 +97,18 @@ class _AddVarietyState extends State<AddVariety> {
                           borderSide: BorderSide(color: Colors.green))),
                   controller: varietyNameController,
                 ),
-                TextFormField(
-                  validator: (val) => val.isEmpty ? 'Enter No Of Plants' : null,
-                  decoration: InputDecoration(
-                      labelText: 'No Of Plants',
-                      labelStyle: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green))),
-                  controller: varietyNoOfPlantsController,
-                ),
+                // TextFormField(
+                //   validator: (val) => val.isEmpty ? 'Enter No Of Plants' : null,
+                //   decoration: InputDecoration(
+                //       labelText: 'No Of Plants',
+                //       labelStyle: TextStyle(
+                //           fontFamily: 'Montserrat',
+                //           fontWeight: FontWeight.bold,
+                //           color: Colors.black),
+                //       focusedBorder: UnderlineInputBorder(
+                //           borderSide: BorderSide(color: Colors.green))),
+                //   controller: varietyNoOfPlantsController,
+                // ),
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
@@ -128,7 +131,7 @@ class _AddVarietyState extends State<AddVariety> {
                       elevation: 7.0,
                       child: Center(
                         child: Text(
-                          'Upload History',
+                          'Upload Variety',
                           style: TextStyle(
                               color: Colors.white,
                               fontWeight: FontWeight.bold,

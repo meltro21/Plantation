@@ -21,7 +21,8 @@ List<VarietyModel> parseVarieties(String responseBody) {
 
 class VarietyHomeProcessing extends StatefulWidget {
   String batchId;
-  VarietyHomeProcessing(this.batchId);
+  String batchNo;
+  VarietyHomeProcessing(this.batchId, this.batchNo);
 
   @override
   _VarietyHomeProcessingState createState() => _VarietyHomeProcessingState();
@@ -74,6 +75,7 @@ class _VarietyHomeProcessingState extends State<VarietyHomeProcessing> {
                                     MaterialPageRoute(
                                         builder: (context) => VarietyInfoHome(
                                             snapshot.data[index].varietyId,
+                                            widget.batchNo,
                                             null)));
                               },
                             ),

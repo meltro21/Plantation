@@ -109,7 +109,7 @@ class _UserHomeState extends State<UserHome> {
         backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColorDark,
-          title: Text('Home'),
+          title: Text('Hugh Home'),
           actions: [
             FlatButton.icon(
                 onPressed: () async {
@@ -173,7 +173,7 @@ class _UserHomeState extends State<UserHome> {
                                 },
                                 child: Align(
                                     alignment: Alignment.center,
-                                    child: Text('Garden History')),
+                                    child: Text('Garden Care')),
                               ),
                             ),
                           ),

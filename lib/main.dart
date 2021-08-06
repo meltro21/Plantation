@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluttertest/provider/batchProvider.dart';
 import 'package:provider/provider.dart';
 
 import './shared/loading.dart';
@@ -27,8 +28,14 @@ class MyApp extends StatelessWidget {
           if (snapshot.hasError) {
             return Text('Error');
           } else if (snapshot.hasData) {
-            return StreamProvider<User>.value(
-                value: AuthService().user, initialData: null, child: Wrapper());
+            return MultiProvider(
+              providers: [
+                StreamProvider<User>.value(
+                    value: AuthService().user, initialData: null),
+                ChangeNotifierProvider.value(value: BatchP()),
+              ],
+              child: Wrapper(),
+            );
           } else {
             return Loading();
           }
