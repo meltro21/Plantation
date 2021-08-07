@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/provider/batchProvider.dart';
+import 'package:fluttertest/provider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/varietyProvider.dart';
 import 'package:fluttertest/provider/varietyProvider.dart';
 import 'package:fluttertest/screen/admin/batches/addBatch.dart';
@@ -74,8 +75,7 @@ class _AdminBatchesState extends State<AdminBatches> {
     print('Navigate');
     print('id is $id');
 
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => Variety(id, batchNo)));
+    Navigator.push(context, MaterialPageRoute(builder: (context) => Variety()));
   }
 
   void showLoadingDialogBox() {
@@ -104,6 +104,9 @@ class _AdminBatchesState extends State<AdminBatches> {
       context,
     );
     final pVariety = Provider.of<PVariety>(
+      context,
+    );
+    final pVarietyHistory = Provider.of<PVarietyHistory>(
       context,
     );
     void showConfirmDeleteDialogBox(String batchId) async {
@@ -166,14 +169,17 @@ class _AdminBatchesState extends State<AdminBatches> {
               itemBuilder: (context, index) {
                 return GestureDetector(
                   onTap: () {
+                    //pBatch.currentBatchId = pBatch.lBatch[index].id;
+                    pBatch.index = index;
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => MultiProvider(
                               providers: [
                                 ChangeNotifierProvider.value(value: pBatch),
                                 ChangeNotifierProvider.value(value: pVariety),
+                                ChangeNotifierProvider.value(
+                                    value: pVarietyHistory),
                               ],
-                              child: Variety(pBatch.lBatch[index].id,
-                                  pBatch.lBatch[index].batchNo),
+                              child: Variety(),
                             )));
                     // Navigator.push(
                     //     context,

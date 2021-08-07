@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertest/provider/varietyHistoryProvider.dart';
+import 'package:fluttertest/provider/varietyProvider.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 Future<String> postVarietyInfo(String varietyId, String roomName, String stage,
     String noOfPlants, String entryIntoRoom) async {
@@ -29,9 +32,11 @@ Future<String> postVarietyInfo(String varietyId, String roomName, String stage,
 class addVarietyInfoAdmin extends StatefulWidget {
   String varietyId;
   String batchNo;
-  Function navigateToVarietyInfoHome;
+
   addVarietyInfoAdmin(
-      this.varietyId, this.batchNo, this.navigateToVarietyInfoHome);
+    this.varietyId,
+    this.batchNo,
+  );
 
   @override
   _addVarietyInfoAdminState createState() => _addVarietyInfoAdminState();
@@ -81,6 +86,8 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
 
   @override
   Widget build(BuildContext context) {
+    final pVariety = Provider.of<PVariety>(context);
+    final pVarietyHistory = Provider.of<PVarietyHistory>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
@@ -171,17 +178,25 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                 GestureDetector(
                   onTap: () async {
                     showDialogBox();
-                    await postVarietyInfo(
+                    await pVarietyHistory.wrapperPostVarietyHistory(
+                        context,
                         widget.varietyId,
                         roomNameController.text,
                         stageController.text,
                         noOfPlantsController.text,
                         date);
+                    // pVariety.wrapperGetVarieties(context, batchId);
+                    // postVarietyInfo(
+                    //     widget.varietyId,
+                    //     roomNameController.text,
+                    //     stageController.text,
+                    //     noOfPlantsController.text,
+                    //     date);
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    Navigator.pop(context);
-                    widget.navigateToVarietyInfoHome(
-                        widget.varietyId, widget.batchNo);
+                    // Navigator.pop(context);
+                    // widget.navigateToVarietyInfoHome(
+                    //     widget.varietyId, widget.batchNo);
                   },
                   child: Container(
                     height: 40.0,

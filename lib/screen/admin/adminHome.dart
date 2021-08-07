@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/models/workers.dart';
 import 'package:fluttertest/provider/batchProvider.dart';
+import 'package:fluttertest/provider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/varietyProvider.dart';
 import 'package:fluttertest/screen/admin/batches/adminBatches.dart';
 import 'package:fluttertest/screen/admin/batchesHistory/batchesHIstory.dart';
@@ -52,6 +53,7 @@ class _AdminHomeState extends State<AdminHome> {
   Widget build(BuildContext context) {
     final pBatch = Provider.of<BatchP>(context);
     final pVariety = Provider.of<PVariety>(context);
+    final pVarietyHistory = Provider.of<PVarietyHistory>(context);
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
@@ -105,6 +107,9 @@ class _AdminHomeState extends State<AdminHome> {
                                                       ChangeNotifierProvider
                                                           .value(
                                                               value: pVariety),
+                                                      ChangeNotifierProvider.value(
+                                                          value:
+                                                              pVarietyHistory),
                                                     ],
                                                     child: AdminBatches(),
                                                   )

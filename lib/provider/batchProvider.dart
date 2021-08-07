@@ -61,6 +61,8 @@ Future<int> deleteBatch(http.Client client, String batchId) async {
 
 class BatchP with ChangeNotifier {
   List<Batch> lBatch = [];
+  int index;
+  String currentBatchId;
   List<Batch> tempBatch = [];
   bool loading = false;
 
@@ -90,5 +92,13 @@ class BatchP with ChangeNotifier {
     );
     lBatch = await getBatches(http.Client());
     notifyListeners();
+  }
+
+  setCurrentBatchId(String batchId) {
+    currentBatchId = batchId;
+  }
+
+  setIndex(int i) {
+    index = i;
   }
 }
