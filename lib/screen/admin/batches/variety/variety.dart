@@ -1,40 +1,14 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/provider/batchProvider.dart';
 import 'package:fluttertest/provider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/varietyProvider.dart';
-import 'package:fluttertest/screen/admin/batches/adminBatches.dart';
 import 'package:fluttertest/screen/admin/batches/variety/addVariety.dart';
 import 'package:fluttertest/screen/admin/batches/variety/varityInfoHome.dart';
 import 'package:fluttertest/shared/loading.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import '../../../../models/variety.dart';
-
-List<VarietyModel> parseVarieties(String responseBody) {
-  print('start parseBatch');
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-  print('end patseBatch get');
-  return parsed
-      .map<VarietyModel>((json) => VarietyModel.fromJson(json))
-      .toList();
-}
-
-Future<int> deleteVariety(http.Client client, String varietyId) async {
-  var queryParameters = {'VarietyId': varietyId};
-  var uri = Uri.https(
-      'hughplantation.herokuapp.com', '/deleteVariety', queryParameters);
-  final response = await http.get(uri);
-  if (response.statusCode == 200) {
-    return 1;
-  } else {
-    return 0;
-  }
-}
 
 class Variety extends StatefulWidget {
   @override
@@ -48,19 +22,6 @@ class _VarietyState extends State<Variety> {
     color: Colors.grey[200],
     size: 50.0,
   );
-  // Future<List<VarietyModel>> getVarities(http.Client client) async {
-  //   print('start filterVariety get');
-  //   var queryParameters = {'batchId': widget.batchId};
-  //   var uri = Uri.https(
-  //       'hughplantation.herokuapp.com', '/filterVariety', queryParameters);
-  //   print('Filter Variety uri is: $uri');
-  //   final response = await http.get(uri);
-  //   if (response.statusCode == 200) {}
-
-  //   print(response);
-  //   print('end filterVariety get');
-  //   return compute(parseVarieties, response.body);
-  // }
 
   Future<String> getShiftBatches(http.Client client) async {
     print('start getShiftBatches get');
@@ -78,37 +39,12 @@ class _VarietyState extends State<Variety> {
     }
   }
 
-  void navigateToVarietyInfoHome(String id, String batchNo) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => VarietyInfoHome(
-                  id,
-                  batchNo,
-                )));
-  }
-
-  void showDialogBox() {
+  void smallLoading() {
     showCupertinoDialog(
         context: context,
         builder: (_) => Container(
               child: AlertDialog(
                 content: Container(width: 50, height: 50, child: spinkit),
-
-                // actions: [
-                //   FlatButton(
-                //     onPressed: () {za
-                //       Navigator.pop(context);
-                //     },
-                //     child: Text('No'),
-                //   ),
-                //   FlatButton(
-                //     onPressed: () {
-                //       Navigator.pop(context);
-                //     },
-                //     child: Text('Ok'),
-                //   ),
-                // ],
               ),
             ));
   }
@@ -128,14 +64,12 @@ class _VarietyState extends State<Variety> {
                   ),
                   FlatButton(
                     onPressed: () async {
-                      showDialogBox();
+                      smallLoading();
                       await getShiftBatches(http.Client());
                       Navigator.pop(context);
                       Navigator.pop(context);
                       Navigator.pop(context);
                       Navigator.pop(context);
-
-                      //  widget.navigateToAdminBatches();
                     },
                     child: Text('Yes'),
                   ),
@@ -146,7 +80,6 @@ class _VarietyState extends State<Variety> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final pBatch = Provider.of<BatchP>(context, listen: false);
@@ -181,18 +114,11 @@ class _VarietyState extends State<Variety> {
                     ),
                     FlatButton(
                       onPressed: () async {
-                        showDialogBox();
+                        smallLoading();
                         await pVariety.wrapperDeleteVarieties(
                             context, batchId, varietyId);
                         Navigator.pop(context);
                         Navigator.pop(context);
-                        // showDialogBox();
-
-                        // await deleteVariety(http.Client(), varietyId);
-                        // Navigator.pop(context);
-                        // Navigator.pop(context);
-                        // widget.navigateToListVarieties(
-                        //     widget.batchId, widget.batchNo);
                       },
                       child: Text('Yes'),
                     ),
@@ -201,7 +127,6 @@ class _VarietyState extends State<Variety> {
               ));
     }
 
-    print('hello');
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
@@ -226,16 +151,12 @@ class _VarietyState extends State<Variety> {
               MaterialPageRoute(
                   builder: (BuildContext context) => MultiProvider(
                         providers: [
+                          ChangeNotifierProvider.value(value: pBatch),
                           ChangeNotifierProvider.value(value: pVariety),
                         ],
-                        child: AddVariety(batchId),
+                        child: AddVariety(),
                       )),
             );
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => AddVariety(
-            //             widget.batchId, widget.navigateToListVarieties)));
           },
           label: Text('Add Variety')),
       body: Container(
@@ -310,63 +231,26 @@ class _VarietyState extends State<Variety> {
                             },
                             child: Icon(Icons.highlight_off)),
                         onTap: () {
+                          pVariety.index = index;
                           Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     MultiProvider(
                                       providers: [
                                         ChangeNotifierProvider.value(
+                                            value: pBatch),
+                                        ChangeNotifierProvider.value(
                                             value: pVariety),
                                         ChangeNotifierProvider.value(
                                             value: pVarietyHistory),
                                       ],
-                                      child: VarietyInfoHome(
-                                          pVariety.lVariety[index].varietyId,
-                                          batchNo),
+                                      child: VarietyInfoHome(),
                                     )),
                           );
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) => VarietyInfoHome(
-                          //             pVariety.lVariety[index].varietyId,
-                          //             widget.batchNo,
-                          //             navigateToVarietyInfoHome)));
                         },
                       ),
                     );
                   })),
-      // SizedBox(height: 20),
-      // Container(
-      //   padding: EdgeInsets.symmetric(horizontal: 20),
-      //   height: 40.0,
-      //   child: Material(
-      //     borderRadius: BorderRadius.circular(20.0),
-      //     shadowColor: Colors.greenAccent,
-      //     color: Colors.blue,
-      //     elevation: 7.0,
-      //     child: GestureDetector(
-      //       onTap: () async {
-      //         showDialogBox();
-      //         await getShiftBatches(http.Client());
-      //         Navigator.pop(context);
-      //         Navigator.pop(context);
-      //         Navigator.pop(context);
-
-      //         widget.navigateToAdminBatches();
-      //       },
-      //       child: Center(
-      //         child: Text(
-      //           'Add to Processing',
-      //           style: TextStyle(
-      //               color: Colors.white,
-      //               fontWeight: FontWeight.bold,
-      //               fontFamily: 'Montserrat'),
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      // ),
     );
   }
 }

@@ -64,6 +64,7 @@ Future<int> deleteVariety(http.Client client, String varietyId) async {
 
 class PVariety with ChangeNotifier {
   List<VarietyModel> lVariety;
+  int index;
   bool loading = true;
 
   wrapperGetVarieties(context, String batchId) async {

@@ -73,10 +73,8 @@ class _VarietyHomeProcessingState extends State<VarietyHomeProcessing> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => VarietyInfoHome(
-                                              snapshot.data[index].varietyId,
-                                              widget.batchNo,
-                                            )));
+                                        builder: (context) =>
+                                            VarietyInfoHome()));
                               },
                             ),
                           );

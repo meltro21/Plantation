@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/models/varietyInfo.dart';
+import 'package:fluttertest/provider/batchProvider.dart';
 import 'package:fluttertest/provider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/varietyProvider.dart';
 import 'package:fluttertest/screen/admin/batches/variety/addVarietyInfoAdmin.dart';
@@ -38,9 +39,6 @@ Future<int> deleteVarietyInfo(http.Client client, String varietyInfoId) async {
 }
 
 class VarietyInfoHome extends StatefulWidget {
-  String batchNo;
-  String varietyId;
-  VarietyInfoHome(this.varietyId, this.batchNo);
   @override
   _VarietyInfoHomeState createState() => _VarietyInfoHomeState();
 }
@@ -51,52 +49,8 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
     color: Colors.grey[200],
     size: 50.0,
   );
-  Future<List<VarietyInfoModel>> getVarietyInfo(http.Client client) async {
-    print('start filterVariety get');
-    var queryParameters = {'VarietyId': widget.varietyId};
-    var uri = Uri.https(
-        'hughplantation.herokuapp.com', '/varietyInfo', queryParameters);
-    print('Filter Variety uri is: $uri');
-    final response = await http.get(uri);
 
-    if (response.statusCode == 200) {}
-
-    print(response);
-    print('end filterVariety get');
-    return compute(parseVarietyInfo, response.body);
-  }
-
-  void showConfirmDeleteDialogBox(String varietyInfoId) async {
-    print('enter');
-    showCupertinoDialog(
-        context: context,
-        builder: (_) => Container(
-              child: AlertDialog(
-                content: Text('Are you sure you want to delete!'),
-                actions: [
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('No'),
-                  ),
-                  FlatButton(
-                    onPressed: () async {
-                      // Navigator.pop(context);
-                      // showLoadingDialogBox();
-                      // await deleteVarietyInfo(http.Client(), varietyInfoId);
-                      // Navigator.pop(context);
-                      // Navigator.pop(context);
-                      // widget.navigateToVarietyInfoHome(widget.varietyId);
-                    },
-                    child: Text('Yes'),
-                  ),
-                ],
-              ),
-            ));
-  }
-
-  void showLoadingDialogBox() {
+  void smallLoading() {
     showCupertinoDialog(
         context: context,
         builder: (_) => Container(
@@ -108,48 +62,71 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final pVariety = Provider.of<PVariety>(context, listen: false);
+      String varietyId = pVariety.lVariety[pVariety.index].varietyId;
       final pVarietyHistory =
           Provider.of<PVarietyHistory>(context, listen: false);
-      pVarietyHistory.wrapperGetVarietyHistory(context, widget.varietyId);
+      pVarietyHistory.wrapperGetVarietyHistory(context, varietyId);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     DateTime dateTime;
+    final pBatch = Provider.of<BatchP>(context);
     final pVariety = Provider.of<PVariety>(context);
     final pVarietyHistory = Provider.of<PVarietyHistory>(context);
+
+    String varietyId = pVariety.lVariety[pVariety.index].varietyId;
+    String batchNo = pBatch.lBatch[pBatch.index].batchNo;
+
+    void showConfirmDeleteDialogBox(String varietyHistoryId) async {
+      print('enter');
+      showCupertinoDialog(
+          context: context,
+          builder: (_) => Container(
+                child: AlertDialog(
+                  content: Text('Are you sure you want to delete!'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('No'),
+                    ),
+                    FlatButton(
+                      onPressed: () async {
+                        smallLoading();
+                        await pVarietyHistory.wrapperDeleteVarietyHistory(
+                            context, varietyHistoryId);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      child: Text('Yes'),
+                    ),
+                  ],
+                ),
+              ));
+    }
 
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColorDark,
-          title: Text('${widget.batchNo} Variety History'),
+          title: Text('$batchNo Variety History'),
         ),
         floatingActionButton: FloatingActionButton.extended(
             onPressed: () {
               print('pressed');
               Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider.value(value: pVariety),
-                      ChangeNotifierProvider.value(value: pVarietyHistory),
-                    ],
-                    child: addVarietyInfoAdmin(
-                      widget.varietyId,
-                      widget.batchNo,
-                    )),
+                builder: (BuildContext context) => MultiProvider(providers: [
+                  ChangeNotifierProvider.value(value: pBatch),
+                  ChangeNotifierProvider.value(value: pVariety),
+                  ChangeNotifierProvider.value(value: pVarietyHistory),
+                ], child: addVarietyInfoAdmin()),
               ));
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => addVarietyInfoAdmin(
-              //             widget.varietyId,
-              //             widget.batchNo,
-              //             widget.navigateToVarietyInfoHome)));
             },
             label: Text('Add History')),
         body: Container(
@@ -241,7 +218,3 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
         ));
   }
 }
-
-
-// DateFormat().format(
-//                               DateTime.parse(snapshot.data[index].createdAt

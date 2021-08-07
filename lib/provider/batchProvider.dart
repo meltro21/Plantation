@@ -93,12 +93,4 @@ class BatchP with ChangeNotifier {
     lBatch = await getBatches(http.Client());
     notifyListeners();
   }
-
-  setCurrentBatchId(String batchId) {
-    currentBatchId = batchId;
-  }
-
-  setIndex(int i) {
-    index = i;
-  }
 }

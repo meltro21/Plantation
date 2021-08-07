@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertest/provider/batchProvider.dart';
 import 'package:fluttertest/provider/varietyProvider.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -26,9 +27,6 @@ Future<String> postVariety(
 }
 
 class AddVariety extends StatefulWidget {
-  String batchId;
-  AddVariety(this.batchId);
-
   @override
   _AddVarietyState createState() => _AddVarietyState();
 }
@@ -48,27 +46,13 @@ class _AddVarietyState extends State<AddVariety> {
         builder: (_) => Container(
               child: AlertDialog(
                 content: Container(width: 50, height: 50, child: spinkit),
-
-                // actions: [
-                //   FlatButton(
-                //     onPressed: () {za
-                //       Navigator.pop(context);
-                //     },
-                //     child: Text('No'),
-                //   ),
-                //   FlatButton(
-                //     onPressed: () {
-                //       Navigator.pop(context);
-                //     },
-                //     child: Text('Ok'),
-                //   ),
-                // ],
               ),
             ));
   }
 
   @override
   Widget build(BuildContext context) {
+    final pBatch = Provider.of<BatchP>(context);
     final pVariety = Provider.of<PVariety>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
@@ -99,35 +83,19 @@ class _AddVarietyState extends State<AddVariety> {
                           borderSide: BorderSide(color: Colors.green))),
                   controller: varietyNameController,
                 ),
-                // TextFormField(
-                //   validator: (val) => val.isEmpty ? 'Enter No Of Plants' : null,
-                //   decoration: InputDecoration(
-                //       labelText: 'No Of Plants',
-                //       labelStyle: TextStyle(
-                //           fontFamily: 'Montserrat',
-                //           fontWeight: FontWeight.bold,
-                //           color: Colors.black),
-                //       focusedBorder: UnderlineInputBorder(
-                //           borderSide: BorderSide(color: Colors.green))),
-                //   controller: varietyNoOfPlantsController,
-                // ),
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
                     showDialogBox();
                     await pVariety.wrapperPostVarieties(
                         context,
-                        widget.batchId,
+                        pBatch.lBatch[pBatch.index].id,
                         varietyNameController.text,
                         varietyNoOfPlantsController.text);
-                    // await postVariety(
-                    //     widget.batchId,
-                    //     varietyNameController.text,
-                    //     varietyNoOfPlantsController.text);
+
                     FocusScope.of(context).requestFocus(FocusNode());
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    //  widget.navigateToListVarieties(widget.batchId);
                   },
                   child: Container(
                     height: 40.0,

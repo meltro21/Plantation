@@ -1,43 +1,13 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertest/provider/batchProvider.dart';
 import 'package:fluttertest/provider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/varietyProvider.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-Future<String> postVarietyInfo(String varietyId, String roomName, String stage,
-    String noOfPlants, String entryIntoRoom) async {
-  print("In PostVariety");
-  final response =
-      await http.post(Uri.https('hughplantation.herokuapp.com', '/varietyInfo'),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
-            "VarietyId": varietyId,
-            "EnterRoomName": roomName,
-            "Stage": stage,
-            "NoOfPlants": noOfPlants,
-            "EnterRoomDate": entryIntoRoom
-          }));
-  if (response.statusCode == 200) {
-    print('VarietyInfo added successfully');
-  }
-}
-
 class addVarietyInfoAdmin extends StatefulWidget {
-  String varietyId;
-  String batchNo;
-
-  addVarietyInfoAdmin(
-    this.varietyId,
-    this.batchNo,
-  );
-
   @override
   _addVarietyInfoAdminState createState() => _addVarietyInfoAdminState();
 }
@@ -86,8 +56,13 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
 
   @override
   Widget build(BuildContext context) {
+    final pBatch = Provider.of<BatchP>(context);
     final pVariety = Provider.of<PVariety>(context);
     final pVarietyHistory = Provider.of<PVarietyHistory>(context);
+
+    String batchNo = pBatch.lBatch[pBatch.index].batchNo;
+    String varietyId = pVariety.lVariety[pVariety.index].varietyId;
+
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
@@ -144,22 +119,7 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                 Row(
                   children: [
                     Expanded(
-                        child:
-                            // TextFormField(
-                            //   validator: (val) =>
-                            //       val.isEmpty ? 'Enter Room Name' : null,
-                            //   decoration: InputDecoration(
-                            //       labelText: 'Entry into Room',
-                            //       labelStyle: TextStyle(
-                            //           fontFamily: 'Montserrat',
-                            //           fontWeight: FontWeight.bold,
-                            //           color: Colors.black),
-                            //       focusedBorder: UnderlineInputBorder(
-                            //           borderSide: BorderSide(color: Colors.green)
-                            // )),
-                            //   controller: entryIntoRoomController,
-                            // ),
-                            Text(
+                        child: Text(
                       '${date.toString()}',
                       style: TextStyle(decoration: TextDecoration.underline),
                     )),
@@ -180,23 +140,16 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                     showDialogBox();
                     await pVarietyHistory.wrapperPostVarietyHistory(
                         context,
-                        widget.varietyId,
+                        varietyId,
                         roomNameController.text,
                         stageController.text,
                         noOfPlantsController.text,
                         date);
-                    // pVariety.wrapperGetVarieties(context, batchId);
-                    // postVarietyInfo(
-                    //     widget.varietyId,
-                    //     roomNameController.text,
-                    //     stageController.text,
-                    //     noOfPlantsController.text,
-                    //     date);
+                    pVariety.wrapperGetVarieties(
+                        context, pBatch.lBatch[pBatch.index].id);
+                    FocusScope.of(context).requestFocus(FocusNode());
                     Navigator.pop(context);
                     Navigator.pop(context);
-                    // Navigator.pop(context);
-                    // widget.navigateToVarietyInfoHome(
-                    //     widget.varietyId, widget.batchNo);
                   },
                   child: Container(
                     height: 40.0,
