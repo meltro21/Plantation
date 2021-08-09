@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertest/provider/batchProvider.dart';
-import 'package:fluttertest/provider/varietyHistoryProvider.dart';
-import 'package:fluttertest/provider/varietyProvider.dart';
+import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
 import 'package:fluttertest/screen/admin/batches/variety/addVariety.dart';
-import 'package:fluttertest/screen/admin/batches/variety/varityInfoHome.dart';
+import 'package:fluttertest/screen/admin/batches/variety/varietyHistory/varityInfoHome.dart';
 import 'package:fluttertest/shared/loading.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -84,7 +84,7 @@ class _VarietyState extends State<Variety> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final pBatch = Provider.of<BatchP>(context, listen: false);
       final pVariety = Provider.of<PVariety>(context, listen: false);
-      String batchId = pBatch.lBatch[pBatch.index].id;
+      String batchId = pBatch.lBatch[pBatch.currentBatchIndex].id;
       pVariety.wrapperGetVarieties(context, batchId);
     });
   }
@@ -95,8 +95,8 @@ class _VarietyState extends State<Variety> {
     final pBatch = Provider.of<BatchP>(context);
     final pVarietyHistory = Provider.of<PVarietyHistory>(context);
 
-    String batchId = pBatch.lBatch[pBatch.index].id;
-    String batchNo = pBatch.lBatch[pBatch.index].batchNo;
+    String batchId = pBatch.lBatch[pBatch.currentBatchIndex].id;
+    String batchNo = pBatch.lBatch[pBatch.currentBatchIndex].batchNo;
 
     void showConfirmDeleteDialogBox(
         String varietyName, String varietyId) async {
@@ -227,11 +227,10 @@ class _VarietyState extends State<Variety> {
                               await showConfirmDeleteDialogBox(
                                   pVariety.lVariety[index].varietyName,
                                   pVariety.lVariety[index].varietyId);
-                              //Navigator.pop(context);
                             },
                             child: Icon(Icons.highlight_off)),
                         onTap: () {
-                          pVariety.index = index;
+                          pVariety.currentVarietyIndex = index;
                           Navigator.of(context).push(
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>

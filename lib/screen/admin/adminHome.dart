@@ -4,13 +4,17 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/models/workers.dart';
-import 'package:fluttertest/provider/batchProvider.dart';
-import 'package:fluttertest/provider/varietyHistoryProvider.dart';
-import 'package:fluttertest/provider/varietyProvider.dart';
-import 'package:fluttertest/screen/admin/batches/adminBatches.dart';
+import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
+import 'package:fluttertest/provider/dailyWork/dailyWorkProvider.dart';
+import 'package:fluttertest/provider/gardenCareProvider/workerProvider.dart';
+import 'package:fluttertest/provider/room/roomProvider.dart';
+import 'package:fluttertest/screen/admin/batches/batchHome.dart';
 import 'package:fluttertest/screen/admin/batchesHistory/batchesHIstory.dart';
+import 'package:fluttertest/screen/admin/gardenCare/dailyWork.dart';
 import 'package:fluttertest/screen/admin/processing/processBatches/batchesListProcessBatches.dart';
-import 'package:fluttertest/screen/admin/workersInfo/dailyWork.dart';
+import 'package:fluttertest/screen/admin/room/roomHome.dart';
 import 'package:fluttertest/shared/loading.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -44,16 +48,17 @@ class AdminHome extends StatefulWidget {
 class _AdminHomeState extends State<AdminHome> {
   final AuthService _auth = AuthService();
 
-  void navigateToAdminBatches() {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => AdminBatches()));
-  }
-
   @override
   Widget build(BuildContext context) {
+    //batch Provider
     final pBatch = Provider.of<BatchP>(context);
     final pVariety = Provider.of<PVariety>(context);
     final pVarietyHistory = Provider.of<PVarietyHistory>(context);
+    //Garden Care Provider
+    final pWorker = Provider.of<PWorker>(context);
+    final pRoom = Provider.of<PRoom>(context);
+    final pDailyWork = Provider.of<PDailyWork>(context);
+
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
@@ -111,7 +116,7 @@ class _AdminHomeState extends State<AdminHome> {
                                                           value:
                                                               pVarietyHistory),
                                                     ],
-                                                    child: AdminBatches(),
+                                                    child: BatchHome(),
                                                   )
                                               // AdminBatches(
                                               //     navigateToAdminBatches)
@@ -134,12 +139,30 @@ class _AdminHomeState extends State<AdminHome> {
                                   width: 150,
                                   child: FlatButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                          context,
+                                      Navigator.of(context).push(
                                           MaterialPageRoute(
-                                              builder: (context) =>
-                                                  DailyWorkHome(
-                                                      snapshot.data)));
+                                              builder: (BuildContext context) =>
+                                                  MultiProvider(
+                                                    providers: [
+                                                      ChangeNotifierProvider
+                                                          .value(
+                                                              value: pWorker),
+                                                      ChangeNotifierProvider
+                                                          .value(
+                                                              value:
+                                                                  pDailyWork),
+                                                    ],
+                                                    child: DailyWorkHome(),
+                                                  )
+                                              // AdminBatches(
+                                              //     navigateToAdminBatches)
+                                              ));
+                                      // Navigator.push(
+                                      //     context,
+                                      //     MaterialPageRoute(
+                                      //         builder: (context) =>
+                                      //             DailyWorkHome(
+                                      //                 snapshot.data)));
                                     },
                                     child: Align(
                                         alignment: Alignment.center,
@@ -195,6 +218,39 @@ class _AdminHomeState extends State<AdminHome> {
                                     child: Align(
                                         alignment: Alignment.center,
                                         child: Text('Batch History')),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Card(
+                                color: Theme.of(context).primaryColorDark,
+                                elevation: 5,
+                                child: Container(
+                                  height: 150,
+                                  width: 150,
+                                  child: FlatButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  MultiProvider(
+                                                    providers: [
+                                                      ChangeNotifierProvider
+                                                          .value(value: pRoom),
+                                                    ],
+                                                    child: RoomHome(),
+                                                  )));
+                                    },
+                                    child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text('Room')),
                                   ),
                                 ),
                               ),

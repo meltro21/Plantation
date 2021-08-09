@@ -28,7 +28,7 @@ class _SignInState extends State<SignIn> {
             backgroundColor: Theme.of(context).primaryColorLight,
             appBar: AppBar(
               backgroundColor: Theme.of(context).primaryColorDark,
-              title: Text('Indian Hub'),
+              title: Text('Plantation'),
             ),
             //  resizeToAvoidBottomPadding: false,
             body: SingleChildScrollView(
@@ -147,7 +147,7 @@ class _SignInState extends State<SignIn> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'New to Indian Hub ?',
+                        'New to Plantation ?',
                         style: TextStyle(fontFamily: 'Montserrat'),
                       ),
                       SizedBox(width: 5.0),

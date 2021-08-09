@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertest/screen/admin/batches/variety/addVariety.dart';
-import 'package:fluttertest/screen/admin/batches/variety/varityInfoHome.dart';
+import 'package:fluttertest/screen/admin/batches/variety/varietyHistory/varityInfoHome.dart';
 import 'package:fluttertest/screen/user/varietyUser/datailVarietyInfo.dart';
 import 'package:fluttertest/screen/user/varietyUser/varietyHistoryList.dart';
 import 'package:fluttertest/shared/loading.dart';

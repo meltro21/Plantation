@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertest/models/dailyWork.dart';
+import 'package:fluttertest/provider/dailyWork/dailyWorkProvider.dart';
+import 'package:fluttertest/provider/room/roomProvider.dart';
+import 'package:fluttertest/shared/loading.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 Future<String> postDailyWork(
     String lightsCondition,
@@ -38,7 +40,8 @@ Future<String> postDailyWork(
     maintenance,
     construction,
     notes,
-    uid) async {
+    uid,
+    room) async {
   print('Fedd empty is: $feed');
   print(lightsCondition);
   double sum = 0.0;
@@ -173,6 +176,9 @@ Future<String> postDailyWork(
   if (notes == '') {
     notes = "N/A";
   }
+  if (room == '') {
+    room = "N/A";
+  }
   print("Sum is $sum");
 
   final response = await http.post(
@@ -212,7 +218,8 @@ Future<String> postDailyWork(
         "Construction": construction,
         "Notes": notes,
         "TotalHours": sum.toString(),
-        "CreatedBy": uid
+        "CreatedBy": uid,
+        "Room": room
       }));
 
   if (response.statusCode == 200) {
@@ -225,12 +232,13 @@ Future<String> postDailyWork(
   }
 }
 
-String lightsCondition = '      Good';
-String oFansCondition = '      Good';
-String heatersCondition = '      Good';
-String eFansCondition = '      Good';
-String dehumidifierCondition = '      Good';
-String acCondition = '      Good';
+String room = '';
+String lightsCondition = 'Good';
+String oFansCondition = 'Good';
+String heatersCondition = 'Good';
+String eFansCondition = 'Good';
+String dehumidifierCondition = 'Good';
+String acCondition = 'Good';
 TextEditingController tHighController = TextEditingController();
 TextEditingController tLowController = TextEditingController();
 TextEditingController hHighController = TextEditingController();
@@ -255,11 +263,13 @@ TextEditingController cleaningController = TextEditingController();
 TextEditingController maintenanceController = TextEditingController();
 TextEditingController constructionController = TextEditingController();
 TextEditingController notesController = TextEditingController();
+List<String> rooms = [];
 
 class DailyWorkEntry extends StatefulWidget {
   String uid;
-  Function navigateToHomeDailyWorkEntry;
-  DailyWorkEntry(this.uid, this.navigateToHomeDailyWorkEntry);
+  DailyWorkEntry(
+    this.uid,
+  );
   @override
   _DailyWorkEntryState createState() => _DailyWorkEntryState();
 }
@@ -269,13 +279,13 @@ class _DailyWorkEntryState extends State<DailyWorkEntry> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    lightsCondition = "      Good";
-    oFansCondition = "      Good";
-    heatersCondition = "      Good";
-    eFansCondition = "      Good";
-    dehumidifierCondition = "      Good";
-    acCondition = "      Good";
+    room = " ";
+    lightsCondition = "Good";
+    oFansCondition = "Good";
+    heatersCondition = "Good";
+    eFansCondition = "Good";
+    dehumidifierCondition = "Good";
+    acCondition = "Good";
     tHighController.text = '';
     tLowController.text = '';
     hHighController.text = '';
@@ -299,11 +309,14 @@ class _DailyWorkEntryState extends State<DailyWorkEntry> {
     maintenanceController.text = '';
     constructionController.text = '';
     notesController.text = '';
+    rooms.clear();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final pRoom = Provider.of<PRoom>(context);
+    final pDailyWork = Provider.of<PDailyWork>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
@@ -313,18 +326,23 @@ class _DailyWorkEntryState extends State<DailyWorkEntry> {
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10),
-          child: DailyWorkFullForm(
-              widget.uid, widget.navigateToHomeDailyWorkEntry),
+          child: DailyWorkFullForm(widget.uid, null),
         ),
       ),
     );
   }
 }
 
-class DailyWorkFullForm extends StatelessWidget {
+class DailyWorkFullForm extends StatefulWidget {
   String uid;
   Function navigateToHomeDailyWorkEntry;
   DailyWorkFullForm(this.uid, this.navigateToHomeDailyWorkEntry);
+
+  @override
+  _DailyWorkFullFormState createState() => _DailyWorkFullFormState();
+}
+
+class _DailyWorkFullFormState extends State<DailyWorkFullForm> {
   final spinkit = SpinKitChasingDots(
     color: Colors.grey[200],
     size: 50.0,
@@ -332,6 +350,13 @@ class DailyWorkFullForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pRoom = Provider.of<PRoom>(context);
+    final pDailyWork = Provider.of<PDailyWork>(context);
+    List<String> rooms = [];
+    for (int i = 0; i < pRoom.lRoom.length; i++) {
+      rooms.add(pRoom.lRoom[i].name);
+    }
+    //rooms = pRoom.getRoomName();
     void showDialogBox() {
       showCupertinoDialog(
           context: context,
@@ -357,215 +382,255 @@ class DailyWorkFullForm extends StatelessWidget {
               ));
     }
 
-    return Column(
-      children: [
-        Form(
-          child: Column(
+    return pRoom.loading
+        ? Container(
+            child: Loading(),
+          )
+        : Column(
             children: [
-              DailyWorkDropDown(
-                label: 'Lights:                  ',
-                choice: lightsCondition,
-                width: 60,
-              ),
-              DailyWorkDropDown(
-                label: 'Oscillating Fans: ',
-                choice: oFansCondition,
-                width: 0,
-              ),
-              DailyWorkDropDown(
-                label: 'Heaters                 ',
-                choice: heatersCondition,
-              ),
-              DailyWorkDropDown(
-                label: 'Exaust Fans          ',
-                choice: eFansCondition,
-              ),
-              DailyWorkDropDown(
-                label: 'Dehumidifier         ',
-                choice: dehumidifierCondition,
-              ),
-              DailyWorkDropDown(
-                label: 'AC                           ',
-                choice: acCondition,
-              ),
-              DailyWorkForm(
-                labelText: 'Temperatur High',
-                tController: tHighController,
-              ),
-              DailyWorkForm(
-                  labelText: 'Temperatur Low', tController: tLowController),
-              DailyWorkForm(
-                  labelText: 'Humadity High', tController: hHighController),
-              DailyWorkForm(
-                  labelText: 'Humadity Low', tController: hLowController),
-              DailyWorkForm(
-                labelText: 'Feed',
-                tController: feedController,
-              ),
-              DailyWorkForm(
-                labelText: 'Flush',
-                tController: flushController,
-              ),
-              DailyWorkForm(
-                labelText: 'General Plat Care',
-                tController: gPlantCareController,
-              ),
-              DailyWorkForm(
-                labelText: 'Administration, Solrting and or Moving Plants',
-                tController: administrationPlantController,
-              ),
-              DailyWorkForm(
-                labelText: 'Foliar Buggy Spray',
-                tController: fBuggySprayController,
-              ),
-              DailyWorkForm(
-                labelText: 'Foliar Rinse',
-                tController: fRinseController,
-              ),
-              DailyWorkForm(
-                labelText: 'Foliar Food Spray',
-                tController: fFoodSprayController,
-              ),
-              DailyWorkForm(
-                labelText: 'Alternate Spray',
-                tController: aSprayController,
-              ),
-              DailyWorkForm(
-                labelText: 'Bugs',
-                tController: bugsController,
-              ),
-              DailyWorkForm(
-                labelText: 'Water or Soil Bugg Treatment',
-                tController: waterORSoilTreatmentController,
-              ),
-              DailyWorkForm(
-                labelText: 'Transplanting',
-                tController: transplantingController,
-              ),
-              DailyWorkForm(
-                labelText: 'Topping',
-                tController: toppingController,
-              ),
-              DailyWorkForm(
-                labelText: 'Pruning',
-                tController: pruningController,
-              ),
-              DailyWorkForm(
-                labelText: 'Staking',
-                tController: stakingController,
-              ),
-              DailyWorkForm(
-                labelText: 'Cloning',
-                tController: cloningController,
-              ),
-              DailyWorkForm(
-                labelText: 'Harvest',
-                tController: harvestController,
-              ),
-              DailyWorkForm(
-                labelText: 'Cleaning',
-                tController: cleaningController,
-              ),
-              DailyWorkForm(
-                labelText: 'Maintenance',
-                tController: maintenanceController,
-              ),
-              DailyWorkForm(
-                labelText: 'Contruction',
-                tController: constructionController,
-              ),
-              DailyWorkForm(
-                labelText: 'NOTES:',
-                tController: notesController,
-              ),
-              SizedBox(height: 20),
-              GestureDetector(
-                onTap: () async {
-                  print("Add batch post called");
-                  print("Parameters are: ");
-                  print('Lights: $lightsCondition');
-                  print(oFansCondition);
-                  print(heatersCondition);
-
-                  print(eFansCondition);
-                  print(dehumidifierCondition);
-                  print(acCondition);
-
-                  print(tHighController.text);
-                  print(tLowController.text);
-
-                  print(hHighController.text);
-                  print(hLowController.text);
-                  print(feedController.text);
-                  print(flushController.text);
-                  print(gPlantCareController.text);
-                  // print(tHighController.text);
-                  // print(tHighController.text);
-                  // print(tHighController.text);
-
-                  showDialogBox();
-                  await postDailyWork(
-                      lightsCondition,
-                      oFansCondition,
-                      heatersCondition,
-                      eFansCondition,
-                      dehumidifierCondition,
-                      acCondition,
-                      tHighController.text,
-                      tLowController.text,
-                      hHighController.text,
-                      hLowController.text,
-                      feedController.text,
-                      flushController.text,
-                      gPlantCareController.text,
-                      administrationPlantController.text,
-                      fBuggySprayController.text,
-                      fRinseController.text,
-                      fFoodSprayController.text,
-                      aSprayController.text,
-                      bugsController.text,
-                      waterORSoilTreatmentController.text,
-                      transplantingController.text,
-                      toppingController.text,
-                      pruningController.text,
-                      stakingController.text,
-                      cloningController.text,
-                      harvestController.text,
-                      cleaningController.text,
-                      maintenanceController.text,
-                      constructionController.text,
-                      notesController.text,
-                      uid);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  navigateToHomeDailyWorkEntry(uid);
-                },
-                child: Container(
-                  height: 50.0,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(20.0),
-                    shadowColor: Colors.greenAccent,
-                    color: Theme.of(context).primaryColorDark,
-                    elevation: 7.0,
-                    child: Center(
-                      child: Text(
-                        'Enter Daily Work',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Montserrat'),
+              Form(
+                child: Column(
+                  children: [
+                    Container(
+                      child: Row(
+                        children: [
+                          Container(width: 100, child: Text('Room')),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Container(width: 60, child: Text('$room')),
+                          Container(
+                            child: DropdownButtonHideUnderline(
+                                child: DropdownButton<String>(
+                              items: rooms.map((String value) {
+                                return new DropdownMenuItem<String>(
+                                  value: value,
+                                  child: new Text(value),
+                                );
+                              }).toList(),
+                              onChanged: (_) {
+                                FocusScope.of(context)
+                                    .requestFocus(FocusNode());
+                                setState(() {
+                                  room = _;
+                                });
+                              },
+                            )),
+                          )
+                        ],
                       ),
                     ),
-                  ),
+                    DailyWorkDropDown(
+                      label: 'Lights:                  ',
+                      choice: lightsCondition,
+                      width: 60,
+                    ),
+                    DailyWorkDropDown(
+                      label: 'Oscillating Fans: ',
+                      choice: oFansCondition,
+                      width: 0,
+                    ),
+                    DailyWorkDropDown(
+                      label: 'Heaters                 ',
+                      choice: heatersCondition,
+                    ),
+                    DailyWorkDropDown(
+                      label: 'Exaust Fans          ',
+                      choice: eFansCondition,
+                    ),
+                    DailyWorkDropDown(
+                      label: 'Dehumidifier         ',
+                      choice: dehumidifierCondition,
+                    ),
+                    DailyWorkDropDown(
+                      label: 'AC                           ',
+                      choice: acCondition,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Temperatur High',
+                      tController: tHighController,
+                    ),
+                    DailyWorkForm(
+                        labelText: 'Temperatur Low',
+                        tController: tLowController),
+                    DailyWorkForm(
+                        labelText: 'Humadity High',
+                        tController: hHighController),
+                    DailyWorkForm(
+                        labelText: 'Humadity Low', tController: hLowController),
+                    DailyWorkForm(
+                      labelText: 'Feed',
+                      tController: feedController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Flush',
+                      tController: flushController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'General Plat Care',
+                      tController: gPlantCareController,
+                    ),
+                    DailyWorkForm(
+                      labelText:
+                          'Administration, Solrting and or Moving Plants',
+                      tController: administrationPlantController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Foliar Buggy Spray',
+                      tController: fBuggySprayController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Foliar Rinse',
+                      tController: fRinseController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Foliar Food Spray',
+                      tController: fFoodSprayController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Alternate Spray',
+                      tController: aSprayController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Bugs',
+                      tController: bugsController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Water or Soil Bugg Treatment',
+                      tController: waterORSoilTreatmentController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Transplanting',
+                      tController: transplantingController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Topping',
+                      tController: toppingController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Pruning',
+                      tController: pruningController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Staking',
+                      tController: stakingController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Cloning',
+                      tController: cloningController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Harvest',
+                      tController: harvestController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Cleaning',
+                      tController: cleaningController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Maintenance',
+                      tController: maintenanceController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'Contruction',
+                      tController: constructionController,
+                    ),
+                    DailyWorkForm(
+                      labelText: 'NOTES:',
+                      tController: notesController,
+                    ),
+                    SizedBox(height: 20),
+                    GestureDetector(
+                      onTap: () async {
+                        print("Add batch post called");
+                        print("Parameters are: ");
+                        print('Lights: $lightsCondition');
+                        print(oFansCondition);
+                        print(heatersCondition);
+
+                        print(eFansCondition);
+                        print(dehumidifierCondition);
+                        print(acCondition);
+
+                        print(tHighController.text);
+                        print(tLowController.text);
+
+                        print(hHighController.text);
+                        print(hLowController.text);
+                        print(feedController.text);
+                        print(flushController.text);
+                        print(gPlantCareController.text);
+                        // print(tHighController.text);
+                        // print(tHighController.text);
+                        // print(tHighController.text);
+
+                        showDialogBox();
+                        await pDailyWork.wrapperPostDailyWork(
+                            context,
+                            pDailyWork.dailyWorkUid,
+                            lightsCondition,
+                            oFansCondition,
+                            heatersCondition,
+                            eFansCondition,
+                            dehumidifierCondition,
+                            acCondition,
+                            tHighController.text,
+                            tLowController.text,
+                            hHighController.text,
+                            hLowController.text,
+                            feedController.text,
+                            flushController.text,
+                            gPlantCareController.text,
+                            administrationPlantController.text,
+                            fBuggySprayController.text,
+                            fRinseController.text,
+                            fFoodSprayController.text,
+                            aSprayController.text,
+                            bugsController.text,
+                            waterORSoilTreatmentController.text,
+                            transplantingController.text,
+                            toppingController.text,
+                            pruningController.text,
+                            stakingController.text,
+                            cloningController.text,
+                            harvestController.text,
+                            cleaningController.text,
+                            maintenanceController.text,
+                            constructionController.text,
+                            notesController.text,
+                            widget.uid,
+                            room);
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        //Navigator.pop(context);
+                        //widget.navigateToHomeDailyWorkEntry(widget.uid);
+                      },
+                      child: Container(
+                        height: 50.0,
+                        child: Material(
+                          borderRadius: BorderRadius.circular(20.0),
+                          shadowColor: Colors.greenAccent,
+                          color: Theme.of(context).primaryColorDark,
+                          elevation: 7.0,
+                          child: Center(
+                            child: Text(
+                              'Enter Daily Work',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Montserrat'),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                  ],
                 ),
               ),
-              SizedBox(height: 20),
             ],
-          ),
-        ),
-      ],
-    );
+          );
   }
 }
 
@@ -730,48 +795,55 @@ class _DailyWorkDropDownState extends State<DailyWorkDropDown> {
     return Container(
       child: Row(
         children: [
-          Text('${widget.label}'),
-          Text('${widget.choice}'),
-          DropdownButtonHideUnderline(
-              child: DropdownButton<String>(
-            items: <String>['      Good', 'Problem'].map((String value) {
-              return new DropdownMenuItem<String>(
-                value: value,
-                child: new Text(value),
-              );
-            }).toList(),
-            onChanged: (_) {
-              // if (widget.label == 'Lights:                  ') {
-              //   print('In Lights');
-              //   lightsCondition = _;
-              //   print(lightsCondition);
-              // }
-              setState(() {
-                widget.choice = _;
-                if (widget.label == 'Lights:                  ') {
-                  print('In Lights');
-                  lightsCondition = _;
-                  print(lightsCondition);
-                }
-                if (widget.label == 'Oscillating Fans: ') {
-                  print('In oFans');
-                  oFansCondition = _;
-                  print(lightsCondition);
-                }
-                if (widget.label == 'Heaters                 ') {
-                  print('In oFans');
-                  heatersCondition = _;
-                  print(lightsCondition);
-                } else if (widget.label == 'Exaust Fans          ') {
-                  eFansCondition = _;
-                } else if (widget.label == 'Dehumidifier         ') {
-                  dehumidifierCondition = _;
-                } else if (widget.label == 'AC                           ') {
-                  acCondition = _;
-                }
-              });
-            },
-          ))
+          Container(width: 100, child: Text('${widget.label}')),
+          SizedBox(
+            width: 20,
+          ),
+          Container(
+              width: 60, child: Container(child: Text('${widget.choice}'))),
+          Container(
+            child: DropdownButtonHideUnderline(
+                child: DropdownButton<String>(
+              items: <String>['Good', 'Problem'].map((String value) {
+                return new DropdownMenuItem<String>(
+                  value: value,
+                  child: new Text(value),
+                );
+              }).toList(),
+              onChanged: (_) {
+                // if (widget.label == 'Lights:                  ') {
+                //   print('In Lights');
+                //   lightsCondition = _;
+                //   print(lightsCondition);
+                // }
+                FocusScope.of(context).requestFocus(FocusNode());
+                setState(() {
+                  widget.choice = _;
+                  if (widget.label == 'Lights:                  ') {
+                    print('In Lights');
+                    lightsCondition = _;
+                    print(lightsCondition);
+                  }
+                  if (widget.label == 'Oscillating Fans: ') {
+                    print('In oFans');
+                    oFansCondition = _;
+                    print(lightsCondition);
+                  }
+                  if (widget.label == 'Heaters                 ') {
+                    print('In oFans');
+                    heatersCondition = _;
+                    print(lightsCondition);
+                  } else if (widget.label == 'Exaust Fans          ') {
+                    eFansCondition = _;
+                  } else if (widget.label == 'Dehumidifier         ') {
+                    dehumidifierCondition = _;
+                  } else if (widget.label == 'AC                           ') {
+                    acCondition = _;
+                  }
+                });
+              },
+            )),
+          )
         ],
       ),
     );

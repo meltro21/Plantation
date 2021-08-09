@@ -59,11 +59,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluttertest/models/workers.dart';
+import 'package:fluttertest/provider/dailyWork/dailyWorkProvider.dart';
+import 'package:fluttertest/provider/room/roomProvider.dart';
 import 'package:fluttertest/screen/admin/processing/processBatches/batchesListProcessBatches.dart';
 import 'package:fluttertest/screen/user/userBatches.dart';
 import 'package:fluttertest/screen/user/dailyWorkEntry/homeDailyWorkEntry.dart';
 import 'package:fluttertest/shared/loading.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../../services/auth.dart';
 
@@ -99,12 +102,17 @@ class _UserHomeState extends State<UserHome> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) =>
-                HomeDailyWorkEntry(widget.uid, navigateToHomeDailyWorkEntry)));
+            builder: (context) => HomeDailyWorkEntry(
+                  widget.uid,
+                )));
   }
 
   @override
   Widget build(BuildContext context) {
+    //room Provider
+    final pRoom = Provider.of<PRoom>(context);
+    final pDailyWork = Provider.of<PDailyWork>(context);
+
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
@@ -164,12 +172,27 @@ class _UserHomeState extends State<UserHome> {
                               width: 150,
                               child: FlatButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              HomeDailyWorkEntry(widget.uid,
-                                                  navigateToHomeDailyWorkEntry)));
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          MultiProvider(
+                                            providers: [
+                                              ChangeNotifierProvider.value(
+                                                  value: pRoom),
+                                              ChangeNotifierProvider.value(
+                                                  value: pDailyWork),
+                                            ],
+                                            child:
+                                                HomeDailyWorkEntry(widget.uid),
+                                          )
+                                      // AdminBatches(
+                                      //     navigateToAdminBatches)
+                                      ));
+                                  // Navigator.push(
+                                  //     context,
+                                  //     MaterialPageRoute(
+                                  //         builder: (context) =>
+                                  //             HomeDailyWorkEntry(widget.uid,
+                                  //                 navigateToHomeDailyWorkEntry)));
                                 },
                                 child: Align(
                                     alignment: Alignment.center,

@@ -11,7 +11,7 @@ class DetailDailyWork extends StatefulWidget {
 }
 
 class _DetailDailyWorkState extends State<DetailDailyWork> {
-  double titleWidth = 90;
+  double titleWidth = 110;
   double resultWidth = 90;
   double sizedBoxHeight = 10;
   @override
@@ -32,14 +32,14 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                     Container(
                       width: titleWidth,
                       child: widget.dailyWork.lightsCondition != 'N/A' &&
-                              widget.dailyWork.lightsCondition != '      Good'
+                              widget.dailyWork.lightsCondition != 'Good'
                           ? Text('Lights')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
                       child: widget.dailyWork.lightsCondition != 'N/A' &&
-                              widget.dailyWork.lightsCondition != '      Good'
+                              widget.dailyWork.lightsCondition != 'Good'
                           ? Text('Problem')
                           : SizedBox(),
                     )
@@ -55,15 +55,15 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                     Container(
                       width: titleWidth,
                       child: widget.dailyWork.oFansCondition != 'N/A' &&
-                              widget.dailyWork.oFansCondition != '      Good'
+                              widget.dailyWork.oFansCondition != 'Good'
                           ? Text('Oscillating Fans')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
                       child: widget.dailyWork.oFansCondition != 'N/A' &&
-                              widget.dailyWork.oFansCondition != '      Good'
-                          ? Text(widget.dailyWork.oFansCondition != '      Good'
+                              widget.dailyWork.oFansCondition != 'Good'
+                          ? Text(widget.dailyWork.oFansCondition != 'Good'
                               ? 'Problem'
                               : '')
                           : SizedBox(),
@@ -71,7 +71,7 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                   ],
                 ),
                 widget.dailyWork.oFansCondition != 'N/A' &&
-                        widget.dailyWork.oFansCondition != '      Good'
+                        widget.dailyWork.oFansCondition != 'Good'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )
@@ -81,24 +81,23 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                     Container(
                       width: titleWidth,
                       child: widget.dailyWork.heatersCondition != 'N/A' &&
-                              widget.dailyWork.heatersCondition != '      Good'
+                              widget.dailyWork.heatersCondition != 'Good'
                           ? Text('Heaters')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
                       child: widget.dailyWork.heatersCondition != 'N/A' &&
-                              widget.dailyWork.heatersCondition != '      Good'
-                          ? Text(
-                              widget.dailyWork.heatersCondition != '      Good'
-                                  ? 'Problem'
-                                  : '')
+                              widget.dailyWork.heatersCondition != 'Good'
+                          ? Text(widget.dailyWork.heatersCondition != 'Good'
+                              ? 'Problem'
+                              : '')
                           : SizedBox(),
                     )
                   ],
                 ),
                 widget.dailyWork.heatersCondition != 'N/A' &&
-                        widget.dailyWork.heatersCondition != '      Good'
+                        widget.dailyWork.heatersCondition != 'Good'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )
@@ -108,15 +107,15 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                     Container(
                       width: titleWidth,
                       child: widget.dailyWork.eFansCondition != 'N/A' &&
-                              widget.dailyWork.eFansCondition != '      Good'
+                              widget.dailyWork.eFansCondition != 'Good'
                           ? Text('Exaust Fans')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
                       child: widget.dailyWork.eFansCondition != 'N/A' &&
-                              widget.dailyWork.eFansCondition != '      Good'
-                          ? Text(widget.dailyWork.eFansCondition != '      Good'
+                              widget.dailyWork.eFansCondition != 'Good'
+                          ? Text(widget.dailyWork.eFansCondition != 'Good'
                               ? 'Problem'
                               : '')
                           : SizedBox(),
@@ -124,7 +123,7 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                   ],
                 ),
                 widget.dailyWork.eFansCondition != 'N/A' &&
-                        widget.dailyWork.eFansCondition != '      Good'
+                        widget.dailyWork.eFansCondition != 'Good'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )
@@ -134,26 +133,24 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                     Container(
                       width: titleWidth,
                       child: widget.dailyWork.dehumidifierCondition != 'N/A' &&
-                              widget.dailyWork.dehumidifierCondition !=
-                                  '      Good'
+                              widget.dailyWork.dehumidifierCondition != 'Good'
                           ? Text('Dehumidifier')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
                       child: widget.dailyWork.dehumidifierCondition != 'N/A' &&
-                              widget.dailyWork.dehumidifierCondition !=
-                                  '      Good'
-                          ? Text(widget.dailyWork.dehumidifierCondition !=
-                                  '      Good'
-                              ? 'Problem'
-                              : '')
+                              widget.dailyWork.dehumidifierCondition != 'Good'
+                          ? Text(
+                              widget.dailyWork.dehumidifierCondition != 'Good'
+                                  ? 'Problem'
+                                  : '')
                           : SizedBox(),
                     )
                   ],
                 ),
                 widget.dailyWork.dehumidifierCondition != 'N/A' &&
-                        widget.dailyWork.dehumidifierCondition != '      Good'
+                        widget.dailyWork.dehumidifierCondition != 'Good'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )
@@ -163,15 +160,15 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                     Container(
                       width: titleWidth,
                       child: widget.dailyWork.acCondition != 'N/A' &&
-                              widget.dailyWork.acCondition != '      Good'
+                              widget.dailyWork.acCondition != 'Good'
                           ? Text('Ac')
                           : SizedBox(),
                     ),
                     Container(
                       width: resultWidth,
                       child: widget.dailyWork.acCondition != 'N/A' &&
-                              widget.dailyWork.acCondition != '      Good'
-                          ? Text(widget.dailyWork.acCondition != '      Good'
+                              widget.dailyWork.acCondition != 'Good'
+                          ? Text(widget.dailyWork.acCondition != 'Good'
                               ? 'Problem'
                               : '')
                           : SizedBox(),
@@ -668,305 +665,7 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                       )
                     : SizedBox(),
               ],
-            )
-
-            // Row(
-            //   children: [
-            //     Container(
-            //       width: 85,
-            //       child: Column(
-            //         children: [
-            //           widget.dailyWork.lightsCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft, child: Text("Lights"))
-            //               : SizedBox(),
-            //           widget.dailyWork.oFansCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text("Oscillating Fans"))
-            //               : SizedBox(),
-            //           widget.dailyWork.heatersCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text("Heaters"))
-            //               : SizedBox(),
-            //           widget.dailyWork.eFansCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text("Exaust Fans"))
-            //               : SizedBox(),
-            //           widget.dailyWork.dehumidifierCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text("Dehumidifier"))
-            //               : SizedBox(),
-            //           widget.dailyWork.lightsCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft, child: Text("Lights"))
-            //               : SizedBox(),
-            //           widget.dailyWork.lightsCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft, child: Text("Lights"))
-            //               : SizedBox(),
-            //           widget.dailyWork.lightsCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft, child: Text("Lights"))
-            //               : SizedBox(),
-            //           widget.dailyWork.waterORSoilTreatment != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text("Water or Soil Treatment"))
-            //               : SizedBox(),
-            //         ],
-            //       ),
-            //     ),
-            //     Container(
-            //       width: 85,
-            //       child: Column(
-            //         children: [
-            //           widget.dailyWork.lightsCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text(widget.dailyWork.lightsCondition))
-            //               : SizedBox(),
-            //           widget.dailyWork.oFansCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text(widget.dailyWork.oFansCondition))
-            //               : SizedBox(),
-            //           widget.dailyWork.heatersCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text(widget.dailyWork.heatersCondition))
-            //               : SizedBox(),
-            //           widget.dailyWork.eFansCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text(widget.dailyWork.eFansCondition))
-            //               : SizedBox(),
-            //           widget.dailyWork.dehumidifierCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text(widget.dailyWork.dehumidifierCondition))
-            //               : SizedBox(),
-            //           widget.dailyWork.lightsCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text(widget.dailyWork.lightsCondition))
-            //               : SizedBox(),
-            //           widget.dailyWork.lightsCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft, child: Text("Lights"))
-            //               : SizedBox(),
-            //           widget.dailyWork.lightsCondition != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft, child: Text("Lights"))
-            //               : SizedBox(),
-            //           widget.dailyWork.waterORSoilTreatment != 'N/A'
-            //               ? Container(
-            //                   alignment: Alignment.topLeft,
-            //                   child: Text("Water or Soil Treatment"))
-            //               : SizedBox(),
-            //         ],
-            //       ),
-            //     ),
-            //   ],
-            // )
-
-            ///previous design
-            // Column(
-            //   textBaseline: TextBaseline.alphabetic,
-            //   children: [
-            //     widget.dailyWork.lightsCondition != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Lights                                        :${widget.dailyWork.lightsCondition}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.oFansCondition != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "OFans                                        :${widget.dailyWork.oFansCondition}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.heatersCondition != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Heaters                                     :${widget.dailyWork.heatersCondition}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.eFansCondition != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Exaust Fans                             : ${widget.dailyWork.eFansCondition}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.dehumidifierCondition != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Dehumidifier                            : ${widget.dailyWork.dehumidifierCondition}"),
-            //           )
-            //         : SizedBox(),
-            //     widget.dailyWork.acCondition != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Ac                                              : ${widget.dailyWork.acCondition}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.tHigh != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Container(
-            //               alignment: Alignment.topLeft,
-            //               child: Text(
-            //                   "Temperatur High                     :     ${widget.dailyWork.tHigh}"),
-            //             ))
-            //         : SizedBox(),
-            //     widget.dailyWork.tLow != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Temperature Low                    :       ${widget.dailyWork.tLow}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.hHigh != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text("Humadity High  : ${widget.dailyWork.hHigh}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.hLow != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text("Humadity Low : ${widget.dailyWork.hLow}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.feed != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text("Feed       : ${widget.dailyWork.feed}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.flush != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text("Flush       : ${widget.dailyWork.flush}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.gPlant != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "General Plant Care        : ${widget.dailyWork.gPlant}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.administrationPlant != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Administration Plants      : ${widget.dailyWork.administrationPlant}"),
-            //           )
-            //         : SizedBox(),
-            //     widget.dailyWork.fBuggySpray != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Foilar Buggy Spray  : ${widget.dailyWork.fBuggySpray}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.fRinse != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text("Foilar Rinse : ${widget.dailyWork.fRinse}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.fFoodSpray != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Foilar Food Spray       : ${widget.dailyWork.fFoodSpray}"),
-            //           )
-            //         : SizedBox(),
-            //     widget.dailyWork.aSpray != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Alternate Spray       : ${widget.dailyWork.aSpray}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.bugs != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text("Bugs       : ${widget.dailyWork.bugs}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.waterORSoilTreatment != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Water or Soil Bug Treatment: ${widget.dailyWork.waterORSoilTreatment}"),
-            //           )
-            //         : SizedBox(),
-            //     widget.dailyWork.transplanting != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Transplanting                       : ${widget.dailyWork.transplanting}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.topping != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Topping                                   : ${widget.dailyWork.topping}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.pruning != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Pruning                                   : ${widget.dailyWork.pruning}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.staking != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Staking                                   : ${widget.dailyWork.staking}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.cloning != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Cloning                                   : ${widget.dailyWork.cloning}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.harvest != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Harvest                                   : ${widget.dailyWork.harvest}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.cleaning != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Cleaning                                 : ${widget.dailyWork.cleaning}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.maintenance != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Maintenance                          : ${widget.dailyWork.maintenance}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.construction != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Construction                          : ${widget.dailyWork.construction}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.notes != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Notes                                       : ${widget.dailyWork.notes}"))
-            //         : SizedBox(),
-            //     widget.dailyWork.totalHours != 'N/A'
-            //         ? Container(
-            //             alignment: Alignment.topLeft,
-            //             child: Text(
-            //                 "Total Hours                             : ${widget.dailyWork.totalHours}"))
-            //         : SizedBox()
-            //   ],
-            // ),
-            ),
+            )),
       ),
     );
   }

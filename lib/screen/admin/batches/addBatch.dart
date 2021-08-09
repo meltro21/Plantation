@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertest/provider/batchProvider.dart';
+import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -64,11 +64,13 @@ class AddBatch extends StatelessWidget {
               SizedBox(height: 20),
               GestureDetector(
                 onTap: () async {
-                  smallLoading();
-                  await pBatch.wrapperPostBatch(
-                      context, batchNoController.text);
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                  if (_formKey.currentState.validate()) {
+                    smallLoading();
+                    await pBatch.wrapperPostBatch(
+                        context, batchNoController.text);
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  }
                 },
                 child: Container(
                   height: 40.0,

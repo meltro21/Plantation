@@ -32,7 +32,8 @@ class DailyWorkModel {
       notes,
       createdAt,
       totalHours,
-      createdBy;
+      createdBy,
+      room;
 
   DailyWorkModel(
       {this.id,
@@ -68,7 +69,8 @@ class DailyWorkModel {
       this.notes,
       this.createdAt,
       this.totalHours,
-      this.createdBy});
+      this.createdBy,
+      this.room});
 
   factory DailyWorkModel.fromJson(Map<String, dynamic> json) {
     return new DailyWorkModel(
@@ -105,6 +107,7 @@ class DailyWorkModel {
         notes: json["Notes"].toString(),
         createdAt: json["CreatedAt"].toString(),
         totalHours: json["TotalHours"].toString(),
-        createdBy: json["CreatedBy"].toString());
+        createdBy: json["CreatedBy"].toString(),
+        room: json["Room"].toString());
   }
 }

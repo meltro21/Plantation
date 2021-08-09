@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertest/provider/batchProvider.dart';
-import 'package:fluttertest/provider/varietyProvider.dart';
+import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
@@ -86,16 +86,18 @@ class _AddVarietyState extends State<AddVariety> {
                 SizedBox(height: 20),
                 GestureDetector(
                   onTap: () async {
-                    showDialogBox();
-                    await pVariety.wrapperPostVarieties(
-                        context,
-                        pBatch.lBatch[pBatch.index].id,
-                        varietyNameController.text,
-                        varietyNoOfPlantsController.text);
+                    if (_formKey.currentState.validate()) {
+                      showDialogBox();
+                      await pVariety.wrapperPostVarieties(
+                          context,
+                          pBatch.lBatch[pBatch.currentBatchIndex].id,
+                          varietyNameController.text,
+                          varietyNoOfPlantsController.text);
 
-                    FocusScope.of(context).requestFocus(FocusNode());
-                    Navigator.pop(context);
-                    Navigator.pop(context);
+                      FocusScope.of(context).requestFocus(FocusNode());
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    }
                   },
                   child: Container(
                     height: 40.0,

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fluttertest/provider/batchProvider.dart';
-import 'package:fluttertest/provider/varietyHistoryProvider.dart';
-import 'package:fluttertest/provider/varietyProvider.dart';
+import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
+import 'package:fluttertest/provider/dailyWork/dailyWorkProvider.dart';
+import 'package:fluttertest/provider/gardenCareProvider/workerProvider.dart';
+import 'package:fluttertest/provider/room/roomProvider.dart';
 import 'package:provider/provider.dart';
 
 import './shared/loading.dart';
@@ -32,11 +35,18 @@ class MyApp extends StatelessWidget {
           } else if (snapshot.hasData) {
             return MultiProvider(
               providers: [
+                //batch Providers
                 StreamProvider<User>.value(
                     value: AuthService().user, initialData: null),
                 ChangeNotifierProvider.value(value: BatchP()),
                 ChangeNotifierProvider.value(value: PVariety()),
                 ChangeNotifierProvider.value(value: PVarietyHistory()),
+                //workerInfo Providers
+                ChangeNotifierProvider.value(value: PWorker()),
+                //room Provider
+                ChangeNotifierProvider.value(value: PRoom()),
+                //dailyWotkProvider
+                ChangeNotifierProvider.value(value: PDailyWork()),
               ],
               child: Wrapper(),
             );
