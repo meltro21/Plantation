@@ -8,6 +8,7 @@ import 'package:fluttertest/models/varietyInfo.dart';
 import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
+import 'package:fluttertest/provider/room/roomProvider.dart';
 import 'package:fluttertest/screen/admin/batches/variety/varietyHistory/addVarietyInfoAdmin.dart';
 import 'package:fluttertest/screen/user/varietyUser/datailVarietyInfo.dart';
 import 'package:fluttertest/shared/loading.dart';
@@ -17,7 +18,6 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 List<VarietyInfoModel> parseVarietyInfo(String responseBody) {
-  String varietyUid;
   print('start parseBatch');
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
   print('end patseBatch get');
@@ -70,6 +70,8 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
       final pVarietyHistory =
           Provider.of<PVarietyHistory>(context, listen: false);
       pVarietyHistory.wrapperGetVarietyHistory(context, varietyId);
+      final pRoom = Provider.of<PRoom>(context, listen: false);
+      pRoom.wrapperGetRoom(context);
     });
   }
 
@@ -78,7 +80,7 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
     final pBatch = Provider.of<BatchP>(context);
     final pVariety = Provider.of<PVariety>(context);
     final pVarietyHistory = Provider.of<PVarietyHistory>(context);
-
+    final pRoom = Provider.of<PRoom>(context);
     String varietyId =
         pVariety.lVariety[pVariety.currentVarietyIndex].varietyId;
     String batchNo = pBatch.lBatch[pBatch.currentBatchIndex].batchNo;
@@ -101,7 +103,7 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
                       onPressed: () async {
                         smallLoading();
                         await pVarietyHistory.wrapperDeleteVarietyHistory(
-                            context, varietyHistoryId);
+                            context, varietyId, varietyHistoryId);
                         Navigator.pop(context);
                         Navigator.pop(context);
                       },
@@ -126,6 +128,7 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
                   ChangeNotifierProvider.value(value: pBatch),
                   ChangeNotifierProvider.value(value: pVariety),
                   ChangeNotifierProvider.value(value: pVarietyHistory),
+                  ChangeNotifierProvider.value(value: pRoom),
                 ], child: addVarietyInfoAdmin()),
               ));
             },

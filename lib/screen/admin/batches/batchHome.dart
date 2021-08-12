@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
+import 'package:fluttertest/provider/room/roomProvider.dart';
 import 'package:fluttertest/screen/admin/batches/addBatch.dart';
 import 'package:fluttertest/screen/admin/batches/variety/variety.dart';
 import 'package:fluttertest/shared/loading.dart';
@@ -49,6 +50,9 @@ class _BatchHomeState extends State<BatchHome> {
       context,
     );
     final pVarietyHistory = Provider.of<PVarietyHistory>(
+      context,
+    );
+    final pRoom = Provider.of<PRoom>(
       context,
     );
 
@@ -117,6 +121,7 @@ class _BatchHomeState extends State<BatchHome> {
                                 ChangeNotifierProvider.value(value: pVariety),
                                 ChangeNotifierProvider.value(
                                     value: pVarietyHistory),
+                                ChangeNotifierProvider.value(value: pRoom),
                               ],
                               child: Variety(),
                             )));

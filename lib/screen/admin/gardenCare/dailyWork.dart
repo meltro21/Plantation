@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertest/models/workers.dart';
 import 'package:fluttertest/provider/dailyWork/dailyWorkProvider.dart';
-import 'package:fluttertest/provider/gardenCareProvider/workerProvider.dart';
+import 'package:fluttertest/provider/workerProvider/workerProvider.dart';
 import 'package:fluttertest/screen/admin/gardenCare/individualDailyWork.dart';
 import 'package:fluttertest/shared/loading.dart';
 import 'package:provider/provider.dart';

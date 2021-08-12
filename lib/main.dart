@@ -5,7 +5,8 @@ import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
 import 'package:fluttertest/provider/dailyWork/dailyWorkProvider.dart';
-import 'package:fluttertest/provider/gardenCareProvider/workerProvider.dart';
+import 'package:fluttertest/provider/weightProvider/weightProvider.dart';
+import 'package:fluttertest/provider/workerProvider/workerProvider.dart';
 import 'package:fluttertest/provider/room/roomProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -41,12 +42,15 @@ class MyApp extends StatelessWidget {
                 ChangeNotifierProvider.value(value: BatchP()),
                 ChangeNotifierProvider.value(value: PVariety()),
                 ChangeNotifierProvider.value(value: PVarietyHistory()),
-                //workerInfo Providers
+                //worker Providers
                 ChangeNotifierProvider.value(value: PWorker()),
                 //room Provider
                 ChangeNotifierProvider.value(value: PRoom()),
-                //dailyWotkProvider
+                //dailyWorkProvider
                 ChangeNotifierProvider.value(value: PDailyWork()),
+                //weight Provider
+
+                ChangeNotifierProvider.value(value: Pweight()),
               ],
               child: Wrapper(),
             );

@@ -87,9 +87,10 @@ class PVarietyHistory with ChangeNotifier {
     notifyListeners();
   }
 
-  wrapperDeleteVarietyHistory(context, String varietyHistoryId) async {
+  wrapperDeleteVarietyHistory(
+      context, String varietyId, varietyHistoryId) async {
     await deleteVarietyHistory(http.Client(), varietyHistoryId);
-    lVarietyHistory = await getVarietyHistory(http.Client(), varietyHistoryId);
+    lVarietyHistory = await getVarietyHistory(http.Client(), varietyId);
     notifyListeners();
   }
 }

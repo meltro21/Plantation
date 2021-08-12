@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
+import 'package:fluttertest/provider/room/roomProvider.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -17,9 +18,10 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
     color: Colors.grey[200],
     size: 50.0,
   );
+  String room = '';
   final _formKey = GlobalKey<FormState>();
   String date = DateFormat.yMMMd().format(DateTime.now());
-  TextEditingController roomNameController = TextEditingController();
+  //TextEditingController roomNameController = TextEditingController();
   TextEditingController stageController = TextEditingController();
   TextEditingController noOfPlantsController = TextEditingController();
   TextEditingController entryIntoRoomController = TextEditingController();
@@ -59,10 +61,15 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
     final pBatch = Provider.of<BatchP>(context);
     final pVariety = Provider.of<PVariety>(context);
     final pVarietyHistory = Provider.of<PVarietyHistory>(context);
+    final pRoom = Provider.of<PRoom>(context);
 
     String batchNo = pBatch.lBatch[pBatch.currentBatchIndex].batchNo;
     String varietyId =
         pVariety.lVariety[pVariety.currentVarietyIndex].varietyId;
+    List<String> rooms = [];
+    for (int i = 0; i < pRoom.lRoom.length; i++) {
+      rooms.add(pRoom.lRoom[i].name);
+    }
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
@@ -78,19 +85,50 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
             key: _formKey,
             child: Column(
               children: <Widget>[
-                TextFormField(
-                  validator: (val) => val.isEmpty ? 'Room' : null,
-                  decoration: InputDecoration(
-                      labelText: 'Room',
-                      labelStyle: TextStyle(
-                          fontFamily: 'Montserrat',
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black),
-                      focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.green))),
-                  controller: roomNameController,
+                Row(
+                  children: [
+                    Container(
+                        width: 100,
+                        child: Text(
+                          'Room',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                    SizedBox(
+                      width: 20,
+                    ),
+                    Container(width: 60, child: Text('$room')),
+                    Container(
+                      child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                        items: rooms.map((String value) {
+                          return new DropdownMenuItem<String>(
+                            value: value,
+                            child: new Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (_) {
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          setState(() {
+                            room = _;
+                          });
+                        },
+                      )),
+                    )
+                  ],
                 ),
-                SizedBox(height: 20),
+                // TextFormField(
+                //   validator: (val) => val.isEmpty ? 'Room' : null,
+                //   decoration: InputDecoration(
+                //       labelText: 'Room',
+                //       labelStyle: TextStyle(
+                //           fontFamily: 'Montserrat',
+                //           fontWeight: FontWeight.bold,
+                //           color: Colors.black),
+                //       focusedBorder: UnderlineInputBorder(
+                //           borderSide: BorderSide(color: Colors.green))),
+                //   controller: roomNameController,
+                // ),
+                // SizedBox(height: 20),
                 TextFormField(
                   validator: (val) => val.isEmpty ? 'Stage' : null,
                   decoration: InputDecoration(
@@ -143,7 +181,7 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                       await pVarietyHistory.wrapperPostVarietyHistory(
                           context,
                           varietyId,
-                          roomNameController.text,
+                          room,
                           stageController.text,
                           noOfPlantsController.text,
                           date);

@@ -65,6 +65,8 @@ Future<String> postDailyWork(
     uid,
     room) async {
   print('Fedd empty is: $feed');
+  print('moulld $aSpray');
+  print('rinse $fRinse');
   print(lightsCondition);
   double sum = 0.0;
   if (lightsCondition == '') {
@@ -100,13 +102,13 @@ Future<String> postDailyWork(
   if (feed == '') {
     feed = "N/A";
   } else {
-    sum = sum + double.parse(feed.toString());
+    //sum = sum + double.parse(feed.toString());
     print("Fed sum is $sum");
   }
   if (flush == '') {
     flush = "N/A";
   } else {
-    sum = sum + double.parse(flush.toString());
+    //sum = sum + double.parse(flush.toString());
   }
   if (gPlant == '') {
     gPlant = "N/A";
@@ -116,37 +118,37 @@ Future<String> postDailyWork(
   if (administrationPlant == '') {
     administrationPlant = "N/A";
   } else {
-    sum = sum + double.parse(administrationPlant.toString());
+    //sum = sum + double.parse(administrationPlant.toString());
   }
   if (fBuggySpray == '') {
     fBuggySpray = "N/A";
   } else {
-    sum = sum + double.parse(fBuggySpray.toString());
+    //sum = sum + double.parse(fBuggySpray.toString());
   }
   if (fRinse == '') {
     fRinse = "N/A";
   } else {
-    sum = sum + double.parse(fRinse.toString());
+    // sum = sum + double.parse(fRinse.toString());
   }
   if (fFoodSpray == '') {
     fFoodSpray = "N/A";
   } else {
-    sum = sum + double.parse(fFoodSpray.toString());
+    //sum = sum + double.parse(fFoodSpray.toString());
   }
   if (aSpray == '') {
     aSpray = "N/A";
   } else {
-    sum = sum + double.parse(aSpray.toString());
+    // sum = sum + double.parse(aSpray.toString());
   }
   if (bugs == '') {
     bugs = "N/A";
   } else {
-    sum = sum + double.parse(bugs.toString());
+    // sum = sum + double.parse(bugs.toString());
   }
   if (waterORSoilTreatment == '') {
     waterORSoilTreatment = "N/A";
   } else {
-    sum = sum + double.parse(waterORSoilTreatment.toString());
+    //sum = sum + double.parse(waterORSoilTreatment.toString());
   }
   if (transplanting == '') {
     transplanting = "N/A";
@@ -280,9 +282,9 @@ class PDailyWork with ChangeNotifier {
     notifyListeners();
   }
 
-  wrapperDeleteDailyWork(client, String dailyWorkId) async {
+  wrapperDeleteDailyWork(client, String workerId, String dailyWorkId) async {
     await deleteDailyWork(client, dailyWorkId);
-    lDailyWork = await getDailyWork(http.Client(), dailyWorkId);
+    lDailyWork = await getDailyWork(http.Client(), workerId);
     notifyListeners();
   }
 

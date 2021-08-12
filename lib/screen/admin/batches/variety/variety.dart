@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
+import 'package:fluttertest/provider/room/roomProvider.dart';
 import 'package:fluttertest/screen/admin/batches/variety/addVariety.dart';
 import 'package:fluttertest/screen/admin/batches/variety/varietyHistory/varityInfoHome.dart';
 import 'package:fluttertest/shared/loading.dart';
@@ -23,21 +24,21 @@ class _VarietyState extends State<Variety> {
     size: 50.0,
   );
 
-  Future<String> getShiftBatches(http.Client client) async {
-    print('start getShiftBatches get');
-    var queryParameters = {'BatchId': "1234"}; //TODO:cchange 1234 to batchId
-    var uri = Uri.https(
-        'hughplantation.herokuapp.com', '/shiftBatches', queryParameters);
-    print('Filter Variety uri is: $uri');
-    final response = await http.get(uri);
-    if (response.statusCode == 200) {
-      print('successfully shifted batch');
-      return 'success';
-    } else {
-      print('error shifting batch');
-      return 'error';
-    }
-  }
+  // Future<String> getShiftBatches(http.Client client) async {
+  //   print('start getShiftBatches get');
+  //   var queryParameters = {'BatchId': "1234"}; //TODO:cchange 1234 to batchId
+  //   var uri = Uri.https(
+  //       'hughplantation.herokuapp.com', '/shiftBatches', queryParameters);
+  //   print('Filter Variety uri is: $uri');
+  //   final response = await http.get(uri);
+  //   if (response.statusCode == 200) {
+  //     print('successfully shifted batch');
+  //     return 'success';
+  //   } else {
+  //     print('error shifting batch');
+  //     return 'error';
+  //   }
+  // }
 
   void smallLoading() {
     showCupertinoDialog(
@@ -45,35 +46,6 @@ class _VarietyState extends State<Variety> {
         builder: (_) => Container(
               child: AlertDialog(
                 content: Container(width: 50, height: 50, child: spinkit),
-              ),
-            ));
-  }
-
-  void showConfirmAddToProcessing() async {
-    showCupertinoDialog(
-        context: context,
-        builder: (_) => Container(
-              child: AlertDialog(
-                content: Text(' will be shifted to Processing'),
-                actions: [
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('No'),
-                  ),
-                  FlatButton(
-                    onPressed: () async {
-                      smallLoading();
-                      await getShiftBatches(http.Client());
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                    },
-                    child: Text('Yes'),
-                  ),
-                ],
               ),
             ));
   }
@@ -92,8 +64,9 @@ class _VarietyState extends State<Variety> {
   @override
   Widget build(BuildContext context) {
     final pVariety = Provider.of<PVariety>(context);
-    final pBatch = Provider.of<BatchP>(context);
+    final pBatch = Provider.of<BatchP>(context, listen: false);
     final pVarietyHistory = Provider.of<PVarietyHistory>(context);
+    final pRoom = Provider.of<PRoom>(context);
 
     String batchId = pBatch.lBatch[pBatch.currentBatchIndex].id;
     String batchNo = pBatch.lBatch[pBatch.currentBatchIndex].batchNo;
@@ -117,6 +90,36 @@ class _VarietyState extends State<Variety> {
                         smallLoading();
                         await pVariety.wrapperDeleteVarieties(
                             context, batchId, varietyId);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      child: Text('Yes'),
+                    ),
+                  ],
+                ),
+              ));
+    }
+
+    void showConfirmAddToProcessing() async {
+      showCupertinoDialog(
+          context: context,
+          builder: (_) => Container(
+                child: AlertDialog(
+                  content:
+                      Text('Batch# $batchNo will be shifted to Processing'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('No'),
+                    ),
+                    FlatButton(
+                      onPressed: () async {
+                        smallLoading();
+                        await pBatch.wrapperShiftBatches(context, batchId);
+                        //await pVariety.wrapperGetVarieties(context, batchId);
+                        Navigator.pop(context);
                         Navigator.pop(context);
                         Navigator.pop(context);
                       },
@@ -177,6 +180,29 @@ class _VarietyState extends State<Variety> {
                         ),
                         subtitle: Column(
                           children: [
+                            SizedBox(
+                              height: 5,
+                            ),
+                            pVariety.lVariety[index].room != "null"
+                                ? Row(
+                                    children: [
+                                      pVariety.lVariety[index].room != "null"
+                                          ? Container(
+                                              width: lWidth,
+                                              child: Text('Room'))
+                                          : SizedBox(),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      pVariety.lVariety[index].room != "null"
+                                          ? Container(
+                                              child: Text(pVariety
+                                                  .lVariety[index].room),
+                                            )
+                                          : SizedBox()
+                                    ],
+                                  )
+                                : SizedBox(),
                             SizedBox(
                               height: 5,
                             ),
@@ -242,6 +268,8 @@ class _VarietyState extends State<Variety> {
                                             value: pVariety),
                                         ChangeNotifierProvider.value(
                                             value: pVarietyHistory),
+                                        ChangeNotifierProvider.value(
+                                            value: pRoom),
                                       ],
                                       child: VarietyInfoHome(),
                                     )),

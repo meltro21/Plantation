@@ -1,18 +1,22 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertest/provider/weightProvider/weightProvider.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 class AddVarietyProcessInfo extends StatelessWidget {
   String varietyId;
-  Function navigateToVarietyHistoryList;
-  AddVarietyProcessInfo(this.varietyId, this.navigateToVarietyHistoryList);
+  AddVarietyProcessInfo(
+    this.varietyId,
+  );
+
   @override
   Widget build(BuildContext context) {
+    final pWeight = Provider.of<Pweight>(context);
     final spinkit = SpinKitChasingDots(
       color: Colors.grey[200],
       size: 50.0,
@@ -25,6 +29,7 @@ class AddVarietyProcessInfo extends StatelessWidget {
     TextEditingController totalHoursController = TextEditingController();
     TextEditingController noOfPlantsHarvestedController =
         TextEditingController();
+    TextEditingController preProcessing = TextEditingController();
 
     Future<String> postVarietyProcessInfo(
         String varietyId,
@@ -117,6 +122,20 @@ class AddVarietyProcessInfo extends StatelessWidget {
                   children: <Widget>[
                     TextFormField(
                       keyboardType: TextInputType.number,
+                      validator: (val) =>
+                          val.isEmpty ? 'Pre-Processing Weight' : null,
+                      decoration: InputDecoration(
+                          labelText: 'Pre-Processing Weight',
+                          labelStyle: TextStyle(
+                              fontFamily: 'Montserrat',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                          focusedBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.green))),
+                      controller: preProcessing,
+                    ),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
                       validator: (val) => val.isEmpty ? 'Enter AGrade' : null,
                       decoration: InputDecoration(
                           labelText: 'AGrade',
@@ -205,18 +224,32 @@ class AddVarietyProcessInfo extends StatelessWidget {
                       onTap: () async {
                         if (_formKey.currentState.validate()) {
                           showDialogBox();
-                          await postVarietyProcessInfo(
+                          await pWeight.wrapperPostWieght(
+                              context,
                               varietyId,
+                              preProcessing.text,
                               aGradeController.text,
                               bGradeController.text,
                               shakeController.text,
                               compostController.text,
                               totalHoursController.text,
                               noOfPlantsHarvestedController.text);
+                          FocusScope.of(context).requestFocus(FocusNode());
                           Navigator.pop(context);
                           Navigator.pop(context);
-                          Navigator.pop(context);
-                          this.navigateToVarietyHistoryList(varietyId);
+                          //   await postVar
+                          // ietyProcessInfo(
+                          //       varietyId,
+                          //       aGradeController.text,
+                          //       bGradeController.text,
+                          //       shakeController.text,
+                          //       compostController.text,
+                          //       totalHoursController.text,
+                          //       noOfPlantsHarvestedController.text);
+                          //   Navigator.pop(context);
+                          //   Navigator.pop(context);
+                          //   Navigator.pop(context);
+                          //  / this.navigateToVarietyHistoryList(varietyId);
                         }
                       },
                       child: Container(

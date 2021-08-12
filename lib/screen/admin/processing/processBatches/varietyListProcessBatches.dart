@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
+import 'package:fluttertest/provider/weightProvider/weightProvider.dart';
 import 'package:fluttertest/screen/admin/batches/variety/addVariety.dart';
 import 'package:fluttertest/screen/admin/processing/processBatches/addVarietyProcessInfo.dart';
 import 'package:fluttertest/screen/admin/processing/processBatches/varietyHistoryListProcessBatches.dart';
@@ -9,6 +11,7 @@ import 'package:fluttertest/screen/user/varietyUser/datailVarietyInfo.dart';
 import 'package:fluttertest/screen/user/varietyUser/varietyHistoryList.dart';
 import 'package:fluttertest/shared/loading.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../../../../models/variety.dart';
 
 List<VarietyModel> parseVarieties(String responseBody) {
@@ -44,16 +47,19 @@ class _VarietyListProcessBatchesState extends State<VarietyListProcessBatches> {
     return compute(parseVarieties, response.body);
   }
 
-  void navigateToVarietyHistoryList(String id) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => VarietyHistoryListProcessBatches(
-                id, navigateToVarietyHistoryList)));
-  }
+  // void navigateToVarietyHistoryList(String id) {
+  //   Navigator.push(
+  //       context,
+  //       MaterialPageRoute(
+  //           builder: (context) => VarietyHistoryListProcessBatches(
+  //               id, navigateToVarietyHistoryList)));
+  // }
 
   @override
   Widget build(BuildContext context) {
+    final pWeight = Provider.of<Pweight>(
+      context,
+    );
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
@@ -85,13 +91,27 @@ class _VarietyListProcessBatchesState extends State<VarietyListProcessBatches> {
                             child: ListTile(
                               title: Text(snapshot.data[index].varietyName),
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            VarietyHistoryListProcessBatches(
-                                                snapshot.data[index].varietyId,
-                                                navigateToVarietyHistoryList)));
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          MultiProvider(
+                                            providers: [
+                                              ChangeNotifierProvider.value(
+                                                  value: pWeight),
+                                            ],
+                                            child:
+                                                VarietyHistoryListProcessBatches(
+                                                    snapshot
+                                                        .data[index].varietyId),
+                                          )),
+                                );
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             VarietyHistoryListProcessBatches(
+                                //                 snapshot.data[index].varietyId,
+                                //                 navigateToVarietyHistoryList)));
                               },
                             ),
                           );

@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertest/models/batchesHistoryModel.dart';
+import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
+import 'package:fluttertest/provider/weightProvider/weightProvider.dart';
 import 'package:fluttertest/screen/admin/processing/processBatches/varietyListProcessBatches.dart';
 import 'package:fluttertest/shared/loading.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../../../../services/auth.dart';
 
@@ -22,7 +25,7 @@ List<BatchHistoryModel> parseBatch(String responseBody) {
 Future<List<BatchHistoryModel>> getBatches(http.Client client) async {
   print('start batches get');
   final response = await client
-      .get(Uri.parse('https://hughplantation.herokuapp.com/batchesHistory'));
+      .get(Uri.parse('https://hughplantation.herokuapp.com/processingBatch'));
 
   if (response.statusCode == 200) {}
 
@@ -42,7 +45,9 @@ class _BatchesListProcessBatchesState extends State<BatchesListProcessBatches> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime;
+    final pWeight = Provider.of<Pweight>(
+      context,
+    );
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
@@ -62,12 +67,24 @@ class _BatchesListProcessBatchesState extends State<BatchesListProcessBatches> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      VarietyListProcessBatches(
-                                          snapshot.data[index].id)));
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    MultiProvider(
+                                      providers: [
+                                        ChangeNotifierProvider.value(
+                                            value: pWeight),
+                                      ],
+                                      child: VarietyListProcessBatches(
+                                          snapshot.data[index].id),
+                                    )),
+                          );
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) =>
+                          //             VarietyListProcessBatches(
+                          //                 snapshot.data[index].id)));
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(

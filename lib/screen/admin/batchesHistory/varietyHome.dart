@@ -2,12 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertest/screen/admin/batches/variety/addVariety.dart';
+import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
 import 'package:fluttertest/screen/admin/batches/variety/varietyHistory/varityInfoHome.dart';
-import 'package:fluttertest/screen/user/varietyUser/datailVarietyInfo.dart';
-import 'package:fluttertest/screen/user/varietyUser/varietyHistoryList.dart';
+import 'package:fluttertest/screen/admin/batchesHistory/varityInfoHistory.dart';
 import 'package:fluttertest/shared/loading.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import '../../../models/variety.dart';
 
 List<VarietyModel> parseVarieties(String responseBody) {
@@ -45,6 +47,9 @@ class _VarietyHomeProcessingState extends State<VarietyHomeProcessing> {
 
   @override
   Widget build(BuildContext context) {
+    final pBatch = Provider.of<BatchP>(context);
+    final pVariety = Provider.of<PVariety>(context);
+    final pVarietyHistory = Provider.of<PVarietyHistory>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
@@ -70,11 +75,26 @@ class _VarietyHomeProcessingState extends State<VarietyHomeProcessing> {
                             child: ListTile(
                               title: Text(snapshot.data[index].varietyName),
                               onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            VarietyInfoHome()));
+                                // pVariety.currentVarietyIndex = index;
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        MultiProvider(
+                                          providers: [
+                                            ChangeNotifierProvider.value(
+                                                value: pBatch),
+                                            ChangeNotifierProvider.value(
+                                                value: pVariety),
+                                            ChangeNotifierProvider.value(
+                                                value: pVarietyHistory),
+                                          ],
+                                          child: VarietyInfoHistory(
+                                              snapshot.data[index].varietyId),
+                                        )));
+                                // Navigator.push(
+                                //     context,
+                                //     MaterialPageRoute(
+                                //         builder: (context) =>
+                                //             VarietyInfoHome()));
                               },
                             ),
                           );

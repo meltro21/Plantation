@@ -4,12 +4,16 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/models/batchesHistoryModel.dart';
+import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
 import 'package:fluttertest/screen/admin/batches/addBatch.dart';
 import 'package:fluttertest/screen/admin/batches/variety/variety.dart';
 import 'package:fluttertest/screen/admin/batchesHistory/varietyHome.dart';
 import 'package:fluttertest/shared/loading.dart';
 
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../../../services/auth.dart';
 
@@ -46,7 +50,9 @@ class _BatchesHistoryState extends State<BatchesHistory> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime;
+    final pBatch = Provider.of<BatchP>(context);
+    final pVariety = Provider.of<PVariety>(context);
+    final pVarietyHistory = Provider.of<PVarietyHistory>(context);
     return Scaffold(
         backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
@@ -66,12 +72,26 @@ class _BatchesHistoryState extends State<BatchesHistory> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => VarietyHomeProcessing(
-                                      snapshot.data[index].id,
-                                      widget.batchNo)));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) => MultiProvider(
+                                    providers: [
+                                      ChangeNotifierProvider.value(
+                                          value: pBatch),
+                                      ChangeNotifierProvider.value(
+                                          value: pVariety),
+                                      ChangeNotifierProvider.value(
+                                          value: pVarietyHistory),
+                                    ],
+                                    child: VarietyHomeProcessing(
+                                        snapshot.data[index].id,
+                                        widget.batchNo),
+                                  )));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => VarietyHomeProcessing(
+                          //             snapshot.data[index].id,
+                          //             widget.batchNo)));
                         },
                         child: Card(
                           color: Theme.of(context).accentColor,

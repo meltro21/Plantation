@@ -311,48 +311,6 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                   children: [
                     Container(
                       width: titleWidth,
-                      child: widget.dailyWork.gPlant != 'N/A'
-                          ? Text('General Plant Care')
-                          : SizedBox(),
-                    ),
-                    Container(
-                      width: resultWidth,
-                      child: widget.dailyWork.gPlant != 'N/A'
-                          ? Text(widget.dailyWork.gPlant)
-                          : SizedBox(),
-                    )
-                  ],
-                ),
-                widget.dailyWork.gPlant != 'N/A'
-                    ? SizedBox(
-                        height: sizedBoxHeight,
-                      )
-                    : SizedBox(),
-                Row(
-                  children: [
-                    Container(
-                      width: titleWidth,
-                      child: widget.dailyWork.administrationPlant != 'N/A'
-                          ? Text('Administration Plant')
-                          : SizedBox(),
-                    ),
-                    Container(
-                      width: resultWidth,
-                      child: widget.dailyWork.administrationPlant != 'N/A'
-                          ? Text(widget.dailyWork.administrationPlant)
-                          : SizedBox(),
-                    )
-                  ],
-                ),
-                widget.dailyWork.administrationPlant != 'N/A'
-                    ? SizedBox(
-                        height: sizedBoxHeight,
-                      )
-                    : SizedBox(),
-                Row(
-                  children: [
-                    Container(
-                      width: titleWidth,
                       child: widget.dailyWork.fBuggySpray != 'N/A'
                           ? Text('Foilar Buggy Spray')
                           : SizedBox(),
@@ -375,7 +333,7 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                     Container(
                       width: titleWidth,
                       child: widget.dailyWork.aSpray != 'N/A'
-                          ? Text('Alternate Spray')
+                          ? Text('Foilar Mould Spray')
                           : SizedBox(),
                     ),
                     Container(
@@ -387,6 +345,48 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                   ],
                 ),
                 widget.dailyWork.aSpray != 'N/A'
+                    ? SizedBox(
+                        height: sizedBoxHeight,
+                      )
+                    : SizedBox(),
+                Row(
+                  children: [
+                    Container(
+                      width: titleWidth,
+                      child: widget.dailyWork.fRinse != 'N/A'
+                          ? Text('Foilar Rinse Spray')
+                          : SizedBox(),
+                    ),
+                    Container(
+                      width: resultWidth,
+                      child: widget.dailyWork.fRinse != 'N/A'
+                          ? Text(widget.dailyWork.fRinse)
+                          : SizedBox(),
+                    )
+                  ],
+                ),
+                widget.dailyWork.fRinse != 'N/A'
+                    ? SizedBox(
+                        height: sizedBoxHeight,
+                      )
+                    : SizedBox(),
+                Row(
+                  children: [
+                    Container(
+                      width: titleWidth,
+                      child: widget.dailyWork.fFoodSpray != 'N/A'
+                          ? Text('Foilar Food Spray')
+                          : SizedBox(),
+                    ),
+                    Container(
+                      width: resultWidth,
+                      child: widget.dailyWork.fFoodSpray != 'N/A'
+                          ? Text(widget.dailyWork.fFoodSpray)
+                          : SizedBox(),
+                    )
+                  ],
+                ),
+                widget.dailyWork.fFoodSpray != 'N/A'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )
@@ -407,11 +407,6 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                     )
                   ],
                 ),
-                widget.dailyWork.bugs != 'N/A'
-                    ? SizedBox(
-                        height: sizedBoxHeight,
-                      )
-                    : SizedBox(),
                 Row(
                   children: [
                     Container(
@@ -428,11 +423,73 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                     )
                   ],
                 ),
-                widget.dailyWork.waterORSoilTreatment != 'N/A'
+                widget.dailyWork.flush != 'N/A'
                     ? SizedBox(
                         height: sizedBoxHeight,
                       )
                     : SizedBox(),
+                Row(
+                  children: [
+                    Container(
+                      width: titleWidth,
+                      child: widget.dailyWork.administrationPlant != 'N/A'
+                          ? Text('Administration Plant')
+                          : SizedBox(),
+                    ),
+                    Container(
+                      width: resultWidth,
+                      child: widget.dailyWork.administrationPlant != 'N/A'
+                          ? Text(widget.dailyWork.administrationPlant)
+                          : SizedBox(),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: titleWidth,
+                      child: widget.dailyWork.gPlant != 'N/A'
+                          ? Text('General Plant Care')
+                          : SizedBox(),
+                    ),
+                    Container(
+                      width: resultWidth,
+                      child: widget.dailyWork.gPlant != 'N/A'
+                          ? Text(widget.dailyWork.gPlant)
+                          : SizedBox(),
+                    )
+                  ],
+                ),
+                // widget.dailyWork.gPlant != 'N/A'
+                //     ? SizedBox(
+                //         height: sizedBoxHeight,
+                //       )
+                //     : SizedBox(),
+                // widget.dailyWork.administrationPlant != 'N/A'
+                //     ? SizedBox(
+                //         height: sizedBoxHeight,
+                //       )
+                //     : SizedBox(),
+                // widget.dailyWork.fBuggySpray != 'N/A'
+                //     ? SizedBox(
+                //         height: sizedBoxHeight,
+                //       )
+                //     : SizedBox(),
+                // widget.dailyWork.aSpray != 'N/A'
+                //     ? SizedBox(
+                //         height: sizedBoxHeight,
+                //       )
+                //     : SizedBox(),
+                // widget.dailyWork.bugs != 'N/A'
+                //     ? SizedBox(
+                //         height: sizedBoxHeight,
+                //       )
+                //     : SizedBox(),
+                // widget.dailyWork.waterORSoilTreatment != 'N/A'
+                //     ? SizedBox(
+                //         height: sizedBoxHeight,
+                //       )
+                //     : SizedBox(),
                 Row(
                   children: [
                     Container(

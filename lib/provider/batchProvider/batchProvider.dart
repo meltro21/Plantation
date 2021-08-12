@@ -59,6 +59,23 @@ Future<int> deleteBatch(http.Client client, String batchId) async {
   }
 }
 
+//shift batchesToProcessing
+Future<String> shiftBatches(http.Client client, String batchId) async {
+  print('start getShiftBatches get');
+  var queryParameters = {'BatchId': batchId};
+  var uri = Uri.https(
+      'hughplantation.herokuapp.com', '/shiftBatches', queryParameters);
+  print('Filter Variety uri is: $uri');
+  final response = await http.get(uri);
+  if (response.statusCode == 200) {
+    print('successfully shifted batch');
+    return 'success';
+  } else {
+    print('error shifting batch');
+    return 'error';
+  }
+}
+
 class BatchP with ChangeNotifier {
   List<Batch> lBatch = [];
   int currentBatchIndex;
@@ -85,6 +102,12 @@ class BatchP with ChangeNotifier {
       http.Client(),
       batchId,
     );
+    lBatch = await getBatches(http.Client());
+    notifyListeners();
+  }
+
+  wrapperShiftBatches(context, String batchId) async {
+    await shiftBatches(http.Client(), batchId);
     lBatch = await getBatches(http.Client());
     notifyListeners();
   }

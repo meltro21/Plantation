@@ -1,10 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertest/models/dailyWork.dart';
 import 'package:fluttertest/provider/dailyWork/dailyWorkProvider.dart';
 import 'package:fluttertest/provider/room/roomProvider.dart';
 import 'package:fluttertest/screen/user/dailyWorkEntry/dailyWorkEntry.dart';
@@ -16,27 +12,6 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../../../services/auth.dart';
-
-List<DailyWorkModel> parseVarieties(String responseBody) {
-  print('start parseBatch');
-  final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-  print('end patseBatch get');
-  return parsed
-      .map<DailyWorkModel>((json) => DailyWorkModel.fromJson(json))
-      .toList();
-}
-
-Future<int> deleteDailyWork(http.Client client, String dailyWorkId) async {
-  var queryParameters = {'DailyWorkId': dailyWorkId};
-  var uri = Uri.https(
-      'hughplantation.herokuapp.com', '/deleteDailyWork', queryParameters);
-  final response = await http.get(uri);
-  if (response.statusCode == 200) {
-    return 1;
-  } else {
-    return 0;
-  }
-}
 
 class HomeDailyWorkEntry extends StatefulWidget {
   String dailyWorkId;
@@ -53,20 +28,6 @@ class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
     color: Colors.grey[200],
     size: 50.0,
   );
-
-  Future<List<DailyWorkModel>> getVarities(http.Client client) async {
-    print('start FilterDailyWork get');
-    var queryParameters = {'firestoreId': '${widget.dailyWorkId}'};
-    var uri = Uri.https(
-        'hughplantation.herokuapp.com', '/filterDailyWork', queryParameters);
-    print('Filter Variety uri is: $uri');
-    final response = await http.get(uri);
-    if (response.statusCode == 200) {}
-
-    print(response);
-    print('end filterVariety get');
-    return compute(parseVarieties, response.body);
-  }
 
   void showDialogBox() {
     showCupertinoDialog(
@@ -127,10 +88,10 @@ class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
                     ),
                     FlatButton(
                       onPressed: () async {
-                        Navigator.pop(context);
                         showDialogBox();
                         await pDailyWork.wrapperDeleteDailyWork(
-                            http.Client(), dailyWorkId);
+                            http.Client(), widget.dailyWorkId, dailyWorkId);
+                        Navigator.pop(context);
                         Navigator.pop(context);
                       },
                       child: Text('Yes'),
@@ -157,12 +118,6 @@ class _HomeDailyWorkEntryState extends State<HomeDailyWorkEntry> {
                       ],
                       child: DailyWorkEntry(widget.dailyWorkId),
                     )));
-
-            // Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //         builder: (context) => DailyWorkEntry(widget.dailyWorkId,
-            //            )));
           },
           label: Text('Add Garden History')),
       body: pDailyWork.loading

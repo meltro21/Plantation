@@ -1,24 +1,24 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertest/models/batch.dart';
 import 'package:fluttertest/models/varietyInfo.dart';
-import 'package:fluttertest/screen/admin/batches/addBatch.dart';
-import 'package:fluttertest/screen/admin/batches/variety/variety.dart';
-import 'package:fluttertest/screen/user/varietyUser/addVarietyInfo.dart';
-import 'package:fluttertest/screen/user/varietyUser/datailVarietyInfo.dart';
+import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
+import 'package:fluttertest/provider/room/roomProvider.dart';
+import 'package:fluttertest/screen/admin/batches/variety/varietyHistory/addVarietyInfoAdmin.dart';
+
 import 'package:fluttertest/shared/loading.dart';
 
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../../services/auth.dart';
 
 List<VarietyInfoModel> parseVarietyInfo(String responseBody) {
-  String varietyUid;
   print('start parseBatch');
   final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
   print('end patseBatch get');
@@ -28,33 +28,17 @@ List<VarietyInfoModel> parseVarietyInfo(String responseBody) {
 }
 
 class VarietyHistoryList extends StatefulWidget {
-  String varietyId;
-  Function navigateToVarietyInfoHome;
-  VarietyHistoryList(this.varietyId, this.navigateToVarietyInfoHome);
   @override
   _VarietyHistoryListState createState() => _VarietyHistoryListState();
 }
 
 class _VarietyHistoryListState extends State<VarietyHistoryList> {
   final AuthService _auth = AuthService();
+  double lWidth = 100;
   final spinkit = SpinKitChasingDots(
     color: Colors.grey[200],
     size: 50.0,
   );
-
-  Future<List<VarietyInfoModel>> getVarietyInfo(http.Client client) async {
-    print('start filterVariety get');
-    var queryParameters = {'VarietyId': widget.varietyId};
-    var uri = Uri.https(
-        'hughplantation.herokuapp.com', '/varietyInfo', queryParameters);
-    print('Filter Variety uri is: $uri');
-    final response = await http.get(uri);
-    if (response.statusCode == 200) {}
-
-    print(response);
-    print('end filterVariety get');
-    return compute(parseVarietyInfo, response.body);
-  }
 
   Future<int> deleteVarietyInfo(
       http.Client client, String varietyInfoId) async {
@@ -69,37 +53,7 @@ class _VarietyHistoryListState extends State<VarietyHistoryList> {
     }
   }
 
-  void showConfirmDeleteDialogBox(String varietyInfoId) async {
-    print('enter');
-    showCupertinoDialog(
-        context: context,
-        builder: (_) => Container(
-              child: AlertDialog(
-                content: Text('Are you sure you want to delete!'),
-                actions: [
-                  FlatButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: Text('No'),
-                  ),
-                  FlatButton(
-                    onPressed: () async {
-                      Navigator.pop(context);
-                      showLoadingDialogBox();
-                      await deleteVarietyInfo(http.Client(), varietyInfoId);
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      widget.navigateToVarietyInfoHome(widget.varietyId);
-                    },
-                    child: Text('Yes'),
-                  ),
-                ],
-              ),
-            ));
-  }
-
-  void showLoadingDialogBox() {
+  void smallLoading() {
     showCupertinoDialog(
         context: context,
         builder: (_) => Container(
@@ -110,99 +64,152 @@ class _VarietyHistoryListState extends State<VarietyHistoryList> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final pVariety = Provider.of<PVariety>(context, listen: false);
+      String varietyId =
+          pVariety.lVariety[pVariety.currentVarietyIndex].varietyId;
+      final pVarietyHistory =
+          Provider.of<PVarietyHistory>(context, listen: false);
+      pVarietyHistory.wrapperGetVarietyHistory(context, varietyId);
+      final pRoom = Provider.of<PRoom>(context, listen: false);
+      pRoom.wrapperGetRoom(context);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    DateTime dateTime;
+    final pBatch = Provider.of<BatchP>(context);
+    final pVariety = Provider.of<PVariety>(context);
+    final pVarietyHistory = Provider.of<PVarietyHistory>(context);
+    final pRoom = Provider.of<PRoom>(context);
+
+    String varietyId =
+        pVariety.lVariety[pVariety.currentVarietyIndex].varietyId;
+    String batchNo = pBatch.lBatch[pBatch.currentBatchIndex].batchNo;
+
+    void showConfirmDeleteDialogBox(String varietyHistoryId) async {
+      print('enter');
+      showCupertinoDialog(
+          context: context,
+          builder: (_) => Container(
+                child: AlertDialog(
+                  content: Text('Are you sure you want to delete!'),
+                  actions: [
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Text('No'),
+                    ),
+                    FlatButton(
+                      onPressed: () async {
+                        smallLoading();
+                        await pVarietyHistory.wrapperDeleteVarietyHistory(
+                            context, varietyId, varietyHistoryId);
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      child: Text('Yes'),
+                    ),
+                  ],
+                ),
+              ));
+    }
+
     return Scaffold(
-        backgroundColor: Theme.of(context).primaryColorLight,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColorDark,
-          title: Text('Variety History'),
-        ),
-        floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => AddVarietyInfoUser(
-                          widget.varietyId, widget.navigateToVarietyInfoHome)));
-            },
-            label: Text('Add Variety Info')),
-        body: FutureBuilder(
-            future: getVarietyInfo(http.Client()),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                print('snapshot has data');
-                for (var i in snapshot.data) {
-                  print(i.enterRoomDate);
-                }
-                return ListView.builder(
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          // Navigator.push(
-                          //     context,
-                          //     MaterialPageRoute(
-                          //         builder: (context) =>
-                          //             DetailVarietyInfo(snapshot.data[index])));
-                        },
-                        child: Card(
-                          color: Theme.of(context).accentColor,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: ListTile(
-                            title: Text(DateFormat.yMMMd().format(
-                                DateTime.parse(
-                                    snapshot.data[index].createdAt))),
-                            subtitle: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text('Room Name'),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(snapshot.data[index].enterRoomName)
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text('No Of Plants'),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(snapshot.data[index].noOfPlants)
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text('Entry Into Room'),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Text(snapshot.data[index].enterRoomDate)
-                                  ],
-                                ),
-                              ],
-                            ),
-                            trailing: GestureDetector(
-                              child: Icon(Icons.highlight_off),
-                              onTap: () async {
-                                print('Error');
-                                await showConfirmDeleteDialogBox(
-                                    snapshot.data[index].id);
-                              },
-                            ),
+      backgroundColor: Theme.of(context).primaryColorLight,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
+        title: Text('Variety History'),
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => MultiProvider(providers: [
+                ChangeNotifierProvider.value(value: pBatch),
+                ChangeNotifierProvider.value(value: pVariety),
+                ChangeNotifierProvider.value(value: pVarietyHistory),
+                ChangeNotifierProvider.value(value: pRoom),
+              ], child: addVarietyInfoAdmin()),
+            ));
+          },
+          label: Text('Add Variety Info')),
+      body: Container(
+        child: pVarietyHistory.loading
+            ? Container(
+                child: Loading(),
+              )
+            : ListView.builder(
+                itemCount: pVarietyHistory.lVarietyHistory.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    color: Theme.of(context).accentColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    child: ListTile(
+                      title: Text(DateFormat.yMMMd().format(DateTime.parse(
+                          pVarietyHistory.lVarietyHistory[index].createdAt))),
+                      subtitle: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                  width: lWidth, child: Text('Room Name')),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(pVarietyHistory
+                                  .lVarietyHistory[index].enterRoomName)
+                            ],
                           ),
-                        ),
-                      );
-                    });
-              } else if (snapshot.hasError) {
-                print('snapshot has error');
-                return snapshot.error;
-              } else {
-                return Loading();
-              }
-            }));
+                          Row(
+                            children: [
+                              Container(width: lWidth, child: Text('Stage')),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(pVarietyHistory.lVarietyHistory[index].stage)
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                  width: lWidth, child: Text('No Of Plants')),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(pVarietyHistory
+                                  .lVarietyHistory[index].noOfPlants)
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Container(
+                                  width: lWidth,
+                                  child: Text('Entry Into Room')),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(pVarietyHistory
+                                  .lVarietyHistory[index].enterRoomDate)
+                            ],
+                          ),
+                        ],
+                      ),
+                      trailing: GestureDetector(
+                        child: Icon(Icons.highlight_off),
+                        onTap: () async {
+                          print('Error');
+                          await showConfirmDeleteDialogBox(
+                              pVarietyHistory.lVarietyHistory[index].id);
+                        },
+                      ),
+                    ),
+                  );
+                }),
+      ),
+    );
   }
 }

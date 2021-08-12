@@ -1,66 +1,16 @@
-// import 'package:firebase_auth/firebase_auth.dart';
-// import 'package:flutter/material.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:fluttertest/screen/user/batchHome.dart';
-
-// import 'package:provider/provider.dart';
-
-// import '../../services/auth.dart';
-
-// class UserHome extends StatefulWidget {
-//   @override
-//   _UserHomeState createState() => _UserHomeState();
-// }
-
-// class _UserHomeState extends State<UserHome> {
-//   final AuthService _auth = AuthService();
-//   int count = 0;
-//   final items = List<String>.generate(20, (i) => "Item $i");
-
-//   @override
-//   //BUILD METHOD
-//   Widget build(BuildContext context) {
-//     // for (var i in items) {
-//     //   print("i is $i");
-//     // }
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Sticky Finger'),
-//         actions: [
-//           FlatButton.icon(
-//               onPressed: () async {
-//                 await _auth.signOut();
-//               },
-//               icon: Icon(Icons.person),
-//               label: Text('Sign out'))
-//         ],
-//       ),
-//       body: Container(
-//         child: ListView.builder(itemBuilder: (context, index) {
-//           return GestureDetector(
-//             onTap: () {
-//               print("Button is presses");
-//               Navigator.push(context,
-//                   MaterialPageRoute(builder: (context) => BatchHome()));
-//             },
-//             child: ListTile(
-//               title: Text('${items[index]}'),
-//             ),
-//           );
-//         }),
-//       ),
-//     );
-//   }
-// }
-
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluttertest/models/workers.dart';
+import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
+import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
 import 'package:fluttertest/provider/dailyWork/dailyWorkProvider.dart';
 import 'package:fluttertest/provider/room/roomProvider.dart';
+import 'package:fluttertest/provider/weightProvider/weightProvider.dart';
+import 'package:fluttertest/provider/workerProvider/workerProvider.dart';
 import 'package:fluttertest/screen/admin/processing/processBatches/batchesListProcessBatches.dart';
 import 'package:fluttertest/screen/user/userBatches.dart';
 import 'package:fluttertest/screen/user/dailyWorkEntry/homeDailyWorkEntry.dart';
@@ -108,128 +58,140 @@ class _UserHomeState extends State<UserHome> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final pWorker = Provider.of<PWorker>(context, listen: false);
+      pWorker.wrapperGetWorkers(context);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    //batch Provider
+    final pBatch = Provider.of<BatchP>(context);
+    final pVariety = Provider.of<PVariety>(context);
+    final pVarietyHistory = Provider.of<PVarietyHistory>(context);
     //room Provider
+    final pWorker = Provider.of<PWorker>(context);
     final pRoom = Provider.of<PRoom>(context);
     final pDailyWork = Provider.of<PDailyWork>(context);
+    //weightProvider
+    final pWeight = Provider.of<Pweight>(context);
 
     return Scaffold(
-        backgroundColor: Theme.of(context).primaryColorLight,
-        appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColorDark,
-          title: Text('Hugh Home'),
-          actions: [
-            FlatButton.icon(
-                onPressed: () async {
-                  await _auth.signOut();
-                },
-                icon: Icon(Icons.person),
-                label: Text('Sign out'))
-          ],
-        ),
-        body: FutureBuilder(
-            future: getWorkers(http.Client()),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                print('snapshot has data');
-                print(snapshot.data);
-                for (var i in snapshot.data) {
-                  print('Mongo WotkerId(firestore) ${i.firestoreId}');
-                  print('Mongo UserName ${i.userName}');
-                }
-                // for (var i in snapshot.data) {
-                //   print('naem is ${snapshot.data[i].userName}');
-                // }
-                return Center(
-                  child: Container(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Card(
-                            color: Theme.of(context).primaryColorDark,
-                            elevation: 5,
-                            child: Container(
-                              height: 150,
-                              width: 150,
-                              child: FlatButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => UserBatches()));
-                                },
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text('Batches')),
-                              ),
-                            ),
+      backgroundColor: Theme.of(context).primaryColorLight,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).primaryColorDark,
+        title: Text('Hugh Home'),
+        actions: [
+          FlatButton.icon(
+              onPressed: () async {
+                await _auth.signOut();
+              },
+              icon: Icon(Icons.person),
+              label: Text('Sign out'))
+        ],
+      ),
+      body: pWorker.loading
+          ? Container(
+              child: Loading(),
+            )
+          : Center(
+              child: Container(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Card(
+                        color: Theme.of(context).primaryColorDark,
+                        elevation: 5,
+                        child: Container(
+                          height: 150,
+                          width: 150,
+                          child: FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      MultiProvider(
+                                        providers: [
+                                          ChangeNotifierProvider.value(
+                                              value: pBatch),
+                                          ChangeNotifierProvider.value(
+                                              value: pVariety),
+                                          ChangeNotifierProvider.value(
+                                              value: pVarietyHistory),
+                                          ChangeNotifierProvider.value(
+                                              value: pRoom),
+                                        ],
+                                        child: UserBatches(),
+                                      )));
+                            },
+                            child: Align(
+                                alignment: Alignment.center,
+                                child: Text('Batches')),
                           ),
-                          Card(
-                            color: Theme.of(context).primaryColorDark,
-                            elevation: 5,
-                            child: Container(
-                              height: 150,
-                              width: 150,
-                              child: FlatButton(
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          MultiProvider(
-                                            providers: [
-                                              ChangeNotifierProvider.value(
-                                                  value: pRoom),
-                                              ChangeNotifierProvider.value(
-                                                  value: pDailyWork),
-                                            ],
-                                            child:
-                                                HomeDailyWorkEntry(widget.uid),
-                                          )
-                                      // AdminBatches(
-                                      //     navigateToAdminBatches)
-                                      ));
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: (context) =>
-                                  //             HomeDailyWorkEntry(widget.uid,
-                                  //                 navigateToHomeDailyWorkEntry)));
-                                },
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text('Garden Care')),
-                              ),
-                            ),
-                          ),
-                          Card(
-                            color: Theme.of(context).primaryColorDark,
-                            elevation: 5,
-                            child: Container(
-                              height: 150,
-                              width: 150,
-                              child: FlatButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              BatchesListProcessBatches()));
-                                },
-                                child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text('Processing')),
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                      Card(
+                        color: Theme.of(context).primaryColorDark,
+                        elevation: 5,
+                        child: Container(
+                          height: 150,
+                          width: 150,
+                          child: FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      MultiProvider(
+                                        providers: [
+                                          ChangeNotifierProvider.value(
+                                              value: pRoom),
+                                          ChangeNotifierProvider.value(
+                                              value: pDailyWork),
+                                        ],
+                                        child: HomeDailyWorkEntry(widget.uid),
+                                      )));
+                            },
+                            child: Align(
+                                alignment: Alignment.center,
+                                child: Text('Garden Care')),
+                          ),
+                        ),
+                      ),
+                      Card(
+                        color: Theme.of(context).primaryColorDark,
+                        elevation: 5,
+                        child: Container(
+                          height: 150,
+                          width: 150,
+                          child: FlatButton(
+                            onPressed: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      MultiProvider(
+                                        providers: [
+                                          ChangeNotifierProvider.value(
+                                              value: pWeight),
+                                        ],
+                                        child: BatchesListProcessBatches(),
+                                      )));
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             BatchesListProcessBatches()));
+                            },
+                            child: Align(
+                                alignment: Alignment.center,
+                                child: Text('Processing')),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                );
-              } else if (snapshot.hasError) {
-                return snapshot.error;
-              } else {
-                return Loading();
-              }
-            }));
+                ),
+              ),
+            ),
+    );
   }
 }
