@@ -10,9 +10,8 @@ import 'package:provider/provider.dart';
 
 class AddVarietyProcessInfo extends StatelessWidget {
   String varietyId;
-  AddVarietyProcessInfo(
-    this.varietyId,
-  );
+  String workerName;
+  AddVarietyProcessInfo(this.varietyId, this.workerName);
 
   @override
   Widget build(BuildContext context) {
@@ -233,7 +232,8 @@ class AddVarietyProcessInfo extends StatelessWidget {
                               shakeController.text,
                               compostController.text,
                               totalHoursController.text,
-                              noOfPlantsHarvestedController.text);
+                              noOfPlantsHarvestedController.text,
+                              workerName);
                           FocusScope.of(context).requestFocus(FocusNode());
                           Navigator.pop(context);
                           Navigator.pop(context);

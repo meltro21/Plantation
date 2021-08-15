@@ -186,7 +186,7 @@ class _AdminHomeState extends State<AdminHome> {
                                         ChangeNotifierProvider.value(
                                             value: pWeight),
                                       ],
-                                      child: BatchesListProcessBatches(),
+                                      child: BatchesListProcessBatches("Admin"),
                                     )
                                 // AdminBatches(
                                 //     navigateToAdminBatches)

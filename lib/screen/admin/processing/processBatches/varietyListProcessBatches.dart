@@ -25,7 +25,8 @@ List<VarietyModel> parseVarieties(String responseBody) {
 
 class VarietyListProcessBatches extends StatefulWidget {
   String batchId;
-  VarietyListProcessBatches(this.batchId);
+  String workerName;
+  VarietyListProcessBatches(this.batchId, this.workerName);
 
   @override
   _VarietyListProcessBatchesState createState() =>
@@ -102,7 +103,8 @@ class _VarietyListProcessBatchesState extends State<VarietyListProcessBatches> {
                                             child:
                                                 VarietyHistoryListProcessBatches(
                                                     snapshot
-                                                        .data[index].varietyId),
+                                                        .data[index].varietyId,
+                                                    widget.workerName),
                                           )),
                                 );
                                 // Navigator.push(

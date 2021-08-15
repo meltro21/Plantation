@@ -33,7 +33,8 @@ List<VarietyProcessModel> parseVarietyInfo(String responseBody) {
 
 class VarietyHistoryListProcessBatches extends StatefulWidget {
   String varietyId;
-  VarietyHistoryListProcessBatches(this.varietyId);
+  String workerName;
+  VarietyHistoryListProcessBatches(this.varietyId, this.workerName);
   @override
   _VarietyHistoryListProcessBatchesState createState() =>
       _VarietyHistoryListProcessBatchesState();
@@ -132,7 +133,8 @@ class _VarietyHistoryListProcessBatchesState
                       providers: [
                         ChangeNotifierProvider.value(value: pWeight),
                       ],
-                      child: AddVarietyProcessInfo(widget.varietyId),
+                      child: AddVarietyProcessInfo(
+                          widget.varietyId, widget.workerName),
                     )));
             // Navigator.push(
             //     context,
@@ -310,6 +312,26 @@ class _VarietyHistoryListProcessBatchesState
                                 ),
                                 Text(
                                   '${pWeight.lWeight[index].totalHours} ',
+                                  // style: TextStyle(
+                                  //     fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  width: lWidth,
+                                  child: Text(
+                                    'Processed By',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  '${pWeight.lWeight[index].workerName} ',
                                   // style: TextStyle(
                                   //     fontWeight: FontWeight.bold),
                                 )

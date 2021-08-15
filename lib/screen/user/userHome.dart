@@ -48,6 +48,7 @@ class UserHome extends StatefulWidget {
 
 class _UserHomeState extends State<UserHome> {
   final AuthService _auth = AuthService();
+  String workerName;
   void navigateToHomeDailyWorkEntry(String id) {
     Navigator.push(
         context,
@@ -78,6 +79,8 @@ class _UserHomeState extends State<UserHome> {
     final pDailyWork = Provider.of<PDailyWork>(context);
     //weightProvider
     final pWeight = Provider.of<Pweight>(context);
+
+    print('worker is $workerName');
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColorLight,
@@ -166,6 +169,12 @@ class _UserHomeState extends State<UserHome> {
                           width: 150,
                           child: FlatButton(
                             onPressed: () {
+                              for (var i in pWorker.lWorker) {
+                                if (i.firestoreId == widget.uid) {
+                                  workerName = i.userName;
+                                }
+                              }
+                              print('worker is $workerName');
                               Navigator.of(context).push(MaterialPageRoute(
                                   builder: (BuildContext context) =>
                                       MultiProvider(
@@ -173,7 +182,8 @@ class _UserHomeState extends State<UserHome> {
                                           ChangeNotifierProvider.value(
                                               value: pWeight),
                                         ],
-                                        child: BatchesListProcessBatches(),
+                                        child: BatchesListProcessBatches(
+                                            workerName),
                                       )));
                               // Navigator.push(
                               //     context,

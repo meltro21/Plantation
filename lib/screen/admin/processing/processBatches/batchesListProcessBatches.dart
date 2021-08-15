@@ -35,6 +35,8 @@ Future<List<BatchHistoryModel>> getBatches(http.Client client) async {
 }
 
 class BatchesListProcessBatches extends StatefulWidget {
+  String workerName;
+  BatchesListProcessBatches(this.workerName);
   @override
   _BatchesListProcessBatchesState createState() =>
       _BatchesListProcessBatchesState();
@@ -71,13 +73,13 @@ class _BatchesListProcessBatchesState extends State<BatchesListProcessBatches> {
                             MaterialPageRoute(
                                 builder: (BuildContext context) =>
                                     MultiProvider(
-                                      providers: [
-                                        ChangeNotifierProvider.value(
-                                            value: pWeight),
-                                      ],
-                                      child: VarietyListProcessBatches(
-                                          snapshot.data[index].id),
-                                    )),
+                                        providers: [
+                                          ChangeNotifierProvider.value(
+                                              value: pWeight),
+                                        ],
+                                        child: VarietyListProcessBatches(
+                                            snapshot.data[index].id,
+                                            widget.workerName))),
                           );
                           // Navigator.push(
                           //     context,

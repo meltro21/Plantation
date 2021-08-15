@@ -39,7 +39,8 @@ Future<String> postWeight(
     String shake,
     String compost,
     String totalHours,
-    String noOfPlantsHarvested) async {
+    String noOfPlantsHarvested,
+    String workerName) async {
   final response = await http.post(
       Uri.https('hughplantation.herokuapp.com', '/processingVariety'),
       headers: <String, String>{
@@ -53,7 +54,8 @@ Future<String> postWeight(
         "Shake": shake,
         "Compost": compost,
         "NoOfPlantsHarvested": noOfPlantsHarvested,
-        "TotalHours": totalHours
+        "TotalHours": totalHours,
+        "WorkerName": workerName
       }));
 
   if (response.statusCode == 200) {
@@ -118,9 +120,10 @@ class Pweight with ChangeNotifier {
       String shake,
       String compost,
       String totalHours,
-      String noOfPlantsHarvested) async {
+      String noOfPlantsHarvested,
+      String workerName) async {
     var t = await postWeight(varietyId, preProcessing, aGrade, bGrade, shake,
-        compost, totalHours, noOfPlantsHarvested);
+        compost, totalHours, noOfPlantsHarvested, workerName);
     lWeight = await getWeight(http.Client(), vId);
     if (lWeight.isNotEmpty && lWeight.length != 1) {
       int preProcessing = 0;

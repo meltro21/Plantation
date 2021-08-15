@@ -6,7 +6,8 @@ class VarietyProcessModel {
       shake,
       compost,
       totalHours,
-      noOfPlantsHarvested;
+      noOfPlantsHarvested,
+      workerName;
 
   VarietyProcessModel(
       {this.varietyId,
@@ -16,7 +17,8 @@ class VarietyProcessModel {
       this.shake,
       this.compost,
       this.totalHours,
-      this.noOfPlantsHarvested});
+      this.noOfPlantsHarvested,
+      this.workerName});
 
   VarietyProcessModel.empty() {
     varietyId = "0";
@@ -27,6 +29,7 @@ class VarietyProcessModel {
     compost = "0";
     totalHours = "0";
     noOfPlantsHarvested = "0";
+    workerName = "0";
   }
 
   factory VarietyProcessModel.fromJson(Map<String, dynamic> json) {
@@ -38,6 +41,7 @@ class VarietyProcessModel {
         shake: json['Shake'].toString(),
         compost: json['Compost'].toString(),
         totalHours: json['TotalHours'].toString(),
-        noOfPlantsHarvested: json['NoOfPlantsHarvested'].toString());
+        noOfPlantsHarvested: json['NoOfPlantsHarvested'].toString(),
+        workerName: json['WorkerName'].toString());
   }
 }
