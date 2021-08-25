@@ -20,7 +20,7 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: Text("Detail"),
+        title: Text("Details"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -433,7 +433,7 @@ class _DetailDailyWorkState extends State<DetailDailyWork> {
                     Container(
                       width: titleWidth,
                       child: widget.dailyWork.administrationPlant != 'N/A'
-                          ? Text('Administration Plant')
+                          ? Text('Plant Sorting')
                           : SizedBox(),
                     ),
                     Container(

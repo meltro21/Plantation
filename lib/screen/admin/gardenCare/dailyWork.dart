@@ -31,7 +31,7 @@ class _DailyWorkHomeState extends State<DailyWorkHome> {
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: Text('Select Worker'),
+        title: Text('Select Staff Member'),
       ),
       body: pWorker.loading
           ? Container(
@@ -60,7 +60,8 @@ class _DailyWorkHomeState extends State<DailyWorkHome> {
                                       value: pDailyWork),
                                 ],
                                 child: IndividualDailyWork(
-                                    pWorker.lWorker[index].firestoreId),
+                                    pWorker.lWorker[index].firestoreId,
+                                    pWorker.lWorker[index].userName),
                               )));
 
                       // Navigator.push(

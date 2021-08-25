@@ -5,6 +5,7 @@ import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
 import 'package:fluttertest/provider/dailyWork/dailyWorkProvider.dart';
+import 'package:fluttertest/provider/room/timeProvider.dart';
 import 'package:fluttertest/provider/weightProvider/weightProvider.dart';
 import 'package:fluttertest/provider/workerProvider/workerProvider.dart';
 import 'package:fluttertest/provider/room/roomProvider.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
                 ChangeNotifierProvider.value(value: PWorker()),
                 //room Provider
                 ChangeNotifierProvider.value(value: PRoom()),
+                ChangeNotifierProvider.value(value: PRoomTime()),
                 //dailyWorkProvider
                 ChangeNotifierProvider.value(value: PDailyWork()),
                 //weight Provider

@@ -25,6 +25,7 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
   TextEditingController stageController = TextEditingController();
   TextEditingController noOfPlantsController = TextEditingController();
   TextEditingController entryIntoRoomController = TextEditingController();
+  TextEditingController roomController = TextEditingController();
 
   void pickStartDate() {
     showDatePicker(
@@ -93,10 +94,17 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                           'Room',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         )),
+                    Container(
+                      width: 60,
+                      child: TextFormField(
+                        validator: (val) => val.isEmpty ? 'Enter Room' : null,
+                        readOnly: true,
+                        controller: roomController,
+                      ),
+                    ),
                     SizedBox(
                       width: 20,
                     ),
-                    Container(width: 60, child: Text('$room')),
                     Container(
                       child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
@@ -110,6 +118,7 @@ class _addVarietyInfoAdminState extends State<addVarietyInfoAdmin> {
                           FocusScope.of(context).requestFocus(FocusNode());
                           setState(() {
                             room = _;
+                            roomController.text = _;
                           });
                         },
                       )),

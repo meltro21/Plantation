@@ -79,7 +79,8 @@ class _BatchesListProcessBatchesState extends State<BatchesListProcessBatches> {
                                         ],
                                         child: VarietyListProcessBatches(
                                             snapshot.data[index].id,
-                                            widget.workerName))),
+                                            widget.workerName,
+                                            snapshot.data[index].batchNo))),
                           );
                           // Navigator.push(
                           //     context,

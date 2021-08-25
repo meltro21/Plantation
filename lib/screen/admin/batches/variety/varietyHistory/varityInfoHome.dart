@@ -118,7 +118,8 @@ class _VarietyInfoHomeState extends State<VarietyInfoHome> {
         backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColorDark,
-          title: Text('$batchNo Variety History'),
+          title: Text(
+              '$batchNo ${pVariety.lVariety[pVariety.currentVarietyIndex].varietyName} Variety History'),
         ),
         floatingActionButton: FloatingActionButton.extended(
             onPressed: () {

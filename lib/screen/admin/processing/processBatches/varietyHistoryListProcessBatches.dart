@@ -34,7 +34,10 @@ List<VarietyProcessModel> parseVarietyInfo(String responseBody) {
 class VarietyHistoryListProcessBatches extends StatefulWidget {
   String varietyId;
   String workerName;
-  VarietyHistoryListProcessBatches(this.varietyId, this.workerName);
+  String batchNo;
+  String varietyName;
+  VarietyHistoryListProcessBatches(
+      this.varietyId, this.workerName, this.batchNo, this.varietyName);
   @override
   _VarietyHistoryListProcessBatchesState createState() =>
       _VarietyHistoryListProcessBatchesState();
@@ -123,7 +126,7 @@ class _VarietyHistoryListProcessBatchesState
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: Text('Weight'),
+        title: Text('${widget.batchNo} ${widget.varietyName} Weight'),
       ),
       floatingActionButton: FloatingActionButton.extended(
           backgroundColor: Theme.of(context).primaryColorDark,
@@ -197,7 +200,7 @@ class _VarietyHistoryListProcessBatchesState
                                 Container(
                                   width: lWidth,
                                   child: Text(
-                                    'A Grade',
+                                    'A-Grade',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
@@ -218,7 +221,7 @@ class _VarietyHistoryListProcessBatchesState
                                 Container(
                                   width: lWidth,
                                   child: Text(
-                                    'B Grade',
+                                    'B-Grade',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
@@ -281,7 +284,7 @@ class _VarietyHistoryListProcessBatchesState
                                 Container(
                                   width: lWidth,
                                   child: Text(
-                                    'NoOfPlants',
+                                    '#OfPlants',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold),
                                   ),
@@ -316,6 +319,9 @@ class _VarietyHistoryListProcessBatchesState
                                   //     fontWeight: FontWeight.bold),
                                 )
                               ],
+                            ),
+                            SizedBox(
+                              height: 10,
                             ),
                             Row(
                               children: [

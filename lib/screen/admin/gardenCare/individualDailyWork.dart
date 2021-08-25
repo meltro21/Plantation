@@ -21,7 +21,8 @@ List<DailyWorkModel> parseVarieties(String responseBody) {
 
 class IndividualDailyWork extends StatefulWidget {
   String uid;
-  IndividualDailyWork(this.uid);
+  String workerName;
+  IndividualDailyWork(this.uid, this.workerName);
   @override
   _IndividualDailyWorkState createState() => _IndividualDailyWorkState();
 }
@@ -57,7 +58,7 @@ class _IndividualDailyWorkState extends State<IndividualDailyWork> {
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: Text('Daily Work'),
+        title: Text('${widget.workerName} Daily Work'),
       ),
       body: pDailyWork.loading
           ? Container(

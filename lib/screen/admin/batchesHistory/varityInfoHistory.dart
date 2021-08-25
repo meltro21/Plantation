@@ -40,7 +40,9 @@ Future<int> deleteVarietyInfo(http.Client client, String varietyInfoId) async {
 
 class VarietyInfoHistory extends StatefulWidget {
   String varietyId;
-  VarietyInfoHistory(this.varietyId);
+  String batchNo;
+  String varietyName;
+  VarietyInfoHistory(this.varietyId, this.batchNo, this.varietyName);
   @override
   _VarietyInfoHistoryState createState() => _VarietyInfoHistoryState();
 }
@@ -121,21 +123,9 @@ class _VarietyInfoHistoryState extends State<VarietyInfoHistory> {
         backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColorDark,
-          title: Text(' Variety History'),
+          title:
+              Text('${widget.batchNo} ${widget.varietyName} Finalized Batches'),
         ),
-        floatingActionButton: FloatingActionButton.extended(
-            onPressed: () {
-              print('pressed');
-              // Navigator.of(context).push(MaterialPageRoute(
-              //   builder: (BuildContext context) => MultiProvider(providers: [
-              //     ChangeNotifierProvider.value(value: pBatch),
-              //     ChangeNotifierProvider.value(value: pVariety),
-              //     ChangeNotifierProvider.value(value: pVarietyHistory),
-              //     //ChangeNotifierProvider.value(value: pRoom),
-              //   ], child: addVarietyInfoAdmin()),
-              // ));
-            },
-            label: Text('Add History')),
         body: Container(
           child: pVarietyHistory.loading
               ? Container(
@@ -198,14 +188,6 @@ class _VarietyInfoHistoryState extends State<VarietyInfoHistory> {
                               ],
                             ),
                           ],
-                        ),
-                        trailing: GestureDetector(
-                          child: Icon(Icons.highlight_off),
-                          onTap: () async {
-                            print('Error');
-                            await showConfirmDeleteDialogBox(
-                                pVarietyHistory.lVarietyHistory[index].id);
-                          },
                         ),
                       ),
                     );

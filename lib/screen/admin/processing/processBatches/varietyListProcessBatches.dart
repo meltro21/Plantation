@@ -26,7 +26,8 @@ List<VarietyModel> parseVarieties(String responseBody) {
 class VarietyListProcessBatches extends StatefulWidget {
   String batchId;
   String workerName;
-  VarietyListProcessBatches(this.batchId, this.workerName);
+  String batchNo;
+  VarietyListProcessBatches(this.batchId, this.workerName, this.batchNo);
 
   @override
   _VarietyListProcessBatchesState createState() =>
@@ -65,7 +66,7 @@ class _VarietyListProcessBatchesState extends State<VarietyListProcessBatches> {
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: Text('Variety List'),
+        title: Text('${widget.batchNo} Variety List'),
       ),
       // floatingActionButton: FloatingActionButton.extended(
       //     onPressed: () {
@@ -104,7 +105,10 @@ class _VarietyListProcessBatchesState extends State<VarietyListProcessBatches> {
                                                 VarietyHistoryListProcessBatches(
                                                     snapshot
                                                         .data[index].varietyId,
-                                                    widget.workerName),
+                                                    widget.workerName,
+                                                    widget.batchNo,
+                                                    snapshot.data[index]
+                                                        .varietyName),
                                           )),
                                 );
                                 // Navigator.push(

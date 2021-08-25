@@ -137,7 +137,7 @@ class AddVarietyProcessInfo extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       validator: (val) => val.isEmpty ? 'Enter AGrade' : null,
                       decoration: InputDecoration(
-                          labelText: 'AGrade',
+                          labelText: 'A-Grade',
                           labelStyle: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
@@ -151,7 +151,7 @@ class AddVarietyProcessInfo extends StatelessWidget {
                       keyboardType: TextInputType.number,
                       validator: (val) => val.isEmpty ? 'Enter BGrade' : null,
                       decoration: InputDecoration(
-                          labelText: 'BGrade',
+                          labelText: 'B-Grade',
                           labelStyle: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,
@@ -194,7 +194,7 @@ class AddVarietyProcessInfo extends StatelessWidget {
                       validator: (val) =>
                           val.isEmpty ? 'Enter No Of Plants Harvested' : null,
                       decoration: InputDecoration(
-                          labelText: 'No Of Plants Harvested',
+                          labelText: '# Of Plants Harvested',
                           labelStyle: TextStyle(
                               fontFamily: 'Montserrat',
                               fontWeight: FontWeight.bold,

@@ -31,6 +31,8 @@ class VarietyHomeProcessing extends StatefulWidget {
 }
 
 class _VarietyHomeProcessingState extends State<VarietyHomeProcessing> {
+  double lWidth = 80;
+  double rWidth = 100;
   Future<List<VarietyModel>> getVarities(http.Client client) async {
     print('start filterVariety get');
     var queryParameters = {'batchId': widget.batchId};
@@ -54,7 +56,7 @@ class _VarietyHomeProcessingState extends State<VarietyHomeProcessing> {
       backgroundColor: Theme.of(context).primaryColorLight,
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColorDark,
-        title: Text('Variety List'),
+        title: Text('${widget.batchNo} Finzalized Batchess'),
       ),
       body: Container(
         child: Column(
@@ -74,6 +76,75 @@ class _VarietyHomeProcessingState extends State<VarietyHomeProcessing> {
                                 borderRadius: BorderRadius.circular(10)),
                             child: ListTile(
                               title: Text(snapshot.data[index].varietyName),
+                              subtitle: Column(
+                                children: [
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  snapshot.data[index].room != "null"
+                                      ? Row(
+                                          children: [
+                                            snapshot.data[index].room != "null"
+                                                ? Container(
+                                                    width: lWidth,
+                                                    child: Text('Room'))
+                                                : SizedBox(),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            snapshot.data[index].room != "null"
+                                                ? Container(
+                                                    child: Text(snapshot
+                                                        .data[index].room),
+                                                  )
+                                                : SizedBox()
+                                          ],
+                                        )
+                                      : SizedBox(),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  snapshot.data[index].stage != "null"
+                                      ? Row(
+                                          children: [
+                                            snapshot.data[index].stage != "null"
+                                                ? Container(
+                                                    width: lWidth,
+                                                    child: Text('Stage'))
+                                                : SizedBox(),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            snapshot.data[index].stage != "null"
+                                                ? Container(
+                                                    child: Text(snapshot
+                                                        .data[index].stage),
+                                                  )
+                                                : SizedBox()
+                                          ],
+                                        )
+                                      : SizedBox(),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  snapshot.data[index].noOfPlants != "null"
+                                      ? Row(
+                                          children: [
+                                            Container(
+                                                width: lWidth,
+                                                child: Text('No Of Plants')),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Container(
+                                              child: Text(snapshot
+                                                  .data[index].noOfPlants),
+                                            )
+                                          ],
+                                        )
+                                      : SizedBox(),
+                                ],
+                              ),
                               onTap: () {
                                 // pVariety.currentVarietyIndex = index;
                                 Navigator.of(context).push(MaterialPageRoute(
@@ -88,7 +159,9 @@ class _VarietyHomeProcessingState extends State<VarietyHomeProcessing> {
                                                 value: pVarietyHistory),
                                           ],
                                           child: VarietyInfoHistory(
-                                              snapshot.data[index].varietyId),
+                                              snapshot.data[index].varietyId,
+                                              widget.batchNo,
+                                              snapshot.data[index].varietyName),
                                         )));
                                 // Navigator.push(
                                 //     context,

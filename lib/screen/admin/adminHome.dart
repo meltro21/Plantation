@@ -8,6 +8,7 @@ import 'package:fluttertest/provider/batchProvider/batchProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyHistoryProvider.dart';
 import 'package:fluttertest/provider/batchProvider/varietyProvider.dart';
 import 'package:fluttertest/provider/dailyWork/dailyWorkProvider.dart';
+import 'package:fluttertest/provider/room/timeProvider.dart';
 import 'package:fluttertest/provider/weightProvider/weightProvider.dart';
 import 'package:fluttertest/provider/workerProvider/workerProvider.dart';
 import 'package:fluttertest/provider/room/roomProvider.dart';
@@ -66,6 +67,7 @@ class _AdminHomeState extends State<AdminHome> {
     //Garden Care Provider
     final pWorker = Provider.of<PWorker>(context);
     final pRoom = Provider.of<PRoom>(context);
+    final pRoomTime = Provider.of<PRoomTime>(context);
     final pDailyWork = Provider.of<PDailyWork>(context);
     //weight Provider
     final pWeight = Provider.of<Pweight>(context);
@@ -260,6 +262,10 @@ class _AdminHomeState extends State<AdminHome> {
                                       providers: [
                                         ChangeNotifierProvider.value(
                                             value: pRoom),
+                                        ChangeNotifierProvider.value(
+                                            value: pRoomTime),
+                                        ChangeNotifierProvider.value(
+                                            value: pBatch),
                                       ],
                                       child: RoomHome(),
                                     )));

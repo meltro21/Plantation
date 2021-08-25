@@ -57,7 +57,7 @@ class _BatchesHistoryState extends State<BatchesHistory> {
         backgroundColor: Theme.of(context).primaryColorLight,
         appBar: AppBar(
           backgroundColor: Theme.of(context).primaryColorDark,
-          title: Text('Batches'),
+          title: Text('Finalized Batches'),
         ),
         body: FutureBuilder(
             future: getBatches(http.Client()),
@@ -72,6 +72,7 @@ class _BatchesHistoryState extends State<BatchesHistory> {
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
+                          pBatch.currentBatchIndex = index;
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) => MultiProvider(
                                     providers: [
@@ -84,7 +85,7 @@ class _BatchesHistoryState extends State<BatchesHistory> {
                                     ],
                                     child: VarietyHomeProcessing(
                                         snapshot.data[index].id,
-                                        widget.batchNo),
+                                        snapshot.data[index].batchNo),
                                   )));
                           // Navigator.push(
                           //     context,
